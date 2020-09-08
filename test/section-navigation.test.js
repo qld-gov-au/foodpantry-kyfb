@@ -1,5 +1,5 @@
 /* eslint-disable */
-const SectionNavigation = require('../src/scripts/section-navigation');
+const SectionNavigation = require('../src/components/section-navigation.js');
 
 describe('Section Navigation is setup correctly.', function () {
   document
