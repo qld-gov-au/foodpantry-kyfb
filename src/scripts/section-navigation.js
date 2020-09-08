@@ -8,10 +8,10 @@ module.exports = class SectionNavigation {
    */
   constructor(target) {
     this.target = target;
-    this.target.innerHTML = this.render();
+    this.render();
 
-    document.body.addEventListener('labelbusterPageChange', event => {
-      this.render(event.data.navigation);
+    document.body.addEventListener('labelbusterPageChange', (event) => {
+      this.render(event.detail.navigation);
     });
   }
 
@@ -21,8 +21,8 @@ module.exports = class SectionNavigation {
   render(navigation = []) {
     let buttons = this.target.querySelectorAll('button');
     if (buttons.length) {
-      buttons.forEach(button => {
-        button.removeEventListener('click', event => {
+      buttons.forEach((button) => {
+        button.removeEventListener('click', (event) => {
           this.sectionNavigationClicked(event);
         });
       });
@@ -30,7 +30,7 @@ module.exports = class SectionNavigation {
 
     if (navigation.length) {
       this.target.innerHTML = '';
-      navigation.forEach(nav => {
+      navigation.forEach((nav) => {
         const element = this.renderButton(
           nav.cssClass,
           nav.label,
@@ -43,9 +43,9 @@ module.exports = class SectionNavigation {
 
     buttons = this.target.querySelectorAll('button');
     if (buttons.length) {
-      buttons.forEach(button => {
+      buttons.forEach((button) => {
         if (!button.disabled) {
-          button.addEventListener('click', event => {
+          button.addEventListener('click', (event) => {
             this.sectionNavigationClicked(event);
           });
         }
