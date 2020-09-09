@@ -1,9 +1,11 @@
 /* eslint-disable no-unused-vars */
+import { LabelBuster } from './components/label-buster';
+import { ButtonGroup } from './components/button-group';
 import { SectionNavigation } from './components/section-navigation';
 
 (() => {
-  // const lb = new LabelBuster();
-  // const bg = new ButtonGroup(document.querySelector('.button-container'));
+  const lb = new LabelBuster();
+  const bg = new ButtonGroup(document.querySelector('.button-container'));
 
   /* Remove Squiz default H1 */
   window.addEventListener('DOMContentLoaded', () => {
