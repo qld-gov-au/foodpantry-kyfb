@@ -1,3 +1,29 @@
 .kyfb {
-    
-}
+    .fa {
+      margin-right: 5px;
+      font-size: 1.5625rem;
+    }
+  
+    .alert-instructions {
+      background-color: #f5f5f5;
+      border-left: 5px solid #808080;
+    }
+
+    .qg-cards .qg-card .content{
+        border-radius: 4px;
+        border: solid 1px #d3d3d3;
+        background-color: #ffffff;
+    }
+
+    .qg-cards .qg-card .details{
+        background-color: #ffffff;
+    }
+
+    .qg-cards .qg-card .content .details a,
+    .qg-cards .qg-card .content .details a:active,
+    .qg-cards .qg-card .content .details a:focus,
+    .qg-cards .qg-card .content .details a:hover,
+    .qg-cards .qg-card .content .details a:visited {
+        color: #005e85;
+    }
+  }
