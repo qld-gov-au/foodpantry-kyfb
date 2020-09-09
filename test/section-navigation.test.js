@@ -1,5 +1,6 @@
 /* eslint-disable */
-const SectionNavigation = require('../src/components/section-navigation.js');
+import { expect } from '@open-wc/testing';
+import { SectionNavigation } from '../src/components/section-navigation';
 
 describe('Section Navigation is setup correctly.', function () {
   document
@@ -38,17 +39,17 @@ describe('Section Navigation is setup correctly.', function () {
       target.innerHTML.includes(
         '<li><button type="button" data-destination="1">Overview</button></li>'
       )
-    ).toEqual(true);
+    ).to.equal(true);
     expect(
       target.innerHTML.includes(
         '<li><button type="button" data-destination="2" disabled="">Terms of use</button></li>'
       )
-    ).toEqual(true);
+    ).to.equal(true);
     expect(
       target.innerHTML.includes(
         '<li><button type="button" data-destination="3" disabled="">Questions</button></li>'
       )
-    ).toEqual(true);
+    ).to.equal(true);
   });
 
   it('render button should output what is antipcated', function () {
@@ -58,11 +59,11 @@ describe('Section Navigation is setup correctly.', function () {
       '1',
       false
     );
-    expect(response.innerHTML.includes('button')).toEqual(true);
-    expect(response.innerHTML.includes('type="button"')).toEqual(true);
-    expect(response.innerHTML.includes('data-destination="1"')).toEqual(true);
-    expect(response.innerHTML.includes('testLabel')).toEqual(true);
-    expect(response.innerHTML.includes('/button')).toEqual(true);
+    expect(response.innerHTML.includes('button')).to.equal(true);
+    expect(response.innerHTML.includes('type="button"')).to.equal(true);
+    expect(response.innerHTML.includes('data-destination="1"')).to.equal(true);
+    expect(response.innerHTML.includes('testLabel')).to.equal(true);
+    expect(response.innerHTML.includes('/button')).to.equal(true);
   });
 
   it('the event fires with the expected data from clicking', function () {
@@ -74,6 +75,6 @@ describe('Section Navigation is setup correctly.', function () {
       },
     };
     const response = navigation.sectionNavigationClicked(clickEvent);
-    expect(response.detail.page).toEqual(1);
+    expect(response.detail.page).to.equal(1);
   });
 });

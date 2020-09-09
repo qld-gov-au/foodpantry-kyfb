@@ -2,7 +2,7 @@
  * @class SectionNavigation
  */
 // eslint-disable-next-line no-unused-vars
-module.exports = class SectionNavigation {
+export class SectionNavigation {
   /**
    * @param {HTMLElement} target the target for the sectio navigation
    */
@@ -89,4 +89,4 @@ module.exports = class SectionNavigation {
     window.dispatchEvent(newEvent);
     return newEvent;
   }
-};
+}
