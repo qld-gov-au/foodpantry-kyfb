@@ -13,6 +13,7 @@
         "airbnb-base"
     ],
     "rules": {
+        "import/prefer-default-export": "off",
         "eol-last": "error",
         "no-console": "error",
         "no-alert": "error",
