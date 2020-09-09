@@ -1,5 +1,12 @@
-.formio-form > div > nav {
-  display: none;
+.formio-form {
+  > div {
+    > nav {
+      display: none;
+    }
+    > ul {
+      display: none;
+    }
+  }
 }
 
 .kyfb {

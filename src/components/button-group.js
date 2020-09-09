@@ -74,13 +74,33 @@ export class ButtonGroup {
    * @param {Number} pageNo the page number provided by the wizard instance
    */
   // eslint-disable-next-line class-methods-use-this
-  render(pageNo) {
+  render(pageNo, hasAccepted) {
     if (pageNo === 0) {
       return buttonGroup([
         {
           text: 'Start now',
           eventName: 'labelbusterGoToNext',
           cssClass: 'btn-primary',
+        },
+      ]);
+    }
+    if (pageNo === 2) {
+      return buttonGroup([
+        {
+          text: 'Back',
+          eventName: 'labelbusterGoToPrevious',
+          cssClass: 'btn-default',
+        },
+        {
+          text: 'Accept',
+          eventName: 'labelbusterAccept',
+          cssClass: 'btn-primary',
+          disabled: !hasAccepted,
+        },
+        {
+          text: 'Cancel',
+          eventName: 'labelbusterCancel',
+          cssClass: 'btn-link',
         },
       ]);
     }
@@ -92,7 +112,7 @@ export class ButtonGroup {
       },
       {
         text: 'Next',
-        eventName: 'labelbusterAccept',
+        eventName: 'labelbusterGoToNext',
         cssClass: 'btn-primary',
       },
       {
