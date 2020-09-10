@@ -8,28 +8,46 @@
         background-color: #f5f5f5;
         border-left: 5px solid #808080;
       }
-  
+    
+      .qg-cards .qg-card .content {
+        border-radius: 4px;
+        border: solid 1px #d3d3d3;
+        background-color: #ffffff;
+      }
+    
+      .qg-cards .qg-card .details {
+        background-color: #ffffff;
+      }
+    
+      .qg-cards .qg-card .content .details .qg-card {
+        color: #005e85;
+      }
+    
+      .btn-kyfb {
+        border: none;
+        background: none;
+        text-decoration: underline;
+        color: #005e85;
+      }
       .emailHeader{
-              width: 561px;
-              height: 34px;
               font-family: Lato;
               font-size: 14px;
-              font-weight: normal;
-              font-stretch: normal;
-              font-style: normal;
-              line-height: normal;
-              letter-spacing: -0.47px;
+              color: #666666;
       }
   
       .textFieldEmail{
               border-radius: 4px;
               background-color: #ffffff;
       }
+
       .boxed{
-          width: 571px;
-          height: 141px;
           border-radius: 4px;
           border: solid 1px #cfcfcf;
-          background-color: #ffffff;
+          margin-bottom: 15px;
+          margin-left: 10px;
       }
+      .boxed .heading-primary, .boxed .desc-margin, .boxed .anchor-margin{
+        margin-left: 15px;
+    }
+
     }
