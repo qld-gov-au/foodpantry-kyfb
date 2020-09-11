@@ -43,11 +43,11 @@
       .boxed{
           border-radius: 4px;
           border: solid 1px #cfcfcf;
-          margin-bottom: 15px;
-          margin-left: 10px;
+          margin-bottom: 16px;
+          padding: 16px;
       }
-      .boxed .heading-primary, .boxed .desc-margin, .boxed .anchor-margin{
-        margin-left: 15px;
+      .boxed hr{
+        margin-inline: -16px;
     }
 
     }
