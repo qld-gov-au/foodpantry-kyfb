@@ -1,3 +1,5 @@
+@import './formio/radio.scss';
+
 .formio-form {
   > div {
     > nav {
@@ -12,5 +14,9 @@
 .kyfb {
   p button {
     margin-right: 5px;
+  }
+
+  .special {
+    color: #f85c50;
   }
 }
