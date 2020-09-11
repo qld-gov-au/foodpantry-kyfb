@@ -38,6 +38,7 @@
     "start": "parcel src/index.html",
     "build": "rimraf dist && npm run build:squiz",
     "build:resources": "parcel build src/resources/**/view.html",
+    "build:fragments": "parcel build src/resources/**/**/*.html",
     "build:squiz": "parcel build src/index.html",
     "test:watch": "karma start --auto-watch=true --single-run=false"
   },
