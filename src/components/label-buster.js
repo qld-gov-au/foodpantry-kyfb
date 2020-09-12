@@ -2,7 +2,7 @@
  * @class LabelBuster
  */
 const formLocation =
-  'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/formwizard';
+  'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/formwizardkyfb';
 
 export class LabelBuster {
   /**
