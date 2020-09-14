@@ -37,17 +37,17 @@ describe('Section Navigation is setup correctly.', function () {
     navigation.render(navData);
     expect(
       target.innerHTML.includes(
-        '<li><button type="button" data-destination="1">Overview</button></li>'
+        '<li><button type="button" class="qg-btn btn-link" data-destination="1">Overview</button></li>'
       )
     ).to.equal(true);
     expect(
       target.innerHTML.includes(
-        '<li><button type="button" data-destination="2" disabled="">Terms of use</button></li>'
+        '<li><button type="button" class="qg-btn btn-link" data-destination="2" disabled="">Terms of use</button></li>'
       )
     ).to.equal(true);
     expect(
       target.innerHTML.includes(
-        '<li><button type="button" data-destination="3" disabled="">Questions</button></li>'
+        '<li><button type="button" class="qg-btn btn-link" data-destination="3" disabled="">Questions</button></li>'
       )
     ).to.equal(true);
   });
