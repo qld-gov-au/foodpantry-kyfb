@@ -76,13 +76,7 @@ export class ButtonGroup {
   // eslint-disable-next-line class-methods-use-this
   render(pageNo, hasAccepted) {
     if (pageNo === 0) {
-      return buttonGroup([
-        {
-          text: 'Start now',
-          eventName: 'labelbusterGoToNext',
-          cssClass: 'btn-primary',
-        },
-      ]);
+      return null;
     }
     if (pageNo === 2) {
       return buttonGroup([
