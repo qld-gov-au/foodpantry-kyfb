@@ -10,7 +10,7 @@ export class SectionNavigation {
     this.target = target;
     this.render();
 
-    document.body.addEventListener('labelbusterPageChange', (event) => {
+    window.addEventListener('labelbusterPageChange', (event) => {
       this.render(event.detail.navigation);
     });
   }
@@ -35,7 +35,10 @@ export class SectionNavigation {
           nav.cssClass,
           nav.label,
           nav.destination,
-          nav.disabled
+          nav.disabled,
+          nav.visited,
+          nav.active,
+          nav.step
         );
         this.target.appendChild(element);
       });
@@ -58,17 +61,43 @@ export class SectionNavigation {
    * @param {String} label the label of the button
    * @param {String} destination the destination (formio page) on click
    * @param {Boolean} disabled is the button disabled
+   * @param {Boolean} visited has this been visited
+   * @param {Boolean} active if the step is active
+   * @param {Number} step the step displayed -1 for no display
    * @return {HTMLElement}
    */
   // eslint-disable-next-line class-methods-use-this
-  renderButton(cssClass, label, destination, disabled) {
+  renderButton(
+    cssClass,
+    label,
+    destination,
+    disabled,
+    visited,
+    active,
+    step = -1
+  ) {
+    const buttonClass = visited ? `${cssClass} visited` : cssClass;
     const button = document.createElement('button');
     button.type = 'button';
-    button.class = cssClass;
+    button.className = buttonClass;
     button.setAttribute('data-destination', destination);
     button.disabled = disabled;
     button.textContent = label;
     const li = document.createElement('li');
+    if (active) {
+      li.className = 'active';
+    }
+    if (step !== -1) {
+      let className = 'number';
+      if (disabled) {
+        className += ' disabled';
+      }
+      const stepHtml = document.createElement('span');
+      stepHtml.className = className;
+      stepHtml.textContent = step;
+      li.appendChild(stepHtml);
+    }
+
     li.appendChild(button);
     return li;
   }

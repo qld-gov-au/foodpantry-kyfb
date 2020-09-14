@@ -14,13 +14,19 @@ import buttonNav from './scripts/button-nav';
     if (pageHeader) {
       pageHeader.removeChild(document.querySelector('h1'));
     }
-
-    let sectionNav = document.querySelector('#qg-section-nav');
+    let sectionNav = document.querySelector(
+      '#qg-section-nav > ul > li:nth-child(2)'
+    );
     if (!sectionNav) {
       sectionNav = document.querySelector('#formnav');
       sectionNav.display = 'block';
     }
+
+    const unorderdList = document.createElement('ul');
+    unorderdList.classList = 'lb';
+    sectionNav.appendChild(unorderdList);
     const sectionNavTarget = sectionNav.querySelector('ul');
+
     const sectionNavigation = new SectionNavigation(sectionNavTarget);
   });
 })();
