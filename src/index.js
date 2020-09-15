@@ -2,12 +2,12 @@
 import { LabelBuster } from './components/label-buster';
 import { ButtonGroup } from './components/button-group';
 import { SectionNavigation } from './components/section-navigation';
-import buttonNav from './scripts/button-nav';
+import attachStepHandlers from './scripts/step-handler';
 
 (() => {
   const lb = new LabelBuster();
   const bg = new ButtonGroup(document.querySelector('.button-container'));
-  buttonNav();
+  attachStepHandlers();
   /* Remove Squiz default H1 */
   window.addEventListener('DOMContentLoaded', () => {
     const pageHeader = document.querySelector('#qg-primary-content');
