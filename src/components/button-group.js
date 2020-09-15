@@ -51,13 +51,13 @@ function buttonGroup(buttons) {
 // eslint-disable-next-line import/prefer-default-export
 export class ButtonGroup {
   constructor(target) {
-    this.target = target; // <div class="button-group"></div>
+    this.target = target;
     this.updateTarget(this.render());
 
     window.addEventListener(
       'labelbusterPageChange',
-      ({ detail: { page, hasAccepted } }) => {
-        this.updateTarget(this.render(page, hasAccepted));
+      ({ detail: { page, hasAccepted, navigation } }) => {
+        this.updateTarget(this.render(page, hasAccepted, navigation));
       }
     );
   }
@@ -67,14 +67,18 @@ export class ButtonGroup {
    */
   updateTarget(result) {
     this.target.innerHTML = '';
-    this.target.appendChild(result);
+    if (result) {
+      this.target.appendChild(result);
+    }
   }
 
   /**
    * @param {Number} pageNo the page number provided by the wizard instance
    */
   // eslint-disable-next-line class-methods-use-this
-  render(pageNo, hasAccepted) {
+  render(pageNo = 0, hasAccepted, navigation) {
+    const nextStep = pageNo + 1;
+
     if (pageNo === 0) {
       return null;
     }
@@ -98,6 +102,22 @@ export class ButtonGroup {
         },
       ]);
     }
+
+    if (pageNo === 4) {
+      return buttonGroup([
+        {
+          text: 'Back',
+          eventName: 'labelbusterGoToPrevious',
+          cssClass: 'btn-default',
+        },
+        {
+          text: 'Cancel',
+          eventName: 'labelbusterCancel',
+          cssClass: 'btn-link',
+        },
+      ]);
+    }
+
     return buttonGroup([
       {
         text: 'Back',
@@ -108,6 +128,7 @@ export class ButtonGroup {
         text: 'Next',
         eventName: 'labelbusterGoToNext',
         cssClass: 'btn-primary',
+        disabled: navigation[nextStep].disabled,
       },
       {
         text: 'Cancel',
