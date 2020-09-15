@@ -55,10 +55,8 @@ export class LabelBuster {
   initialise() {
     this.formElement = document.querySelector('#formio');
     // listens for terms and conditions selection
-    this.formElement.addEventListener('click', (e) => {
-      if (e.target.name === 'data[termsAndConditions]') {
-        this.firePageChangeEvent();
-      }
+    this.formElement.addEventListener('click', () => {
+      this.firePageChangeEvent();
     });
     Formio.createForm(
       this.formElement,
