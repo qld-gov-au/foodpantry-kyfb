@@ -1,11 +1,11 @@
 function hideTile() {
     const animalAndPestsTile = document.querySelector('#animal-pests');
-    animalsAndPestsTile.style.display = none;
+    animalAndPestsTile.style.display = "none";
 }
 
 function hideCompletedTopics() {
-    const completedSection = document.querySelector('#completed-topics');
-    completedSection.style.display = none;
+    const completedSection = document.querySelector('.alert-instructions');
+    completedSection.style.display = "none";
 }
 
 function attachStartTopic(node) {
@@ -22,6 +22,7 @@ function attachStartTopic(node) {
 
 export function homePageUpdates() {
     const completedAnimalsAndPests = localStorage.getItem('animalsAndPests');
+
     if (completedAnimalsAndPests) {
         hideTile();
         attachStartTopic(document.querySelector('#completed-topics button'));
