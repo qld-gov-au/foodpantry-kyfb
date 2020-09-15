@@ -102,6 +102,22 @@ export class ButtonGroup {
         },
       ]);
     }
+
+    if (pageNo === 4) {
+      return buttonGroup([
+        {
+          text: 'Back',
+          eventName: 'labelbusterGoToPrevious',
+          cssClass: 'btn-default',
+        },
+        {
+          text: 'Cancel',
+          eventName: 'labelbusterCancel',
+          cssClass: 'btn-link',
+        },
+      ]);
+    }
+
     return buttonGroup([
       {
         text: 'Back',
