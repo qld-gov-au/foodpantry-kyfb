@@ -28,3 +28,50 @@
     display: none;
   }
 }
+
+
+#qg-section-nav ul.lb {
+  list-style-type: none;
+
+  > li {
+    margin-left: 0!important;
+    &.active {
+      background-color: #005e85;
+      > span {
+        &.number {
+          background-color: #ffffff;
+          color: #005e85;
+          height: 21px;
+          width: 21px;
+          margin: 9px 15px 12px 77px;
+          display: inline-block;
+          text-align: center;
+          font-size: 0.9375rem;
+        }
+      }
+
+      > button {
+        color: #ffffff;
+      }
+    }
+
+    > span {
+      &.number {
+        background-color: #005e85;
+        color: #ffffff;
+        height: 21px;
+        width: 21px;
+        margin: 15px;
+        margin: 9px 15px 12px 77px;
+        display: inline-block;
+        text-align: center;
+        font-size: 0.9375rem;
+      }
+
+      &.disabled {
+        background-color: transparent;
+        color: #6f777b;
+      }
+    }
+  }
+}
