@@ -1,3 +1,4 @@
+import debounce from '../scripts/debounce';
 /**
  * @class LabelBuster
  */
@@ -229,9 +230,11 @@ export class LabelBuster {
 
   observeMutations() {
     const config = { attributes: false, childList: true, subtree: true };
-    const observer = new MutationObserver(() => {
-      this.firePageChangeEvent();
-    }, 250);
+    const observer = new MutationObserver(
+      debounce(() => {
+        this.firePageChangeEvent();
+      }, 250)
+    );
     observer.observe(this.formElement, config);
   }
 }
