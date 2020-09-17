@@ -64,7 +64,7 @@ export class LabelBuster {
     Formio.createForm(
       this.formElement,
       this.formLocation,
-      this.formSettings
+      this.formSettings,
     ).then((wizard) => {
       this.wizard = wizard;
       this.loaded = true;
@@ -104,13 +104,15 @@ export class LabelBuster {
     if (!this.wizard || !this.wizard.components) {
       return navigationArray;
     }
+    if (this.wizard.page === 0) return navigationArray;
+
     // this.wizard.setPage(this.wizard.page);
     let invalidPreviousStep = false;
     this.wizard.components.forEach((page, offset) => {
       const isValid = this.checkPageValidity(
         offset,
         this.wizard.components,
-        this.wizard.data
+        this.wizard.data,
       );
 
       const outputObject = {
@@ -180,7 +182,7 @@ export class LabelBuster {
       return this.checkPageValidity(
         this.wizard.page,
         this.wizard.components,
-        this.wizard.data
+        this.wizard.data,
       );
     }
     return false;
@@ -238,7 +240,7 @@ export class LabelBuster {
     const observer = new MutationObserver(
       debounce(() => {
         this.firePageChangeEvent();
-      }, 250)
+      }, 250),
     );
     observer.observe(this.formElement, config);
   }
