@@ -104,6 +104,7 @@ export class LabelBuster {
     if (!this.wizard || !this.wizard.components) {
       return navigationArray;
     }
+    // TODO: Remove this hack as part of removing technical debt.
     if (this.wizard.page === 0) return navigationArray;
 
     // this.wizard.setPage(this.wizard.page);
