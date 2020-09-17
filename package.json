@@ -72,7 +72,7 @@
   },
   "prettier": {
     "singleQuote": true,
-    "trailing-comma": "all"
+    "trailingComma": "all"
   },
   "husky": {
     "hooks": {

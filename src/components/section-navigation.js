@@ -28,8 +28,8 @@ export class SectionNavigation {
       });
     }
 
+    this.target.innerHTML = '';
     if (navigation.length) {
-      this.target.innerHTML = '';
       navigation.forEach((nav) => {
         const element = this.renderButton(
           nav.cssClass,
@@ -38,7 +38,7 @@ export class SectionNavigation {
           nav.disabled,
           nav.visited,
           nav.active,
-          nav.step
+          nav.step,
         );
         this.target.appendChild(element);
       });
@@ -74,7 +74,7 @@ export class SectionNavigation {
     disabled,
     visited,
     active,
-    step = -1
+    step = -1,
   ) {
     const buttonClass = visited ? `${cssClass} visited` : cssClass;
     const button = document.createElement('button');
