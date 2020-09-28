@@ -37,8 +37,8 @@
     "test": "karma start --coverage",
     "start": "parcel src/index.html",
     "build": "rimraf dist && npm run build:squiz && npm run build:resources",
-    "build:resources": "parcel build src/resources/**/view.html src/resources/**/**/*.html",
-    "build:squiz": "parcel build src/index.html",
+    "build:resources": "parcel build src/resources/**/view.html src/resources/**/**/*.html --no-source-maps",
+    "build:squiz": "parcel build src/index.html --no-source-maps",
     "test:watch": "karma start --auto-watch=true --single-run=false"
   },
   "devDependencies": {
