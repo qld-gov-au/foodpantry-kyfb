@@ -42,7 +42,7 @@ import attachStepHandlers from './scripts/step-handler';
     }
 
     let sectionNav = document.querySelector(
-      '#qg-section-nav > ul > li:nth-child(1)',
+      '#qg-section-nav > ul > li:nth-child(2)',
     );
     if (!sectionNav) {
       sectionNav = document.querySelector('#formnav');
