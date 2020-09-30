@@ -1,32 +1,59 @@
 /* eslint-disable no-unused-vars */
-import { LabelBuster } from './components/label-buster';
+import { FormioWrapper } from './components/formio-wrapper';
 import { ButtonGroup } from './components/button-group';
-import { SectionNavigation } from './components/section-navigation';
 import attachStepHandlers from './scripts/step-handler';
 
 (() => {
-  const lb = new LabelBuster();
+  const configuration = {
+    formLocation: 'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/kyfb',
+    formSettings: {
+      buttonSettings: {
+        showCancel: false,
+        showPrevious: false,
+        showNext: false,
+        showSubmit: false,
+      },
+    },
+    buttonCSS: {
+      baseClass: 'qg-btn',
+      previous: 'btn-default',
+      next: 'btn-primary',
+      cancel: 'btn-link',
+    },
+    scrollTarget: 0,
+    buttonConfig: {
+      startOnFirst: true,
+      acceptWhenTermsFound: true,
+    },
+    navigationCSS: {
+      baseClass: 'qg-btn btn-link',
+    },
+  };
+
+  const kyfb = new FormioWrapper(configuration);
   const bg = new ButtonGroup(document.querySelector('.button-container'));
   attachStepHandlers();
-  /* Remove Squiz default H1 */
+
   window.addEventListener('DOMContentLoaded', () => {
+    /* Remove Squiz default H1 */
     const pageHeader = document.querySelector('#qg-primary-content');
     if (pageHeader) {
       pageHeader.removeChild(document.querySelector('h1'));
     }
+
     let sectionNav = document.querySelector(
-      '#qg-section-nav > ul > li:nth-child(2)'
+      '#qg-section-nav > ul > li:nth-child(1)',
     );
     if (!sectionNav) {
       sectionNav = document.querySelector('#formnav');
       sectionNav.display = 'block';
     }
 
-    const unorderdList = document.createElement('ul');
-    unorderdList.classList = 'lb';
+    const unorderdList = document.createElement('ol');
+    unorderdList.classList = 'kyfb guide-sub-nav';
     sectionNav.appendChild(unorderdList);
-    const sectionNavTarget = sectionNav.querySelector('ul');
+    const sectionNavTarget = sectionNav.querySelector('ol');
 
-    const sectionNavigation = new SectionNavigation(sectionNavTarget);
+    const sectionNavigation = new ButtonGroup(sectionNavTarget, 'navigation');
   });
 })();

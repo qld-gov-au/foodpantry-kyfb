@@ -1,142 +1,97 @@
-/**
- * @param {Event} domEvent the element's event
- * @param {String} name the name of the custom event
- * @returns {void}
- */
-function fireEvent(domEvent, name) {
-  const customEvent = new CustomEvent(name, { bubbles: true });
-  domEvent.target.dispatchEvent(customEvent);
-}
+import { html, render } from 'lit-html';
 
-/**
- * Render a button
- * @param {String} text the button's inner text
- * @param {String} eventName the custom event that button will fire
- * @param {String} cssClass the class that describes the presentation of the button
- * @param {Boolean} isDisabled if the button should be disabled
- * @returns {HTMLButtonElement}
- */
-function button(text, eventName, cssClass, isDisabled = false) {
-  const _button = document.createElement('button');
-  _button.innerText = text;
-  _button.className = `qg-btn ${cssClass}`;
-  _button.disabled = isDisabled;
-  _button.addEventListener('click', (e) => fireEvent(e, eventName));
-  return _button;
-}
+export class ButtonGroup {
+  constructor(target, data = 'buttons') {
+    this.target = target;
+    this.data = data;
 
-/**
- * @param {Array} buttons the array of config buttons
- * @return {HTMLElement}
- */
-function buttonGroup(buttons) {
-  const container = document.createElement('div');
-  container.className = 'panel-body';
-  const p = document.createElement('p');
-
-  if (buttons.length > 0) {
-    buttons.forEach((buttonConfig) => {
-      const { text, eventName, cssClass, disabled } = buttonConfig;
-      const buttonElement = button(text, eventName, cssClass, disabled);
-      p.appendChild(buttonElement);
+    window.addEventListener('formiowrapperPageChange', ({ detail }) => {
+      this.updateTarget(detail);
     });
   }
-  container.appendChild(p);
-  return container;
-}
 
-/**
- * @class ButtonGroup
- */
-// eslint-disable-next-line import/prefer-default-export
-export class ButtonGroup {
-  constructor(target) {
-    this.target = target;
-    this.updateTarget(this.render());
-
-    window.addEventListener(
-      'labelbusterPageChange',
-      ({ detail: { page, hasAccepted, navigation } }) => {
-        this.updateTarget(this.render(page, hasAccepted, navigation));
-      }
-    );
+  /**
+   * @desc Updates the dom target, side effect.
+   * @param {Array} data the event data
+   */
+  updateTarget(data) {
+    render(this.updateButtons(data[this.data]), this.target);
   }
 
   /**
-   * @param {HTMLElement} result is the HTML returned by the render method for button group
+   * @param {Object} data the current page
+   * @return {Object}
    */
-  updateTarget(result) {
-    this.target.innerHTML = '';
-    if (result) {
-      this.target.appendChild(result);
+  updateButtons(data) {
+    const output = data.map((but) =>
+      this.generateButton(
+        but.title,
+        but.event,
+        but.cssClass,
+        but.disabled,
+        but.displayed,
+        but.active,
+        but.detail,
+        but.type,
+      ),
+    );
+
+    return html`${output}`;
+  }
+
+  /**
+   * @param {String} text the text on the button
+   * @param {String} event the event the clicking the button fires
+   * @param {String} cssClass the class string for the buttons display
+   * @param {Boolean} disabled is the button disabled
+   * @param {Boolean} displayed do we display the button
+   * @param {Boolean} active if the nav button is active
+   * @param {Object} detail detail object to pass through
+   * @param {String} type type of element overrites button
+   * @return {Object}
+   */
+  generateButton(
+    text,
+    event,
+    cssClass,
+    disabled,
+    displayed,
+    active,
+    detail = '',
+    type = 'button',
+  ) {
+    if (!displayed) return html``;
+    const extraClass = disabled ? 'disabled' : '';
+    const activeClass = active ? 'active' : '';
+    const button = html` <button
+      class="${cssClass} ${extraClass} ${activeClass}"
+      data-event=${event}
+      data-detail=${JSON.stringify(detail)}
+      @click=${this.fireEvent}
+      ?disabled=${disabled}
+    >
+      ${text}
+    </button>`;
+
+    switch (type) {
+      case 'li': {
+        return html` <li class="${extraClass} ${activeClass}">${button}</li>`;
+      }
+      default: {
+        return html`${button}`;
+      }
     }
   }
 
   /**
-   * @param {Number} pageNo the page number provided by the wizard instance
+   * @param {Object} event the event
    */
   // eslint-disable-next-line class-methods-use-this
-  render(pageNo = 0, hasAccepted, navigation) {
-    const nextStep = pageNo + 1;
-
-    if (pageNo === 0) {
-      return null;
-    }
-    if (pageNo === 2) {
-      return buttonGroup([
-        {
-          text: 'Back',
-          eventName: 'labelbusterGoToPrevious',
-          cssClass: 'btn-default',
-        },
-        {
-          text: 'Accept',
-          eventName: 'labelbusterAccept',
-          cssClass: 'btn-primary',
-          disabled: !hasAccepted,
-        },
-        {
-          text: 'Cancel',
-          eventName: 'labelbusterCancel',
-          cssClass: 'btn-link',
-        },
-      ]);
-    }
-
-    if (pageNo === 4) {
-      return buttonGroup([
-        {
-          text: 'Back',
-          eventName: 'labelbusterGoToPrevious',
-          cssClass: 'btn-default',
-        },
-        {
-          text: 'Cancel',
-          eventName: 'labelbusterCancel',
-          cssClass: 'btn-link',
-        },
-      ]);
-    }
-
-    return buttonGroup([
-      {
-        text: 'Back',
-        eventName: 'labelbusterGoToPrevious',
-        cssClass: 'btn-default',
-      },
-      {
-        text: 'Next',
-        eventName: 'labelbusterGoToNext',
-        cssClass: 'btn-primary',
-        disabled: navigation[nextStep].disabled,
-      },
-      {
-        text: 'Cancel',
-        eventName: 'labelbusterCancel',
-        cssClass: 'btn-link',
-      },
-    ]);
+  fireEvent(event) {
+    const newEvent = new CustomEvent(event.target.dataset.event, {
+      bubbles: true,
+      detail: JSON.parse(event.target.dataset.detail),
+    });
+    window.dispatchEvent(newEvent);
   }
 }
-
-window.controls = new ButtonGroup(document.querySelector('.button-container'));
