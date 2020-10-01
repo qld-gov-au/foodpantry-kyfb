@@ -29,12 +29,13 @@
     text-decoration: underline;
     color: #005e85;
   }
+
+  .qg-cards .qg-card .content img {
+    object-fit: cover;
+    width: 100%;
+    height: auto;
+    display: block
+  }
 }
 
-.qg-cards .qg-card .content img {
-  object-fit: cover;
-  width: 100%;
-  height: auto;
-  display: block
-}
 
