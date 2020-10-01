@@ -54,3 +54,10 @@
      }
 
     }
+    
+    .qg-cards .qg-card .content img {
+      object-fit: cover;
+      width: 100%;
+      height: auto;
+      display: block
+    }
