@@ -1,63 +1,62 @@
 .kyfb {
-  
-    .fa {
-        margin-right: 5px;
-        font-size: 1.5625rem;
-      }
-    
-      .alert-instructions {
-        background-color: #f5f5f5;
-        border-left: 5px solid #808080;
-      }
-    
-      .qg-cards .qg-card .content {
-        border-radius: 4px;
-        border: solid 1px #d3d3d3;
-        background-color: #ffffff;
-      }
-    
-      .qg-cards .qg-card .details {
-        background-color: #ffffff;
-      }
-    
-      .qg-cards .qg-card .content .details .qg-card {
-        color: #005e85;
-      }
-    
-      .btn-kyfb {
-        border: none;
-        background: none;
-        text-decoration: underline;
-        color: #005e85;
-      }
+  .fa {
+    margin-right: 5px;
+    font-size: 1.5625rem;
+  }
 
-      .emailHeader {
-              font-family: Lato;
-              font-size: 14px;
-              color: #666666;
-      }
-  
-      .textFieldEmail {
-              border-radius: 4px;
-              background-color: #ffffff;
-      }
+  .alert-instructions {
+    background-color: #f5f5f5;
+    border-left: 5px solid #808080;
+  }
 
-      .boxed {
-          border-radius: 4px;
-          border: solid 1px #cfcfcf;
-          margin-bottom: 16px;
-          padding: 16px;
-      }
+  .qg-cards .qg-card .content {
+    border-radius: 4px;
+    border: solid 1px #d3d3d3;
+    background-color: #ffffff;
+  }
 
-      .boxed hr {
-        margin-inline: -16px;
-     }
+  .qg-cards .qg-card .details {
+    background-color: #ffffff;
+  }
 
-    }
-    
-    .qg-cards .qg-card .content img {
-      object-fit: cover;
-      width: 100%;
-      height: auto;
-      display: block
-    }
+  .qg-cards .qg-card .content .details .qg-card {
+    color: #005e85;
+  }
+
+  .btn-kyfb {
+    border: none;
+    background: none;
+    text-decoration: underline;
+    color: #005e85;
+  }
+
+  .emailHeader {
+    font-family: Lato;
+    font-size: 14px;
+    color: #666666;
+  }
+
+  .textFieldEmail {
+    border-radius: 4px;
+    background-color: #ffffff;
+  }
+
+  .boxed {
+    border-radius: 4px;
+    border: solid 1px #cfcfcf;
+    margin-bottom: 16px;
+    padding: 16px;
+  }
+
+  .boxed hr {
+    margin-inline: -16px;
+  }
+
+  .qg-cards .qg-card .content img {
+    object-fit: cover;
+    width: 100%;
+    height: auto;
+    display: block;
+  }  
+}
+
