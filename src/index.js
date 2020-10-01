@@ -7,7 +7,8 @@ import attachStepHandlers from './scripts/step-handler';
 
 (() => {
   const configuration = {
-    formLocation: 'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/kyfb',
+    formLocation:
+      'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/kyfbdanieltest',
     formSettings: {
       buttonSettings: {
         showCancel: false,
@@ -58,6 +59,6 @@ import attachStepHandlers from './scripts/step-handler';
 
     const sectionNavigation = new ButtonGroup(sectionNavTarget, 'navigation');
 
-    const topicsList = new TopicsList(document.querySelector('#somethingElse'));
+    const topicsList = new TopicsList('testtest', localStorage);
   });
 })();
