@@ -1,6 +1,8 @@
 /* eslint-disable no-unused-vars */
 import { FormioWrapper } from './components/formio-wrapper';
 import { ButtonGroup } from './components/button-group';
+import { TopicsList } from './components/topics-list';
+
 import attachStepHandlers from './scripts/step-handler';
 
 (() => {
@@ -55,5 +57,7 @@ import attachStepHandlers from './scripts/step-handler';
     const sectionNavTarget = sectionNav.querySelector('ol');
 
     const sectionNavigation = new ButtonGroup(sectionNavTarget, 'navigation');
+
+    const topicsList = new TopicsList(document.querySelector('#somethingElse'));
   });
 })();
