@@ -7,8 +7,7 @@ import attachStepHandlers from './scripts/step-handler';
 
 (() => {
   const configuration = {
-    formLocation:
-      'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/kyfbdanieltest',
+    formLocation: '',
     formSettings: {
       buttonSettings: {
         showCancel: false,
@@ -36,7 +35,6 @@ import attachStepHandlers from './scripts/step-handler';
   const kyfb = new FormioWrapper(configuration);
   const bg = new ButtonGroup(document.querySelector('.button-container'));
   attachStepHandlers();
-
   window.addEventListener('DOMContentLoaded', () => {
     /* Remove Squiz default H1 */
     const pageHeader = document.querySelector('#qg-primary-content');
@@ -44,21 +42,20 @@ import attachStepHandlers from './scripts/step-handler';
       pageHeader.removeChild(document.querySelector('h1'));
     }
 
-    let sectionNav = document.querySelector(
-      '#qg-section-nav > ul > li:nth-child(2)',
-    );
-    if (!sectionNav) {
-      sectionNav = document.querySelector('#formnav');
-      sectionNav.display = 'block';
+    const topicsList = new TopicsList('topics', localStorage);
+  });
+
+  window.addEventListener('kyfb-topic-change', (event) => {
+    kyfb.formLocation = event.detail.topic;
+    kyfb.initialise();
+    if (event.detail.topic) {
+      document.querySelector('#forms').hidden = false;
+      document.querySelector('#topics').hidden = true;
+      document.querySelector('#home').hidden = true;
+    } else {
+      document.querySelector('#forms').hidden = true;
+      document.querySelector('#topics').hidden = false;
+      document.querySelector('#home').hidden = false;
     }
-
-    const unorderdList = document.createElement('ol');
-    unorderdList.classList = 'kyfb guide-sub-nav';
-    sectionNav.appendChild(unorderdList);
-    const sectionNavTarget = sectionNav.querySelector('ol');
-
-    const sectionNavigation = new ButtonGroup(sectionNavTarget, 'navigation');
-
-    const topicsList = new TopicsList('testtest', localStorage);
   });
 })();

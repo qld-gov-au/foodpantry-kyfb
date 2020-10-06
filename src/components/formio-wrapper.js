@@ -41,11 +41,16 @@ export class FormioWrapper {
     window.addEventListener('goToPage', (event) => {
       this._goToPage(Number(event.detail.page));
     });
+
+    window.addEventListener('formSourceChanged', () => {
+      this.initialise();
+    });
   }
 
   /**
    */
   initialise() {
+    if (!this.formLocation) return;
     this.formElement = document.querySelector('#formio');
     // responds to form changing events
     this.formElement.addEventListener('click', () => {
@@ -71,7 +76,6 @@ export class FormioWrapper {
   /**
    * @returns {void}
    */
-
   // eslint-ignored here while committing
   _firePageChangeEvent() {
     const event = new CustomEvent('formiowrapperPageChange', {

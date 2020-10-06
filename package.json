@@ -38,8 +38,9 @@
     "test:watch": "karma start --auto-watch=true --single-run=false",
     "start": "parcel src/index.html",
     "build": "rimraf dist && npm run build:resources && npm run build:squiz",
-    "build:resources": "parcel build src/resources/**/view.html src/resources/**/**/view.html  --no-source-maps",
+    "build:resources": "parcel build src/resources/**/view.html src/resources/**/**/view.html --no-source-maps",
     "build:squiz": "parcel build src/index.html --no-source-maps",
+    "build:images": "parcel build src/kyfb-home-images/*",
     "postinstall": "rm -rf ./.cache && node ./postinstall.js"
   },
   "devDependencies": {

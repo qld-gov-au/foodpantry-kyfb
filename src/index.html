@@ -1,13 +1,46 @@
 <link rel="stylesheet" href="./styles/main.scss">
 
+<link href="https://static.qgov.net.au/assets/v4/4.0.3/css/qg-main.css" rel="stylesheet" type="text/css" media="all">
+<link href="https://www.qld.gov.au/_qgdesigns/css/qg-main.css?v=0.2.58" rel="stylesheet"> 
+<link href="https://www.qld.gov.au/__data/assets/css_file_folder/0015/110823/qg-components.css?v=0.1.10" rel="stylesheet">
+
 <script src="https://unpkg.com/formiojs@latest/dist/formio.full.min.js"></script>
 
 
-<div id="formnav" style="display:none;">
-  <ul aria-label="section navigation"></ul>
+<div class="app-container kyfb">
+    <div id="home">
+        <h1>Know your food business</h1>
+        <p>
+            The Know Your Food Business self-assessment tool is provided for
+            small to medium food businesses. This tool can help you to assess
+            whether you meet the requirements of the <i>Food Act 2006</i> and
+            the <i>Australia New Zealand Food Standards Code.</i>
+        </p>
+        
+        <p>
+            There are 11 assessment topics to complete. You will be asked
+            questions about a range of food safety topics.  
+        </p>
+        <p>
+            You will be offered resources that link you to more information
+            about each topic.  At the end of each self-assessment topic, you can
+            download or email the list of resources that you have selected. 
+        </p>
+        
+        <h2 class="heading-primary">Topics to Complete</h2>
+        <p>
+            Each topic takes about 5 to 10 minutes to complete
+        </p>
+        <div id="topics"></div>
+    </div>
+    <div id="forms" hidden>
+        <div id="formnav">
+            <ul aria-label="section navigation"></ul>
+        </div>
+        
+        <div id="formio" class="kyfb"></div>
+        <div class="button-container kyfb"></div>
+    </div>
 </div>
-
-<div id="formio" class="kyfb"></div>
-<div class="button-container kyfb"></div>
 
 <script src="./index.js"></script>
