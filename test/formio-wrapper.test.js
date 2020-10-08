@@ -38,6 +38,12 @@ describe('Formio Wrapper Tests.', () => {
         startOnFirst: true,
         acceptWhenTermsFound: true,
       },
+      termsConfig: {
+        title: 'terms and conditions',
+        termsStorageType: sessionStorage,
+        termsStorageName: 'termsAndConditions',
+        skipIfTermsAlreadyAccepted: false,
+      },
       navigationCSS: {
         baseClass: 'qg-btn btn-link',
       },

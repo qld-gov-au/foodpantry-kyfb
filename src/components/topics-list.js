@@ -111,9 +111,8 @@ export class TopicsList {
     let completedTopics = storage.getItem(this.storageName);
     completedTopics = completedTopics ? JSON.parse(completedTopics) : [];
 
-    if (!this.domTarget) {
-      this._findTarget(this.target);
-    }
+    this._findTarget(this.target);
+
     if (this.domTarget) {
       render(this.updateTopics(completedTopics), this.domTarget);
     }

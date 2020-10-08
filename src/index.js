@@ -7,6 +7,7 @@ import attachStepHandlers from './scripts/step-handler';
 
 (() => {
   const configuration = {
+    formTitle: '',
     formLocation: '',
     formSettings: {
       buttonSettings: {
@@ -27,6 +28,12 @@ import attachStepHandlers from './scripts/step-handler';
       startOnFirst: true,
       acceptWhenTermsFound: true,
     },
+    termsConfig: {
+      title: 'terms and conditions',
+      termsStorageType: sessionStorage,
+      termsStorageName: 'termsAndConditions',
+      skipIfTermsAlreadyAccepted: true,
+    },
     navigationCSS: {
       baseClass: 'qg-btn btn-link',
     },
@@ -43,6 +50,7 @@ import attachStepHandlers from './scripts/step-handler';
     }
 
     const topicsList = new TopicsList('topics', localStorage);
+    const secondaryTopics = new TopicsList('SummaryTopics', localStorage);
   });
 
   window.addEventListener('kyfb-topic-change', (event) => {

@@ -7,15 +7,15 @@ export class FormioWrapper {
    * @returns {void}
    */
   constructor(configuration) {
+    this.formTitle = configuration.formTitle;
     this.formLocation = configuration.formLocation;
     this.buttonCSS = configuration.buttonCSS;
     this.navigationCSS = configuration.navigationCSS;
     this.scrollTarget = configuration.scrollTarget;
     this.formSettings = configuration.formSettings;
-    this.buttonConfig = {
-      startOnFirst: true,
-      acceptWhenTermsFound: true,
-    };
+    this.buttonConfig = configuration.buttonConfig;
+    this.termsConfig = configuration.termsConfig;
+    this.formName = configuration.formName;
 
     this.formElement = {};
 
@@ -41,10 +41,6 @@ export class FormioWrapper {
     window.addEventListener('goToPage', (event) => {
       this._goToPage(Number(event.detail.page));
     });
-
-    window.addEventListener('formSourceChanged', () => {
-      this.initialise();
-    });
   }
 
   /**
@@ -62,6 +58,7 @@ export class FormioWrapper {
       this.formSettings,
     ).then((wizard) => {
       this.wizard = wizard;
+      this.formTitle = !this.formTitle ? wizard._form.title : this.formTitle;
       this.loaded = true;
       this.wizard.on('initialized', () => {
         this._firePageChangeEvent();
@@ -81,6 +78,7 @@ export class FormioWrapper {
     const event = new CustomEvent('formiowrapperPageChange', {
       bubbles: true,
       detail: {
+        title: this.formTitle,
         page: this.wizard && this.wizard.page ? this.wizard.page : 0,
         navigation: this.buildProgressMenuData(),
         buttons: this.buildButtonData(),
@@ -181,8 +179,7 @@ export class FormioWrapper {
       nextButton.displayed = false;
     }
 
-    const currentPageTitle = this.wizard.pages[this.wizard.page].component
-      .title;
+    const currentPageTitle = this.wizard.pages[page].component.title;
     if (this._determineTitleChange(currentPageTitle)) {
       nextButton.title = 'Accept';
       nextButton.disabled = !this._checkPageValidity(page, pages, data);
@@ -197,7 +194,47 @@ export class FormioWrapper {
    */
   _determineTitleChange(currentPageTitle) {
     if (!this.buttonConfig.acceptWhenTermsFound) return false;
-    return currentPageTitle.toLowerCase().includes('terms');
+    return currentPageTitle.toLowerCase().includes(this.termsConfig.title);
+  }
+
+  /**
+   * @param {Number} page the current page number
+   * @param {Array} pages the wizard pages
+   * @return {Boolean}
+   */
+  _shouldNextPageBeSkipped(page, pages) {
+    if (!this.termsConfig.skipIfTermsAlreadyAccepted) return false;
+    const pageTitle = pages[page].component.title;
+    if (!pageTitle.toLowerCase().includes(this.termsConfig.title)) return false;
+    return this._areTermsAccepted(page, pages);
+  }
+
+  /**
+   * @param {Number} page the wizard page number
+   * @param {Array} pages the wizard pages
+   * @return {Boolean}
+   */
+  _areTermsAccepted(page, pages) {
+    const termsStorage = this.termsConfig.termsStorageType;
+    const storedValue = termsStorage.getItem(this.termsConfig.termsStorageName);
+    if (!storedValue) return false;
+    const storageValue = JSON.parse(storedValue);
+
+    if (storageValue.indexOf(this.termsConfig.title) !== -1) return true;
+    if (page === 0) return false;
+
+    const previousPageNumber = page - 1;
+    const previousPageTitle = pages[previousPageNumber].component.title;
+
+    if (previousPageTitle.toLowerCase().includes(this.termsConfig.title)) {
+      storageValue.push(this.termsConfig.title);
+      termsStorage.setitem(
+        this.termsConfig.termsStorageName,
+        JSON.stringify(storageValue),
+      );
+      return true;
+    }
+    return false;
   }
 
   /**
@@ -219,6 +256,7 @@ export class FormioWrapper {
     if (!this.loaded) {
       this.notLoaded();
     }
+    this._shouldNextPageBeSkipped(this.wizard.page, this.wizard.pages);
     this.wizard.nextPage();
     return true;
   }
@@ -263,6 +301,7 @@ export class FormioWrapper {
   /**
    */
   scrollToTop() {
+    if (this.scrollTaret === -1) return;
     window.scroll({
       top: this.scrollTaret,
       behavior: 'smooth',
