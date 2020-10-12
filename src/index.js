@@ -83,10 +83,12 @@ import attachStepHandlers from './scripts/step-handler';
       document.querySelector('#forms').hidden = false;
       document.querySelector('#topics').hidden = true;
       document.querySelector('#home').hidden = true;
+      document.querySelector('.guide-sub-nav').hidden = false;
     } else {
       document.querySelector('#forms').hidden = true;
       document.querySelector('#topics').hidden = false;
       document.querySelector('#home').hidden = false;
+      document.querySelector('.guide-sub-nav').hidden = true;
     }
   });
 
@@ -97,5 +99,6 @@ import attachStepHandlers from './scripts/step-handler';
     document.querySelector('#forms').hidden = true;
     document.querySelector('#topics').hidden = false;
     document.querySelector('#home').hidden = false;
+    document.querySelector('.guide-sub-nav').hidden = true;
   });
 })();
