@@ -389,7 +389,7 @@ describe('Formio Wrapper Tests.', () => {
     expect(response).equals(true);
   });
 
-  it('_updateIfCompleted', async () => {
+  it('_updateIfCompleted works', async () => {
     wrapper.termsConfig.skipIfTermsAlreadyAccepted = false;
     const pages = [
       { component: { title: 'Something mundane' } },
@@ -397,7 +397,6 @@ describe('Formio Wrapper Tests.', () => {
       { component: { title: 'Another boring title' } },
     ];
     wrapper.formTitle = 'Test form';
-    console.log('now');
     let response = wrapper._updateIfCompleted(1, []);
     expect(response).equals(false);
     response = wrapper._updateIfCompleted(0, pages);
@@ -407,6 +406,14 @@ describe('Formio Wrapper Tests.', () => {
     response = wrapper._updateIfCompleted(2, pages);
     expect(response.length).equals(1);
     expect(response[0]).equals('Test form');
+  });
+
+  it('_fireExtraEvent works', async () => {
+    wrapper.formTitle = 'Test form';
+    let response = wrapper._fireExtraEvent('testEvent');
+    expect(typeof response).equals('object');
+    expect(response.bubbles).equals(true);
+    expect(response.detail.title).equals('Test form');
   });
 
   afterEach(async () => {

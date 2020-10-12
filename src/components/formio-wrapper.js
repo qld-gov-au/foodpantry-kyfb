@@ -18,6 +18,7 @@ export class FormioWrapper {
     this.buttonConfig = configuration.buttonConfig;
     this.termsConfig = configuration.termsConfig;
     this.formName = configuration.formName;
+    this.extraTriggers = configuration.extraTriggersOnActions;
 
     this.formElement = {};
 
@@ -30,18 +31,30 @@ export class FormioWrapper {
 
     window.addEventListener('formiowrapperGoToNext', () => {
       this._goToNextPage();
+      if (this.extraTriggers.next) {
+        this._fireExtraEvent(this.extraTriggers.next);
+      }
     });
 
     window.addEventListener('formiowrapperGoToPrevious', () => {
       this._goToPreviousPage();
+      if (this.extraTriggers.previous) {
+        this._fireExtraEvent(this.extraTriggers.previous);
+      }
     });
 
     window.addEventListener('formiowrapperCancel', () => {
       this._goToPage(0);
+      if (this.extraTriggers.cancel) {
+        this._fireExtraEvent(this.extraTriggers.cancel);
+      }
     });
 
     window.addEventListener('goToPage', (event) => {
       this._goToPage(Number(event.detail.page));
+      if (this.extraTriggers.goto) {
+        this._fireExtraEvent(this.extraTriggers.goto);
+      }
     });
   }
 
@@ -70,6 +83,22 @@ export class FormioWrapper {
         this._firePageChangeEvent();
       });
     });
+  }
+
+  /**
+   * @param {String} event the event name to fire
+   * @return {Event}
+   */
+  _fireExtraEvent(event) {
+    const newEvent = new CustomEvent(event, {
+      bubbles: true,
+      detail: {
+        title: this.formTitle,
+        page: this.wizard && this.wizard.page ? this.wizard.page : 0,
+      },
+    });
+    window.dispatchEvent(newEvent);
+    return newEvent;
   }
 
   /**

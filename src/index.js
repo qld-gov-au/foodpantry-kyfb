@@ -39,6 +39,9 @@ import attachStepHandlers from './scripts/step-handler';
     navigationCSS: {
       baseClass: 'qg-btn btn-link',
     },
+    extraTriggersOnActions: {
+      cancel: 'cancelKYFBForm',
+    },
   };
 
   const kyfb = new FormioWrapper(configuration);
@@ -52,12 +55,15 @@ import attachStepHandlers from './scripts/step-handler';
     }
 
     const navigationSection = document.querySelector('#qg-section-nav');
-    let sectionNav = navigationSection.querySelector('.active');
-    if (!sectionNav) {
-      sectionNav = document.querySelector('#formnav');
-      sectionNav.display = 'block';
+    let sectionNav;
+    if (!navigationSection) {
+      sectionNav = document.createElement('div');
+      sectionNav.id = 'qg-section-nav';
+      document.body.appendChild(sectionNav);
+      sectionNav = document.querySelector('#qg-section-nav');
+    } else {
+      sectionNav = navigationSection.querySelector('.active');
     }
-
     const unorderdList = document.createElement('ol');
     unorderdList.classList = 'kyfb guide-sub-nav';
     sectionNav.appendChild(unorderdList);
@@ -82,5 +88,14 @@ import attachStepHandlers from './scripts/step-handler';
       document.querySelector('#topics').hidden = false;
       document.querySelector('#home').hidden = false;
     }
+  });
+
+  window.addEventListener('cancelKYFBForm', (event) => {
+    kyfb.formLocation = '';
+    kyfb.formTitle = '';
+    kyfb.initialise();
+    document.querySelector('#forms').hidden = true;
+    document.querySelector('#topics').hidden = false;
+    document.querySelector('#home').hidden = false;
   });
 })();
