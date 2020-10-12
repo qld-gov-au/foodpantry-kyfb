@@ -328,9 +328,9 @@ export class FormioWrapper {
   /**
    */
   scrollToTop() {
-    if (this.scrollTaret === -1) return;
+    if (this.scrollTarget === -1) return;
     window.scroll({
-      top: this.scrollTaret,
+      top: this.scrollTarget,
       behavior: 'smooth',
     });
   }
