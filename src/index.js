@@ -51,6 +51,19 @@ import attachStepHandlers from './scripts/step-handler';
       pageHeader.removeChild(document.querySelector('h1'));
     }
 
+    const navigationSection = document.querySelector('#qg-section-nav');
+    let sectionNav = navigationSection.querySelector('.active');
+    if (!sectionNav) {
+      sectionNav = document.querySelector('#formnav');
+      sectionNav.display = 'block';
+    }
+
+    const unorderdList = document.createElement('ol');
+    unorderdList.classList = 'lb guide-sub-nav';
+    sectionNav.appendChild(unorderdList);
+    const sectionNavTarget = sectionNav.querySelector('ol');
+    const sectionNavigation = new ButtonGroup(sectionNavTarget, 'navigation');
+
     const topicsList = new TopicsList('topics', localStorage);
     const secondaryTopics = new TopicsList('SummaryTopics', localStorage);
   });
