@@ -248,7 +248,7 @@ export class TopicsList {
   // eslint-disable-next-line class-methods-use-this
   _generateCompletedTopic(form, title) {
     return html` <li>
-      <button @click=${this.loadNewForm} data-form=${form} class="btn-kyfb">
+      <button @click=${this.loadNewForm} data-form=${form} class="btn-link">
         ${title}
       </button>
     </li>`;
