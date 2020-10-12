@@ -59,9 +59,10 @@ import attachStepHandlers from './scripts/step-handler';
     }
 
     const unorderdList = document.createElement('ol');
-    unorderdList.classList = 'lb guide-sub-nav';
+    unorderdList.classList = 'kyfb guide-sub-nav';
     sectionNav.appendChild(unorderdList);
     const sectionNavTarget = sectionNav.querySelector('ol');
+
     const sectionNavigation = new ButtonGroup(sectionNavTarget, 'navigation');
 
     const topicsList = new TopicsList('topics', localStorage);

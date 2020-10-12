@@ -30,7 +30,7 @@
 }
 
 ol.kyfb {
-  counter-reset: lb-counter;
+  counter-reset: kyfb-counter;
   text-align:left;
   text-size-adjust: 100%;
   margin-left: 0;
@@ -38,7 +38,7 @@ ol.kyfb {
   display: flex;
   flex-direction: column;
   li {
-    counter-increment: lb-counter;
+    counter-increment: kyfb-counter;
     font-size: .875rem;
     transition: all .2s;
     display: flex;
@@ -57,7 +57,7 @@ ol.kyfb {
       }
     }
     &::before {
-      content: counter(lb-counter);
+      content: counter(kyfb-counter);
       color: #005e85;
       font-weight: bold;
       font-size: 0.9375rem;
