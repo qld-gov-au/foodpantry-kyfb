@@ -19,6 +19,8 @@ describe('Formio Wrapper Tests.', () => {
     configuration = {
       formLocation:
         'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/formwizard',
+      storage: localStorage,
+      storageName: 'completedTopics',
       formSettings: {
         buttonSettings: {
           showCancel: false,
@@ -334,6 +336,77 @@ describe('Formio Wrapper Tests.', () => {
     expect(initialProgressBar[2].disabled).equals(true);
     expect(initialProgressBar[2].displayed).equals(true);
     stubbedValidity.restore();
+  });
+
+  it('determines if _shouldNextPageBeSkipped is working', async () => {
+    wrapper.termsConfig.skipIfTermsAlreadyAccepted = false;
+    const pages = [
+      { component: { title: 'Something mundane' } },
+      { component: { title: 'terms and conditions' } },
+      { component: { title: 'Another boring title' } },
+    ];
+    wrapper.wizard._seenPages = [0];
+    let response = wrapper._shouldNextPageBeSkipped(0, []);
+    expect(response).equals(false);
+    wrapper.termsConfig.skipIfTermsAlreadyAccepted = true;
+    response = wrapper._shouldNextPageBeSkipped(0, pages);
+    expect(response).equals(false);
+
+    response = wrapper._shouldNextPageBeSkipped(0, pages);
+    expect(response).equals(false);
+    wrapper.wizard._seenPages = [0, 1];
+    wrapper.wizard._seenPages = [0, 1];
+    response = wrapper._shouldNextPageBeSkipped(1, pages);
+    expect(response).equals(false);
+    sessionStorage.setItem(configuration.termsConfig.termsStorageName, true);
+    response = wrapper._shouldNextPageBeSkipped(1, pages);
+    expect(response).equals(true);
+
+    sessionStorage.setItem(configuration.termsConfig.termsStorageName, false);
+    response = wrapper._shouldNextPageBeSkipped(1, pages);
+    expect(response).equals(false);
+  });
+
+  it('test edge case terms accepted already passed', async () => {
+    wrapper.termsConfig.skipIfTermsAlreadyAccepted = false;
+    const pages = [
+      { component: { title: 'Something mundane' } },
+      { component: { title: 'terms and conditions' } },
+      { component: { title: 'Another boring title' } },
+    ];
+    wrapper.wizard._seenPages = [0];
+    sessionStorage.setItem(configuration.termsConfig.termsStorageName, true);
+    let response = wrapper._areTermsAccepted(1, pages);
+    expect(response).equals(true);
+
+    sessionStorage.setItem(configuration.termsConfig.termsStorageName, false);
+    response = wrapper._areTermsAccepted(1, pages);
+    expect(response).equals(false);
+
+    sessionStorage.removeItem(configuration.termsConfig.termsStorageName);
+    wrapper.wizard._seenPages = [0, 1, 2];
+    response = wrapper._areTermsAccepted(2, pages);
+    expect(response).equals(true);
+  });
+
+  it('_updateIfCompleted', async () => {
+    wrapper.termsConfig.skipIfTermsAlreadyAccepted = false;
+    const pages = [
+      { component: { title: 'Something mundane' } },
+      { component: { title: 'terms and conditions' } },
+      { component: { title: 'Another boring title' } },
+    ];
+    wrapper.formTitle = 'Test form';
+    console.log('now');
+    let response = wrapper._updateIfCompleted(1, []);
+    expect(response).equals(false);
+    response = wrapper._updateIfCompleted(0, pages);
+    expect(response).equals(false);
+    response = wrapper._updateIfCompleted(1, pages);
+    expect(response).equals(false);
+    response = wrapper._updateIfCompleted(2, pages);
+    expect(response.length).equals(1);
+    expect(response[0]).equals('Test form');
   });
 
   afterEach(async () => {

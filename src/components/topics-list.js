@@ -15,13 +15,13 @@ export class TopicsList {
             title: 'Skills and knowledge',
             form:
               'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/skillsandknowledge',
-            image: './kyfb-home-images/Skills-and-knowledge-176606698.jpg',
+            image: '../kyfb-home-images/Skills-and-knowledge-176606698.jpg',
           },
           {
             title: 'Health and hygiene',
             form:
               'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/healthandhygiene',
-            image: './kyfb-home-images/Health-and-hygiene-1181710190.jpg',
+            image: '../kyfb-home-images/Health-and-hygiene-1181710190.jpg',
           },
         ],
       },
@@ -32,37 +32,37 @@ export class TopicsList {
             title: 'Recieve food',
             form:
               'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/recievefood',
-            image: './kyfb-home-images/Recieve-food-868730920.jpg',
+            image: '../kyfb-home-images/Recieve-food-868730920.jpg',
           },
           {
             title: 'Store food',
             form:
               'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/storefood',
-            image: './kyfb-home-images/Transport-1227348008.jpg',
+            image: '../kyfb-home-images/Transport-1227348008.jpg',
           },
           {
             title: 'Prepare food',
             form:
               'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/preparefood',
-            image: './kyfb-home-images/Prepare-and-serve-186557945.jpg',
+            image: '../kyfb-home-images/Prepare-and-serve-186557945.jpg',
           },
           {
             title: 'Display and serve food',
             form:
               'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/displayandservefood',
-            image: './kyfb-home-images/Food-display-629986120.jpg',
+            image: '../kyfb-home-images/Food-display-629986120.jpg',
           },
           {
             title: 'Transport food',
             form:
               'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/transportfood',
-            image: './kyfb-home-images/Transport-1227348008.jpg',
+            image: '../kyfb-home-images/Transport-1227348008.jpg',
           },
           {
             title: 'Complaints and recall',
             form:
               'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/complaintsandrecall',
-            image: './kyfb-home-images/Recalls-and-complaints-1165181144.jpg',
+            image: '../kyfb-home-images/Recalls-and-complaints-1165181144.jpg',
           },
         ],
       },
@@ -72,20 +72,20 @@ export class TopicsList {
           {
             title: 'Animals and pests',
             form:
-              'GET https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/animalsandpests',
-            image: './kyfb-home-images/Animals-and-Pests-1155232061.jpg',
+              'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/animalsandpests',
+            image: '../kyfb-home-images/Animals-and-Pests-1155232061.jpg',
           },
           {
             title: 'Clean and santise',
             form:
               'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/cleanandsantise',
-            image: './kyfb-home-images/Cleaning-200391212-001.jpg',
+            image: '../kyfb-home-images/Cleaning-200391212-001.jpg',
           },
           {
             title: 'Maintenance',
             form:
               'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/kyfbmaintenance',
-            image: './kyfb-home-images/Maintenance-1169504170.jpg',
+            image: '../kyfb-home-images/Maintenance-1169504170.jpg',
           },
         ],
       },
@@ -216,7 +216,12 @@ export class TopicsList {
       <div class="content">
         <img src="${image}" alt="${title}" />
         <div class="details">
-          <button @click=${this.loadNewForm} class="btn-kyfb" data-form=${form}>
+          <button
+            @click=${this.loadNewForm}
+            class="btn-kyfb"
+            data-form=${form}
+            data-title=${title}
+          >
             ${title}
           </button>
         </div>
@@ -232,11 +237,7 @@ export class TopicsList {
   // eslint-disable-next-line class-methods-use-this
   _generateCompletedTopic(form, title) {
     return html` <li>
-      <button
-        @click=${this.loadNewForm}
-        data-form=${form}
-        class="gg-btn btn-link"
-      >
+      <button @click=${this.loadNewForm} data-form=${form} class="btn-kyfb">
         ${title}
       </button>
     </li>`;
@@ -250,7 +251,10 @@ export class TopicsList {
     if (!event.target.dataset.form) return;
     const newEvent = new CustomEvent('kyfb-topic-change', {
       bubbles: true,
-      detail: { topic: event.target.dataset.form },
+      detail: {
+        topic: event.target.dataset.form,
+        title: event.target.dataset.title,
+      },
     });
     window.dispatchEvent(newEvent);
   }

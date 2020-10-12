@@ -8,6 +8,8 @@ import attachStepHandlers from './scripts/step-handler';
 (() => {
   const configuration = {
     formTitle: '',
+    storage: localStorage,
+    storageName: 'completedTopics',
     formLocation: '',
     formSettings: {
       buttonSettings: {
@@ -55,6 +57,7 @@ import attachStepHandlers from './scripts/step-handler';
 
   window.addEventListener('kyfb-topic-change', (event) => {
     kyfb.formLocation = event.detail.topic;
+    kyfb.formTitle = event.detail.title;
     kyfb.initialise();
     if (event.detail.topic) {
       document.querySelector('#forms').hidden = false;

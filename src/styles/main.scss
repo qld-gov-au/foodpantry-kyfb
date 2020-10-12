@@ -92,7 +92,6 @@ ol.kyfb {
     background-color: #f5f5f5;
     border-left: 5px solid #808080;
   }
-
   .qg-cards .qg-card .content {
     border-radius: 4px;
     border: solid 1px #d3d3d3;
@@ -101,6 +100,10 @@ ol.kyfb {
 
   .qg-cards .qg-card .details {
     background-color: #ffffff;
+  }
+
+  .qg-card .content {
+    background-color: #FFFFFF;
   }
 
   .qg-cards .qg-card .content .details .qg-card {
@@ -112,6 +115,8 @@ ol.kyfb {
     background: none;
     text-decoration: underline;
     color: #005e85;
+    width: 100%;
+    text-align: center;
   }
 
   .qg-cards .qg-card .content img {
@@ -121,6 +126,7 @@ ol.kyfb {
     display: block
   }
 }
+
 
 #formnav {
   display: none;

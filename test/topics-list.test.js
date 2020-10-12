@@ -1,6 +1,7 @@
 /* eslint-disable */
 
 import { fixture, html, expect } from '@open-wc/testing';
+import { spy, assert } from 'sinon';
 import { TopicsList } from '../src/components/topics-list';
 
 describe('Topics list test', () => {
@@ -82,15 +83,21 @@ describe('Topics list test', () => {
   });
 
   it('updateTarget and changes output', async () => {
-    console.log(JSON.stringify(['Transport food']));
     localStorage.setItem(
       topics.storageName,
       JSON.stringify(['Transport food']),
     );
-    console.log(localStorage.getItem(topics.storageName));
     topics.updateTarget(topics.storage);
     const headings = element.querySelectorAll('h2');
     expect(headings.length).equals(2);
     expect(headings[1].innerText).equals('Completed topics');
+  });
+
+  it('load new form does nothing when not called from proper event', async () => {
+    const loadForm = spy(topics, 'loadNewForm');
+    const fakeEvent = { target: { dataset: { form: null } } };
+    topics.loadNewForm(fakeEvent);
+    loadForm.restore();
+    assert.calledOnce(loadForm);
   });
 });

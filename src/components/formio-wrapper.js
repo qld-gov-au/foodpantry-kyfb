@@ -8,6 +8,8 @@ export class FormioWrapper {
    */
   constructor(configuration) {
     this.formTitle = configuration.formTitle;
+    this.storage = configuration.storage;
+    this.storageName = configuration.storageName;
     this.formLocation = configuration.formLocation;
     this.buttonCSS = configuration.buttonCSS;
     this.navigationCSS = configuration.navigationCSS;
@@ -217,21 +219,14 @@ export class FormioWrapper {
   _areTermsAccepted(page, pages) {
     const termsStorage = this.termsConfig.termsStorageType;
     const storedValue = termsStorage.getItem(this.termsConfig.termsStorageName);
-    if (!storedValue) return false;
     const storageValue = JSON.parse(storedValue);
-
-    if (storageValue.indexOf(this.termsConfig.title) !== -1) return true;
-    if (page === 0) return false;
+    if (storageValue === false) return false;
+    if (storageValue === true) return true;
 
     const previousPageNumber = page - 1;
     const previousPageTitle = pages[previousPageNumber].component.title;
-
     if (previousPageTitle.toLowerCase().includes(this.termsConfig.title)) {
-      storageValue.push(this.termsConfig.title);
-      termsStorage.setitem(
-        this.termsConfig.termsStorageName,
-        JSON.stringify(storageValue),
-      );
+      termsStorage.setItem(this.termsConfig.termsStorageName, true);
       return true;
     }
     return false;
@@ -256,9 +251,39 @@ export class FormioWrapper {
     if (!this.loaded) {
       this.notLoaded();
     }
-    this._shouldNextPageBeSkipped(this.wizard.page, this.wizard.pages);
+    if (this._shouldNextPageBeSkipped(this.wizard.page, this.wizard.pages)) {
+      const proposedPage = this.wizard.page + 2;
+      const targetPage =
+        proposedPage > this.wizard.pages.length
+          ? proposedPage
+          : this.wizard.page + 1;
+      this.wizard._goToPage(targetPage);
+      this._updateIfCompleted(targetPage, this.wizard.pages);
+      return true;
+    }
+    this._updateIfCompleted(this.wizard.page + 1, this.wizard.pages);
     this.wizard.nextPage();
     return true;
+  }
+
+  /**
+   * @param {Number} page the current page number
+   * @param {Array} pages the array of pages
+   * @return {Boolean|String}
+   */
+  _updateIfCompleted(page, pages) {
+    if (!page) return false;
+    if (!pages || !pages.length) return false;
+    if (page === pages.length - 1) {
+      let completed = JSON.parse(this.storage.getItem(this.storageName));
+      if (!completed || !completed.length) {
+        completed = [];
+      }
+      completed.push(this.formTitle);
+      this.storage.setItem(this.storageName, JSON.stringify(completed));
+      return completed;
+    }
+    return false;
   }
 
   /**
@@ -280,6 +305,8 @@ export class FormioWrapper {
     if (!this.loaded) {
       this.notLoaded();
     }
+
+    this._updateIfCompleted(pageNo, this.wizard.pages);
     this.wizard.setPage(pageNo);
     return true;
   }
