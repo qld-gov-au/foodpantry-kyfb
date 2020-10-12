@@ -87,8 +87,7 @@
   "lint-staged": {
     "*.js": [
       "eslint --fix",
-      "prettier --write",
-      "test:nocover"
+      "prettier --write"
     ]
   },
   "dependencies": {
