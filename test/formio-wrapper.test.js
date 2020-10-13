@@ -153,8 +153,55 @@ describe('Formio Wrapper Tests.', () => {
 
   it('_goToNextPage triggers the right wizard function', async () => {
     wrapper.loaded = true;
+    wrapper.wizard.page = 0;
+    wrapper.wizard.pages = [
+      {
+        component: {
+          title: 'something',
+        },
+      },
+      {
+        component: {
+          title: 'terms and conditions',
+        },
+      },
+      {
+        component: {
+          title: 'something',
+        },
+      },
+    ];
+
     wrapper.wizard.nextPage = () => {};
     const spied = spy(wrapper.wizard, 'nextPage');
+    wrapper._goToNextPage();
+    spied.restore();
+    assert.calledOnce(spied);
+  });
+
+  it('_goToNextPage skips if terms are accepted', async () => {
+    wrapper.loaded = true;
+    sessionStorage.setItem(configuration.termsConfig.termsStorageName, true);
+    wrapper.wizard.page = 1;
+    wrapper.wizard.pages = [
+      {
+        component: {
+          title: 'something',
+        },
+      },
+      {
+        component: {
+          title: 'terms and conditions',
+        },
+      },
+      {
+        component: {
+          title: 'something',
+        },
+      },
+    ];
+    wrapper.wizard.nextPage = () => {};
+    const spied = spy(wrapper, '_shouldNextPageBeSkipped');
     wrapper._goToNextPage();
     spied.restore();
     assert.calledOnce(spied);
@@ -339,13 +386,13 @@ describe('Formio Wrapper Tests.', () => {
   });
 
   it('determines if _shouldNextPageBeSkipped is working', async () => {
+    sessionStorage.setItem(configuration.termsConfig.termsStorageName, false);
     wrapper.termsConfig.skipIfTermsAlreadyAccepted = false;
     const pages = [
       { component: { title: 'Something mundane' } },
       { component: { title: 'terms and conditions' } },
       { component: { title: 'Another boring title' } },
     ];
-    wrapper.wizard._seenPages = [0];
     let response = wrapper._shouldNextPageBeSkipped(0, []);
     expect(response).equals(false);
     wrapper.termsConfig.skipIfTermsAlreadyAccepted = true;
@@ -354,20 +401,19 @@ describe('Formio Wrapper Tests.', () => {
 
     response = wrapper._shouldNextPageBeSkipped(0, pages);
     expect(response).equals(false);
-    wrapper.wizard._seenPages = [0, 1];
-    wrapper.wizard._seenPages = [0, 1];
+
     response = wrapper._shouldNextPageBeSkipped(1, pages);
     expect(response).equals(false);
     sessionStorage.setItem(configuration.termsConfig.termsStorageName, true);
-    response = wrapper._shouldNextPageBeSkipped(1, pages);
+    response = wrapper._shouldNextPageBeSkipped(0, pages);
     expect(response).equals(true);
 
     sessionStorage.setItem(configuration.termsConfig.termsStorageName, false);
-    response = wrapper._shouldNextPageBeSkipped(1, pages);
+    response = wrapper._shouldNextPageBeSkipped(0, pages);
     expect(response).equals(false);
   });
 
-  it('test edge case terms accepted already passed', async () => {
+  it('Terms already accepted sets storage', async () => {
     wrapper.termsConfig.skipIfTermsAlreadyAccepted = false;
     const pages = [
       { component: { title: 'Something mundane' } },
@@ -384,12 +430,12 @@ describe('Formio Wrapper Tests.', () => {
     expect(response).equals(false);
 
     sessionStorage.removeItem(configuration.termsConfig.termsStorageName);
-    wrapper.wizard._seenPages = [0, 1, 2];
-    response = wrapper._areTermsAccepted(2, pages);
+    response = wrapper._areTermsAccepted(1, pages);
     expect(response).equals(true);
   });
 
   it('_updateIfCompleted works', async () => {
+    configuration.storage.removeItem(configuration.storageName);
     wrapper.termsConfig.skipIfTermsAlreadyAccepted = false;
     const pages = [
       { component: { title: 'Something mundane' } },
@@ -406,6 +452,32 @@ describe('Formio Wrapper Tests.', () => {
     response = wrapper._updateIfCompleted(2, pages);
     expect(response.length).equals(1);
     expect(response[0]).equals('Test form');
+  });
+
+  it('ensure gotonext page doesnt go to far', async () => {
+    wrapper.loaded = true;
+    wrapper.wizard.page = 1;
+    wrapper.wizard.pages = [
+      {
+        component: {
+          title: 'something',
+        },
+      },
+      {
+        component: {
+          title: 'terms and conditions',
+        },
+      },
+    ];
+    wrapper._shouldNextPageBeSkipped = () => {
+      return true;
+    };
+    wrapper.wizard.setPage = () => {};
+    const spied = spy(wrapper, '_goToPage');
+    wrapper._goToNextPage();
+    spied.restore();
+    assert.calledOnce(spied);
+    expect(spied.getCall(0).calledWith(2)).equals(true);
   });
 
   it('_fireExtraEvent works', async () => {

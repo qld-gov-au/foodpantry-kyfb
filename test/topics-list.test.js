@@ -23,10 +23,6 @@ describe('Topics list test', () => {
   });
 
   it('the output of the topics is rendered as expected', async () => {
-    const heading = element.querySelectorAll('h2');
-    expect(heading[0]).to.be.ok;
-    expect(heading[0].innerText).equal('Topics to Complete');
-
     const articles = element.querySelectorAll('article');
     expect(articles.length).equals(11);
     expect(articles[0].innerText).equals('Skills and knowledge');
@@ -89,8 +85,8 @@ describe('Topics list test', () => {
     );
     topics.updateTarget(topics.storage);
     const headings = element.querySelectorAll('h2');
-    expect(headings.length).equals(2);
-    expect(headings[1].innerText).equals('Completed topics');
+    expect(headings.length).equals(1);
+    expect(headings[0].innerText).equals('Completed topics');
   });
 
   it('load new form does nothing when not called from proper event', async () => {
