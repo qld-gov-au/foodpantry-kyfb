@@ -31,7 +31,7 @@ import attachStepHandlers from './scripts/step-handler';
       acceptWhenTermsFound: true,
     },
     termsConfig: {
-      title: 'terms and conditions',
+      title: 'terms of use',
       termsStorageType: sessionStorage,
       termsStorageName: 'termsAndConditions',
       skipIfTermsAlreadyAccepted: true,

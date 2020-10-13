@@ -167,9 +167,7 @@ export class TopicsList {
       </div>`;
     }
 
-    return html` <h2 class="heading-primary">Topics to Complete</h2>
-      <p>Each topic takes about 5 to 10 minutes to complete</p>
-      ${renderTopics} ${renderFinishedTopics}`;
+    return html`${renderTopics} ${renderFinishedTopics}`;
   }
 
   /**
@@ -179,7 +177,11 @@ export class TopicsList {
    */
   _renderTopics(allTopics, completedTopics) {
     return allTopics.map((topic) => {
-      const articles = topic.topics.map((minorTopic) => {
+      const filtered = topic.topics.filter(
+        (minorTopic) => completedTopics.indexOf(minorTopic.title) === -1,
+      );
+
+      const articles = filtered.map((minorTopic) => {
         if (completedTopics.indexOf(minorTopic.title) === -1) {
           return this._generateNewArticle(
             minorTopic.image,
@@ -189,6 +191,8 @@ export class TopicsList {
         }
         return nothing;
       });
+
+      if (!articles.length) return nothing;
       return html`
         <h3>${topic.name}</h3>
         <section class="row gg-cards">${articles}</section>

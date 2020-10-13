@@ -235,7 +235,7 @@ export class FormioWrapper {
    */
   _shouldNextPageBeSkipped(page, pages) {
     if (!this.termsConfig.skipIfTermsAlreadyAccepted) return false;
-    const pageTitle = pages[page].component.title;
+    const pageTitle = pages[page + 1].component.title;
     if (!pageTitle.toLowerCase().includes(this.termsConfig.title)) return false;
     return this._areTermsAccepted(page, pages);
   }
@@ -252,7 +252,7 @@ export class FormioWrapper {
     if (storageValue === false) return false;
     if (storageValue === true) return true;
 
-    const previousPageNumber = page - 1;
+    const previousPageNumber = page;
     const previousPageTitle = pages[previousPageNumber].component.title;
     if (previousPageTitle.toLowerCase().includes(this.termsConfig.title)) {
       termsStorage.setItem(this.termsConfig.termsStorageName, true);
@@ -283,14 +283,14 @@ export class FormioWrapper {
     if (this._shouldNextPageBeSkipped(this.wizard.page, this.wizard.pages)) {
       const proposedPage = this.wizard.page + 2;
       const targetPage =
-        proposedPage > this.wizard.pages.length
+        proposedPage < this.wizard.pages.length
           ? proposedPage
           : this.wizard.page + 1;
-      this.wizard._goToPage(targetPage);
-      this._updateIfCompleted(targetPage, this.wizard.pages);
+      this._goToPage(targetPage);
       return true;
     }
     this._updateIfCompleted(this.wizard.page + 1, this.wizard.pages);
+    this._areTermsAccepted(this.wizard.page, this.wizard.pages);
     this.wizard.nextPage();
     return true;
   }
