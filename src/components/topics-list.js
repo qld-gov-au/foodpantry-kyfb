@@ -235,7 +235,7 @@ export class TopicsList {
         <div class="qg-card__footer">
           <button
             @click=${this.loadNewForm}
-            class="btn-kyfb"
+            class="qg-btn btn-link"
             data-form=${form}
             data-title=${title}
           >
