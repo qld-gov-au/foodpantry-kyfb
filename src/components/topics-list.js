@@ -178,7 +178,7 @@ export class TopicsList {
   _renderTopics(allTopics, completedTopics) {
     return allTopics.map((topic) => {
       const filtered = topic.topics.filter(
-        (minorTopic) => completedTopics.indexOf(minorTopic.title) === -1,
+        minorTopic => completedTopics.indexOf(minorTopic.title) === -1,
       );
 
       const articles = filtered.map((minorTopic) => {
@@ -195,7 +195,7 @@ export class TopicsList {
       if (!articles.length) return nothing;
       return html`
         <h3>${topic.name}</h3>
-        <section class="row gg-cards">${articles}</section>
+        <section class="row qg-cards cards__equal-height">${articles}</section>
       `;
     });
   }
@@ -227,10 +227,12 @@ export class TopicsList {
    */
   // eslint-disable-next-line class-methods-use-this
   _generateNewArticle(image, form, title) {
-    return html`<article class="qg-card col-12 col-sm-6 col-lg-4">
+    return html`<article
+      class="qg-card card__light-theme col-12 col-sm-6 col-lg-4"
+    >
       <div class="content">
         <img src="${image}" alt="${title}" />
-        <div class="details">
+        <div class="qg-card__footer">
           <button
             @click=${this.loadNewForm}
             class="btn-kyfb"
