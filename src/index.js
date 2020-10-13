@@ -62,7 +62,8 @@ import attachStepHandlers from './scripts/step-handler';
       document.body.appendChild(sectionNav);
       sectionNav = document.querySelector('#qg-section-nav');
     } else {
-      sectionNav = navigationSection.querySelector('.active');
+      sectionNav = navigationSection.querySelector('ul > li > a.active')
+        .parentElement;
     }
     const unorderdList = document.createElement('ol');
     unorderdList.classList = 'kyfb guide-sub-nav';
