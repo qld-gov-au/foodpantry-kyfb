@@ -282,10 +282,9 @@ export class FormioWrapper {
     }
     if (this._shouldNextPageBeSkipped(this.wizard.page, this.wizard.pages)) {
       const proposedPage = this.wizard.page + 2;
-      const targetPage =
-        proposedPage < this.wizard.pages.length
-          ? proposedPage
-          : this.wizard.page + 1;
+      const targetPage = proposedPage < this.wizard.pages.length
+        ? proposedPage
+        : this.wizard.page + 1;
       this._goToPage(targetPage);
       return true;
     }
