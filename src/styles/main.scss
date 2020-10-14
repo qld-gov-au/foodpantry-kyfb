@@ -30,7 +30,7 @@
 }
 
 ol.kyfb {
-  counter-reset: lb-counter;
+  counter-reset: kyfb-counter;
   text-align:left;
   text-size-adjust: 100%;
   margin-left: 0;
@@ -38,7 +38,7 @@ ol.kyfb {
   display: flex;
   flex-direction: column;
   li {
-    counter-increment: lb-counter;
+    counter-increment: kyfb-counter;
     font-size: .875rem;
     transition: all .2s;
     display: flex;
@@ -57,7 +57,7 @@ ol.kyfb {
       }
     }
     &::before {
-      content: counter(lb-counter);
+      content: counter(kyfb-counter);
       color: #005e85;
       font-weight: bold;
       font-size: 0.9375rem;
@@ -80,4 +80,26 @@ ol.kyfb {
       cursor: not-allowed;
     }
   }
+}
+
+.kyfb {
+  .fa {
+    margin-right: 5px;
+    font-size: 1.5625rem;
+  }
+
+  .alert-instructions {
+    background-color: #f5f5f5;
+    border-left: 5px solid #808080;
+  }
+}
+
+
+#formnav {
+  display: none;
+}
+
+// https://meowni.ca/hidden.is.a.lie.html
+[hidden] {
+  display:none !important
 }

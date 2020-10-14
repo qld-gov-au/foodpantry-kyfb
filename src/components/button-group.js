@@ -23,18 +23,16 @@ export class ButtonGroup {
    * @return {Object}
    */
   updateButtons(data) {
-    const output = data.map((but) =>
-      this.generateButton(
-        but.title,
-        but.event,
-        but.cssClass,
-        but.disabled,
-        but.displayed,
-        but.active,
-        but.detail,
-        but.type,
-      ),
-    );
+    const output = data.map(but => this.generateButton(
+      but.title,
+      but.event,
+      but.cssClass,
+      but.disabled,
+      but.displayed,
+      but.active,
+      but.detail,
+      but.type,
+    ));
 
     return html`${output}`;
   }

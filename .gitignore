@@ -25,3 +25,6 @@
 # Node/Yarn locks for now
 yarn.lock
 package-lock.json
+
+# Images that are already on SQUIZ
+src/kyfb-home-images/
