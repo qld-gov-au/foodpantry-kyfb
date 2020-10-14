@@ -2,8 +2,7 @@
 import { FormioWrapper } from './components/formio-wrapper';
 import { ButtonGroup } from './components/button-group';
 import { TopicsList } from './components/topics-list';
-
-import attachStepHandlers from './scripts/step-handler';
+import { ReapplySelected } from './scripts/reapply-selected';
 
 (() => {
   const configuration = {
@@ -44,9 +43,11 @@ import attachStepHandlers from './scripts/step-handler';
     },
   };
 
+  const cssReapplier = new ReapplySelected();
+
   const kyfb = new FormioWrapper(configuration);
   const bg = new ButtonGroup(document.querySelector('.button-container'));
-  attachStepHandlers();
+
   window.addEventListener('DOMContentLoaded', () => {
     /* Remove Squiz default H1 */
     const pageHeader = document.querySelector('#qg-primary-content');
@@ -101,5 +102,9 @@ import attachStepHandlers from './scripts/step-handler';
     document.querySelector('#topics').hidden = false;
     document.querySelector('#home').hidden = false;
     document.querySelector('.guide-sub-nav').hidden = true;
+  });
+
+  window.addEventListener('formiowrapperPageChange', (event) => {
+    cssReapplier.reapply();
   });
 })();
