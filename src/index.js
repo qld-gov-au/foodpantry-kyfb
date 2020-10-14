@@ -105,6 +105,6 @@ import { ReapplySelected } from './scripts/reapply-selected';
   });
 
   window.addEventListener('formiowrapperPageChange', (event) => {
-    cssReapplier.reapply();
+    cssReapplier.reapply(['radio']);
   });
 })();
