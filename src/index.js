@@ -2,6 +2,7 @@
 import { FormioWrapper } from './components/formio-wrapper';
 import { ButtonGroup } from './components/button-group';
 import { TopicsList } from './components/topics-list';
+import { ReapplySelected } from './scripts/reapply-selected';
 
 (() => {
   const configuration = {
@@ -41,6 +42,8 @@ import { TopicsList } from './components/topics-list';
       cancel: 'cancelKYFBForm',
     },
   };
+
+  const cssReapplier = new ReapplySelected();
 
   const kyfb = new FormioWrapper(configuration);
   const bg = new ButtonGroup(document.querySelector('.button-container'));
@@ -99,5 +102,9 @@ import { TopicsList } from './components/topics-list';
     document.querySelector('#topics').hidden = false;
     document.querySelector('#home').hidden = false;
     document.querySelector('.guide-sub-nav').hidden = true;
+  });
+
+  window.addEventListener('formiowrapperPageChange', (event) => {
+    cssReapplier.reapply(['radio']);
   });
 })();
