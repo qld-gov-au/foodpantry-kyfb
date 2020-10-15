@@ -34,6 +34,7 @@ import { ReapplySelected } from './scripts/reapply-selected';
       termsStorageType: sessionStorage,
       termsStorageName: 'termsAndConditions',
       skipIfTermsAlreadyAccepted: true,
+      dataName: 'termsAndConditions',
     },
     navigationCSS: {
       baseClass: 'qg-btn btn-link',
