@@ -7,7 +7,7 @@ export class ReapplySelected {
    * @param {Array} types the array of types to re-apply
    */
   reapply(types) {
-    if (types.indexOf('radio')) {
+    if (types.indexOf('radio') !== -1) {
       this._reapplyRadios();
     }
   }
