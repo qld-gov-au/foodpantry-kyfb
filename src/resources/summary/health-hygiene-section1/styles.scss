@@ -20,4 +20,9 @@
     flex-direction: column;
   }
 
+  a#download-summary:hover, a#resources-info:hover {
+    color: #202529;
+    text-decoration: none;
+  }
+
 }
