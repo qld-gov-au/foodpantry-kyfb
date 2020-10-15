@@ -3,8 +3,6 @@ import { FormioWrapper } from './components/formio-wrapper';
 import { ButtonGroup } from './components/button-group';
 import { TopicsList } from './components/topics-list';
 
-import attachStepHandlers from './scripts/step-handler';
-
 (() => {
   const configuration = {
     formTitle: '',
@@ -46,7 +44,7 @@ import attachStepHandlers from './scripts/step-handler';
 
   const kyfb = new FormioWrapper(configuration);
   const bg = new ButtonGroup(document.querySelector('.button-container'));
-  attachStepHandlers();
+
   window.addEventListener('DOMContentLoaded', () => {
     /* Remove Squiz default H1 */
     const pageHeader = document.querySelector('#qg-primary-content');
