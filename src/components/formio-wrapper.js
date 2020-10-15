@@ -137,7 +137,7 @@ export class FormioWrapper {
 
       const active = offset === this.wizard.page;
       const activeClass = active ? 'active' : '';
-      const visited = this.wizard._seenPages.indexOf(offset) !== -1;
+      const visited = this._seenPages(offset, this.wizard._seenPages);
       const visitedClass = visited ? 'visited' : '';
 
       if (!visited) {
@@ -164,6 +164,22 @@ export class FormioWrapper {
   }
 
   /**
+   * @description if you skip a terms and conditions page it may not come up
+   * as seen... so therefore if we have seen any pages after that it is
+   * classified as seen also.
+   * @param {Number} page current page number being examined
+   * @param {Array} seenPages the list of seen pages
+   * @return {Boolean}
+   */
+  // eslint-disable-next-line class-methods-use-this
+  _seenPages(page, seenPages) {
+    if (!seenPages.length) return false;
+    if (seenPages.indexOf(page + 1) !== -1) return true;
+    if (seenPages.indexOf(page) !== -1) return true;
+    return false;
+  }
+
+  /**
    * @return {Array} the button data array
    */
   buildButtonData() {
@@ -175,7 +191,7 @@ export class FormioWrapper {
       title: 'Previous',
       event: 'formiowrapperGoToPrevious',
       cssClass: `${this.buttonCSS.baseClass} ${this.buttonCSS.previous}`,
-      disabled: !this._checkPageValidity(page - 1, pages, data),
+      disabled: false,
       displayed: true,
       visited: false,
     };
@@ -285,6 +301,9 @@ export class FormioWrapper {
       const targetPage = proposedPage < this.wizard.pages.length
         ? proposedPage
         : this.wizard.page + 1;
+      if (this.wizard._data) {
+        this.wizard._data[this.termsConfig.dataName] = true;
+      }
       this._goToPage(targetPage);
       return true;
     }

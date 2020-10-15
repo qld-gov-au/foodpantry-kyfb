@@ -44,6 +44,7 @@ describe('Formio Wrapper Tests.', () => {
         title: 'terms and conditions',
         termsStorageType: sessionStorage,
         termsStorageName: 'termsAndConditions',
+        dataName: 'termsAndConditions',
         skipIfTermsAlreadyAccepted: false,
       },
       navigationCSS: {
