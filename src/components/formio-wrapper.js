@@ -188,7 +188,7 @@ export class FormioWrapper {
     const { data } = this.wizard;
 
     const previousButton = {
-      title: 'Previous',
+      title: 'Back',
       event: 'formiowrapperGoToPrevious',
       cssClass: `${this.buttonCSS.baseClass} ${this.buttonCSS.previous}`,
       disabled: false,
