@@ -273,7 +273,7 @@ describe('Formio Wrapper Tests.', () => {
     const validResponse = wrapper.buildButtonData();
     expect(typeof validResponse).equals('object');
     expect(validResponse.length).equals(3);
-    expect(validResponse[0].title).equals('Previous');
+    expect(validResponse[0].title).equals('Back');
     expect(validResponse[0].event).equals('formiowrapperGoToPrevious');
     expect(validResponse[0].cssClass).equals('qg-btn btn-default');
     expect(validResponse[0].disabled).equals(false);
@@ -299,7 +299,7 @@ describe('Formio Wrapper Tests.', () => {
     expect(typeof firstResponse).equals('object');
     expect(firstResponse.length).equals(3);
 
-    expect(firstResponse[0].title).equals('Previous');
+    expect(firstResponse[0].title).equals('Back');
     expect(firstResponse[0].displayed).equals(false);
 
     expect(firstResponse[1].title).equals('Start');
@@ -313,7 +313,7 @@ describe('Formio Wrapper Tests.', () => {
     expect(typeof lastResponse).equals('object');
     expect(lastResponse.length).equals(3);
 
-    expect(lastResponse[0].title).equals('Previous');
+    expect(lastResponse[0].title).equals('Back');
     expect(lastResponse[0].displayed).equals(true);
 
     expect(lastResponse[1].title).equals('Next');

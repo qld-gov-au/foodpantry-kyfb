@@ -21,7 +21,7 @@ describe('Button Group Tests', () => {
     const data = {
       navigation: [
         {
-          title: 'Previous',
+          title: 'Back',
           event: 'formGoToPrevious',
           cssClass: 'class1',
           disabled: false,
@@ -46,7 +46,7 @@ describe('Button Group Tests', () => {
 
     buttonGroup.updateTarget(data, element);
     const button = element.querySelector('button');
-    expect(button.innerHTML).includes('Previous');
+    expect(button.innerHTML).includes('Back');
     expect(button).to.be.ok;
     expect(JSON.stringify(button.classList)).includes('class1');
     expect(button.dataset.detail).includes('""');
@@ -114,7 +114,7 @@ describe('Navigation specialities', () => {
     const data = {
       navigation: [
         {
-          title: 'Previous',
+          title: 'Back',
           event: 'formGoToPrevious',
           cssClass: 'class1',
           disabled: false,
@@ -142,7 +142,7 @@ describe('Navigation specialities', () => {
 
     buttonGroup.updateTarget(data, element);
     const button = element.querySelector('li');
-    expect(button.innerHTML).includes('Previous');
+    expect(button.innerHTML).includes('Back');
     expect(button).to.be.ok;
     const secondButton = element.querySelectorAll('li')[1];
     expect(secondButton.innerHTML).includes('Next');
