@@ -25,6 +25,7 @@ import { ReapplySelected } from './scripts/reapply-selected';
       cancel: 'btn-link',
     },
     scrollTarget: 0,
+    scrollType: 'auto',
     buttonConfig: {
       startOnFirst: true,
       acceptWhenTermsFound: true,

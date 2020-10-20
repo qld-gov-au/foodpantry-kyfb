@@ -14,6 +14,7 @@ export class FormioWrapper {
     this.buttonCSS = configuration.buttonCSS;
     this.navigationCSS = configuration.navigationCSS;
     this.scrollTarget = configuration.scrollTarget;
+    this.scrollType = configuration.scrollType;
     this.formSettings = configuration.formSettings;
     this.buttonConfig = configuration.buttonConfig;
     this.termsConfig = configuration.termsConfig;
@@ -378,7 +379,7 @@ export class FormioWrapper {
     if (this.scrollTarget === -1) return;
     window.scroll({
       top: this.scrollTarget,
-      behavior: 'smooth',
+      behavior: this.scrollType,
     });
   }
 }
