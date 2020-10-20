@@ -15,15 +15,13 @@ export class TopicsList {
             title: 'Skills and knowledge',
             form:
               'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/skillsandknowledge',
-            image:
-              'https://www.qld.gov.au/dev/food-pantry/dev/kyfb-home-images/Skills-and-knowledge-176606698.jpg',
+            image: 'https://www.qld.gov.au/?a=140634',
           },
           {
             title: 'Health and hygiene',
             form:
               'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/healthandhygiene',
-            image:
-              'https://www.qld.gov.au/dev/food-pantry/dev/kyfb-home-images/Health-and-hygiene-1181710190.jpg',
+            image: 'https://www.qld.gov.au/?a=140674',
           },
         ],
       },
@@ -34,43 +32,37 @@ export class TopicsList {
             title: 'Recieve food',
             form:
               'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/recievefood',
-            image:
-              'https://www.qld.gov.au/dev/food-pantry/dev/kyfb-home-images/Recieve-food-868730920.jpg',
+            image: 'https://www.qld.gov.au/?a=140652',
           },
           {
             title: 'Store food',
             form:
               'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/storefood',
-            image:
-              'https://www.qld.gov.au/dev/food-pantry/dev/kyfb-home-images/Transport-1227348008.jpg',
+            image: 'https://www.qld.gov.au/?a=140651',
           },
           {
             title: 'Prepare food',
             form:
               'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/preparefood',
-            image:
-              'https://www.qld.gov.au/dev/food-pantry/dev/kyfb-home-images/Prepare-and-serve-186557945.jpg',
+            image: 'https://www.qld.gov.au/?a=140672',
           },
           {
             title: 'Display and serve food',
             form:
               'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/displayandservefood',
-            image:
-              'https://www.qld.gov.au/dev/food-pantry/dev/kyfb-home-images/Food-display-629986120.jpg',
+            image: 'https://www.qld.gov.au/?a=140675',
           },
           {
             title: 'Transport food',
             form:
               'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/transportfood',
-            image:
-              'https://www.qld.gov.au/dev/food-pantry/dev/kyfb-home-images/Transport-1227348008.jpg',
+            image: 'https://www.qld.gov.au/?a=140646',
           },
           {
             title: 'Complaints and recall',
             form:
               'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/complaintsandrecall',
-            image:
-              'https://www.qld.gov.au/dev/food-pantry/dev/kyfb-home-images/Recalls-and-complaints-1165181144.jpg',
+            image: 'https://www.qld.gov.au/?a=140671',
           },
         ],
       },
@@ -81,22 +73,19 @@ export class TopicsList {
             title: 'Animals and pests',
             form:
               'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/animalsandpests',
-            image:
-              'https://www.qld.gov.au/dev/food-pantry/dev/kyfb-home-images/Animals-and-Pests-1155232061.jpg',
+            image: 'https://www.qld.gov.au/?a=140677',
           },
           {
             title: 'Clean and santise',
             form:
               'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/cleanandsantise',
-            image:
-              'https://www.qld.gov.au/dev/food-pantry/dev/kyfb-home-images/Cleaning-200391212-001.jpg',
+            image: 'https://www.qld.gov.au/?a=140676',
           },
           {
             title: 'Maintenance',
             form:
               'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/kyfbmaintenance',
-            image:
-              'https://www.qld.gov.au/dev/food-pantry/dev/kyfb-home-images/Maintenance-1169504170.jpg',
+            image: 'https://www.qld.gov.au/?a=140673',
           },
         ],
       },
