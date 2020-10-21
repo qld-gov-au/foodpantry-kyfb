@@ -24,11 +24,11 @@
     display: none;
   }
 
-  .questions {
+  .question-margin {
     margin-top: 20px;
   }
 
-  .questions::after { 
+  .required-element::after { 
     content: "*"; 
     color: #f85c50;
   }
