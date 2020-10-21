@@ -83,6 +83,9 @@ export class FormioWrapper {
         this.scrollToTop();
         this._firePageChangeEvent();
       });
+      this.wizard.on('change', () => {
+        this._firePageChangeEvent();
+      });
     });
   }
 
