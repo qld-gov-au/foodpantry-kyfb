@@ -64,10 +64,6 @@ export class FormioWrapper {
   initialise() {
     if (!this.formLocation) return;
     this.formElement = document.querySelector('#formio');
-    // responds to form changing events
-    this.formElement.addEventListener('click', () => {
-      this._firePageChangeEvent();
-    });
     Formio.createForm(
       this.formElement,
       this.formLocation,
@@ -81,6 +77,9 @@ export class FormioWrapper {
       });
       this.wizard.on('render', () => {
         this.scrollToTop();
+        this._firePageChangeEvent();
+      });
+      this.wizard.on('change', () => {
         this._firePageChangeEvent();
       });
     });
