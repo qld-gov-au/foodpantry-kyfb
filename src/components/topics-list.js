@@ -29,9 +29,9 @@ export class TopicsList {
         name: 'Process',
         topics: [
           {
-            title: 'Recieve food',
+            title: 'Receive food',
             form:
-              'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/recievefood',
+              'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/receivefood',
             image: 'https://www.qld.gov.au/?a=140652',
           },
           {
