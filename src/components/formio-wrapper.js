@@ -382,9 +382,6 @@ export class FormioWrapper {
       });
     }
     const formio = document.querySelector('#formio');
-    const focusable = formio.querySelector(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-    );
-    focusable.focus();
+    formio.focus();
   }
 }
