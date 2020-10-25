@@ -15,10 +15,6 @@
   p button {
     margin-right: 5px;
   }
-
-  .special {
-    color: #f85c50;
-  }
   
   .heading-primary {
     font-size: 1.5625rem;
@@ -27,6 +23,16 @@
   .alert.alert-danger {
     display: none;
   }
+
+  .question-margin {
+    margin-top: 20px;
+  }
+
+  .required-element::after { 
+    content: "*"; 
+    color: #f85c50;
+  }
+
 }
 
 ol.kyfb {
@@ -92,6 +98,10 @@ ol.kyfb {
     background-color: #f5f5f5;
     border-left: 5px solid #808080;
   }
+}
+
+#formio:focus {
+  outline: none;
 }
 
 
