@@ -401,7 +401,7 @@ export class FormioWrapper {
       headers: {
         'Content-Type': 'application/pdf',
       },
-      body: this.submissionData,
+      body: JSON.stringify({ data: this.submissionData }),
     })
       .then((res) => {
         if (!res.ok) {
