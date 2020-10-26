@@ -1,4 +1,63 @@
-@import './formio/radio.scss';
+.formio-component-radio {
+  label {
+    display: none;
+  }
+  
+  .form-radio {
+    display: flex;
+    flex-direction: row;
+  
+    .form-check {
+      flex-grow: 2;
+      padding: 20px 10px;
+      margin: 5px;
+      border-radius: 5px;
+      border: solid 1px #979797;
+      background-color: #ffffff;
+  
+      .form-check-label {
+        display: flex;
+        align-items: center;
+  
+        .form-check-input {
+            position: relative;
+            margin: 0;
+        }
+  
+        input[type='radio'] {
+          &:after {
+            width: 24px;
+            height: 24px;
+            border-radius: 24px;
+            top: -3px;
+            position: relative;
+            background-color: #fff;
+            content: '';
+            display: inline-block;
+            visibility: visible;
+            border: 1px solid #979797;
+          }
+  
+          &:checked:after {
+            width: 21px;
+            height: 21px;
+            background-color: #4a4a4a;
+            border: 4px solid white;
+          }
+        }
+  
+        span {
+          margin: 0 20px;
+        }
+      }
+  
+      &.radio-selected {
+        background-color: #007eb1;
+        color: #fff;
+      }
+    }
+  }  
+}
 
 .formio-form {
   > div {
@@ -111,3 +170,4 @@ ol.kyfb {
 [hidden] {
   display:none !important
 }
+
