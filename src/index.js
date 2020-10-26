@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import 'whatwg-fetch';
 import { FormioWrapper } from './components/formio-wrapper';
 import { ButtonGroup } from './components/button-group';
 import { TopicsList } from './components/topics-list';
