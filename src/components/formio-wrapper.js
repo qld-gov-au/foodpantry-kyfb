@@ -20,6 +20,8 @@ export class FormioWrapper {
     this.termsConfig = configuration.termsConfig;
     this.formName = configuration.formName;
     this.extraTriggers = configuration.extraTriggersOnActions;
+    this.submissionInfo = configuration.submissionInfo;
+    this.submissionEndpoint = `https://api.forms.platforms.qld.gov.au/project/${this.submissionInfo.projectID}/form/${this.submissionInfo.formID}/submission`;
 
     this.formElement = {};
 
@@ -70,6 +72,7 @@ export class FormioWrapper {
       this.formSettings,
     ).then((wizard) => {
       this.wizard = wizard;
+      this.submissionData = this.wizard.submission.data;
       this.formTitle = !this.formTitle ? wizard._form.title : this.formTitle;
       this.loaded = true;
       this.wizard.on('initialized', () => {
@@ -81,6 +84,9 @@ export class FormioWrapper {
       });
       this.wizard.on('change', () => {
         this._firePageChangeEvent();
+      });
+      this.wizard.on('downloadPDF', () => {
+        this._downloadPDF();
       });
     });
   }
@@ -383,5 +389,62 @@ export class FormioWrapper {
     }
     const formio = document.querySelector('#formio');
     formio.focus();
+  }
+
+  /**
+   * @return {Response}
+   */
+  _formSubmission() {
+    return fetch(this.submissionEndpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/pdf',
+      },
+      body: JSON.stringify({ data: this.submissionData }),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res}`);
+        }
+        return res.json();
+      })
+      .catch(error => error);
+  }
+
+  /**
+   * @return {void}
+   */
+  _downloadPDF() {
+    this._formSubmission()
+      .then((successBody) => {
+        fetch(`${this.submissionEndpoint}/${successBody._id}/download`)
+          .then((res) => {
+            if (!res.ok) {
+              throw new Error(`HTTP error! status: ${res}`);
+            }
+            return res.blob();
+          })
+          .then((blob) => {
+            const newBlob = new Blob([blob], { type: 'application/pdf' });
+
+            // IE 11
+            if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+              window.navigator.msSaveOrOpenBlob(newBlob);
+              return;
+            }
+
+            // For other browsers
+            const data = window.URL.createObjectURL(newBlob);
+            const link = document.createElement('a');
+            link.href = data;
+            link.download = 'know-your-food-business_summary.pdf';
+            link.click();
+            setTimeout(() => {
+              // For Firefox
+              window.URL.revokeObjectURL(data);
+            }, 100);
+          });
+      })
+      .catch(error => error);
   }
 }

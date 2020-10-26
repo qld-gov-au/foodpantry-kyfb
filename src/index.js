@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import 'whatwg-fetch';
 import { FormioWrapper } from './components/formio-wrapper';
 import { ButtonGroup } from './components/button-group';
 import { TopicsList } from './components/topics-list';
@@ -42,6 +43,10 @@ import { ReapplySelected } from './scripts/reapply-selected';
     },
     extraTriggersOnActions: {
       cancel: 'cancelKYFBForm',
+    },
+    submissionInfo: {
+      projectID: '5f44969319d1a97a819d80a7',
+      formID: '5f8f7e6c8095d22a27f6a03a',
     },
   };
 
