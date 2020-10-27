@@ -447,6 +447,34 @@ describe('Formio Wrapper Tests.', () => {
     expect(response).equals(false);
   });
 
+  it('determines if _shouldPreviousPageBeSkipped is working', async () => {
+    sessionStorage.setItem(configuration.termsConfig.termsStorageName, false);
+    wrapper.termsConfig.skipIfTermsAlreadyAccepted = false;
+    const pages = [
+      { component: { title: 'Something mundane' } },
+      { component: { title: 'terms and conditions' } },
+      { component: { title: 'Another boring title' } },
+    ];
+    let response = wrapper._shouldPreviousPageBeSkipped(0, []);
+    expect(response).equals(false);
+    wrapper.termsConfig.skipIfTermsAlreadyAccepted = true;
+    response = wrapper._shouldPreviousPageBeSkipped(2, pages);
+    expect(response).equals(false);
+
+    response = wrapper._shouldPreviousPageBeSkipped(2, pages);
+    expect(response).equals(false);
+
+    response = wrapper._shouldPreviousPageBeSkipped(1, pages);
+    expect(response).equals(false);
+    sessionStorage.setItem(configuration.termsConfig.termsStorageName, true);
+    response = wrapper._shouldPreviousPageBeSkipped(2, pages);
+    expect(response).equals(true);
+
+    sessionStorage.setItem(configuration.termsConfig.termsStorageName, false);
+    response = wrapper._shouldPreviousPageBeSkipped(1, pages);
+    expect(response).equals(false);
+  });
+
   it('Terms already accepted sets storage', async () => {
     wrapper.termsConfig.skipIfTermsAlreadyAccepted = false;
     const pages = [
