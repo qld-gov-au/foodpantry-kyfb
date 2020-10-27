@@ -22,6 +22,7 @@ export class FormioWrapper {
     this.extraTriggers = configuration.extraTriggersOnActions;
     this.submissionInfo = configuration.submissionInfo;
     this.submissionEndpoint = `https://api.forms.platforms.qld.gov.au/project/${this.submissionInfo.projectID}/form/${this.submissionInfo.formID}/submission`;
+    this.formAdminEmail = configuration.formAdminEmail;
 
     this.formElement = {};
 
@@ -86,7 +87,18 @@ export class FormioWrapper {
         this._firePageChangeEvent();
       });
       this.wizard.on('downloadPDF', () => {
+        this.wizard.data.sendEmail = false;
         this._downloadPDF();
+      });
+      this.wizard.on('sendEmail', () => {
+        this.wizard.data.sendEmail = true;
+        this._sendEmail();
+      });
+      this.wizard.on('nextPage', ({ page }) => {
+        if (page === 3) {
+          this.wizard.data.sendEmail = true;
+          this._sendEmail({ admin: true });
+        }
       });
     });
   }
@@ -458,5 +470,13 @@ export class FormioWrapper {
         downloadButton.disabled = false;
         return error;
       });
+  }
+
+  _sendEmail(options = {}) {
+    const { admin = false } = options;
+    if (admin) {
+      this.wizard.data.email = this.formAdminEmail;
+    }
+    this.wizard.submit();
   }
 }

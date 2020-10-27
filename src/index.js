@@ -49,6 +49,7 @@ import { ReapplySelected } from './scripts/reapply-selected';
       projectID: '5f44969319d1a97a819d80a7',
       formID: '5f8f7e6c8095d22a27f6a03a',
     },
+    formAdminEmail: '',
   };
 
   const cssReapplier = new ReapplySelected();
