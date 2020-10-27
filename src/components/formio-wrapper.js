@@ -415,6 +415,11 @@ export class FormioWrapper {
    * @return {void}
    */
   _downloadPDF() {
+    // wizard event does not capture EventTarget
+    const downloadButton = document.querySelector(
+      '[name="data[downloadSummary]"',
+    );
+    downloadButton.disabled = true;
     this._formSubmission()
       .then((successBody) => {
         fetch(`${this.submissionEndpoint}/${successBody._id}/download`)
@@ -443,8 +448,13 @@ export class FormioWrapper {
               // For Firefox
               window.URL.revokeObjectURL(data);
             }, 100);
+
+            downloadButton.disabled = false;
           });
       })
-      .catch(error => error);
+      .catch((error) => {
+        downloadButton.disabled = false;
+        return error;
+      });
   }
 }
