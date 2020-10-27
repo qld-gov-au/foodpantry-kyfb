@@ -213,6 +213,34 @@ describe('Formio Wrapper Tests.', () => {
     assert.calledOnce(spied);
   });
 
+  it('_goToPreviousPage skips if terms are accepted', async () => {
+    wrapper.loaded = true;
+    sessionStorage.setItem(configuration.termsConfig.termsStorageName, true);
+    wrapper.wizard.page = 2;
+    wrapper.wizard.pages = [
+      {
+        component: {
+          title: 'something',
+        },
+      },
+      {
+        component: {
+          title: 'terms and conditions',
+        },
+      },
+      {
+        component: {
+          title: 'something',
+        },
+      },
+    ];
+    wrapper.wizard.prevPage = () => {};
+    const spied = spy(wrapper, '_shouldPreviousPageBeSkipped');
+    wrapper._goToPreviousPage();
+    spied.restore();
+    assert.calledOnce(spied);
+  });
+
   it('check page validity uses formio validity', async () => {
     const response = wrapper._checkPageValidity(-1, [], {});
     expect(response).equals(false);
