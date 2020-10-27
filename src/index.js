@@ -29,6 +29,7 @@ import { ReapplySelected } from './scripts/reapply-selected';
     scrollType: 'auto',
     buttonConfig: {
       startOnFirst: true,
+      hideCancelOnFirst: false,
       acceptWhenTermsFound: true,
     },
     termsConfig: {

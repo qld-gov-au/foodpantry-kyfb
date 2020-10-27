@@ -38,6 +38,7 @@ describe('Formio Wrapper Tests.', () => {
       scrollTarget: 0,
       buttonConfig: {
         startOnFirst: true,
+        hideCancelOnFirst: true,
         acceptWhenTermsFound: true,
       },
       termsConfig: {
@@ -49,6 +50,10 @@ describe('Formio Wrapper Tests.', () => {
       },
       navigationCSS: {
         baseClass: 'qg-btn btn-link',
+      },
+      submissionInfo: {
+        projectID: '5f44969319d1a97a819d80a7',
+        formID: '5f8f7e6c8095d22a27f6a03a',
       },
     };
 

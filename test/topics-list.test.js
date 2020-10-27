@@ -42,8 +42,8 @@ describe('Topics list test', () => {
     );
     expect(articles[1].innerHTML.includes('button')).equals(true);
 
-    expect(articles[2].innerText).equals('Recieve food');
-    expect(articles[2].innerHTML.includes('alt="Recieve food"')).equals(true);
+    expect(articles[2].innerText).equals('Receive food');
+    expect(articles[2].innerHTML.includes('alt="Receive food"')).equals(true);
 
     expect(articles[3].innerText).equals('Store food');
     expect(articles[3].innerHTML.includes('alt="Store food"')).equals(true);
