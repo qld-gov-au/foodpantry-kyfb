@@ -222,7 +222,9 @@ export class FormioWrapper {
 
     if (page === 0) {
       previousButton.displayed = false;
-      cancelButton.displayed = false;
+      if (this.buttonConfig.hideCancelOnFirst) {
+        cancelButton.displayed = false;
+      }
       if (this.buttonConfig.startOnFirst) {
         nextButton.title = 'Start';
       }
