@@ -67,6 +67,7 @@ export class FormioWrapper {
   initialise() {
     if (!this.formLocation) return;
     this.formElement = document.querySelector('#formio');
+    // create main form
     Formio.createForm(
       this.formElement,
       this.formLocation,
@@ -101,6 +102,8 @@ export class FormioWrapper {
         }
       });
     });
+    // create PDF instance
+    this.createPDFInstance();
   }
 
   /**
@@ -405,24 +408,21 @@ export class FormioWrapper {
     formio.focus();
   }
 
+  createPDFInstance() {
+    Formio.createForm(
+      document.createElement('div'),
+      'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/kyfbpdf',
+    ).then((pdfInstance) => {
+      this.pdfInstance = pdfInstance;
+    });
+  }
+
   /**
    * @return {Response}
    */
   _formSubmission() {
-    return fetch(this.submissionEndpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/pdf',
-      },
-      body: JSON.stringify({ data: this.submissionData }),
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res}`);
-        }
-        return res.json();
-      })
-      .catch(error => error);
+    this.pdfInstance.data = this.submissionData;
+    return this.pdfInstance.submit();
   }
 
   /**
