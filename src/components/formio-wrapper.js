@@ -458,37 +458,35 @@ export class FormioWrapper {
     );
     downloadButton.disabled = true;
     this._formSubmission()
-      .then((successBody) => {
-        fetch(`${this.submissionEndpoint}/${successBody._id}/download`)
-          .then((res) => {
-            if (!res.ok) {
-              throw new Error(`HTTP error! status: ${res}`);
-            }
-            return res.blob();
-          })
-          .then((blob) => {
-            const newBlob = new Blob([blob], { type: 'application/pdf' });
+      .then(successBody => fetch(`${this.submissionEndpoint}/${successBody._id}/download`)
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res}`);
+          }
+          return res.blob();
+        })
+        .then((blob) => {
+          const newBlob = new Blob([blob], { type: 'application/pdf' });
 
-            // IE 11
-            if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-              window.navigator.msSaveOrOpenBlob(newBlob);
-              return;
-            }
+          // IE 11
+          if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(newBlob);
+            return;
+          }
 
-            // For other browsers
-            const data = window.URL.createObjectURL(newBlob);
-            const link = document.createElement('a');
-            link.href = data;
-            link.download = 'know-your-food-business_summary.pdf';
-            link.click();
-            setTimeout(() => {
-              // For Firefox
-              window.URL.revokeObjectURL(data);
-            }, 100);
+          // For other browsers
+          const data = window.URL.createObjectURL(newBlob);
+          const link = document.createElement('a');
+          link.href = data;
+          link.download = 'know-your-food-business_summary.pdf';
+          link.click();
+          setTimeout(() => {
+            // For Firefox
+            window.URL.revokeObjectURL(data);
+          }, 100);
 
-            downloadButton.disabled = false;
-          });
-      })
+          downloadButton.disabled = false;
+        }))
       .catch((error) => {
         downloadButton.disabled = false;
         return error;
