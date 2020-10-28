@@ -22,6 +22,7 @@ export class FormioWrapper {
     this.extraTriggers = configuration.extraTriggersOnActions;
     this.submissionInfo = configuration.submissionInfo;
     this.submissionEndpoint = `https://api.forms.platforms.qld.gov.au/project/${this.submissionInfo.projectID}/form/${this.submissionInfo.formID}/submission`;
+    this.formAdminEmail = configuration.formAdminEmail;
 
     this.formElement = {};
 
@@ -66,6 +67,7 @@ export class FormioWrapper {
   initialise() {
     if (!this.formLocation) return;
     this.formElement = document.querySelector('#formio');
+    // create main form
     Formio.createForm(
       this.formElement,
       this.formLocation,
@@ -86,9 +88,22 @@ export class FormioWrapper {
         this._firePageChangeEvent();
       });
       this.wizard.on('downloadPDF', () => {
+        this.wizard.data.sendEmail = false;
         this._downloadPDF();
       });
+      this.wizard.on('sendEmail', () => {
+        this.wizard.data.sendEmail = true;
+        this._sendEmail();
+      });
+      this.wizard.on('nextPage', ({ page }) => {
+        if (page === 3) {
+          this.wizard.data.sendEmail = true;
+          this._sendEmail({ admin: true });
+        }
+      });
     });
+    // create PDF instance
+    this.createPDFInstance();
   }
 
   /**
@@ -416,24 +431,21 @@ export class FormioWrapper {
     formio.focus();
   }
 
+  createPDFInstance() {
+    Formio.createForm(
+      document.createElement('div'),
+      'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/kyfbpdf',
+    ).then((pdfInstance) => {
+      this.pdfInstance = pdfInstance;
+    });
+  }
+
   /**
    * @return {Response}
    */
   _formSubmission() {
-    return fetch(this.submissionEndpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/pdf',
-      },
-      body: JSON.stringify({ data: this.submissionData }),
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res}`);
-        }
-        return res.json();
-      })
-      .catch(error => error);
+    this.pdfInstance.data = this.submissionData;
+    return this.pdfInstance.submit();
   }
 
   /**
@@ -481,5 +493,13 @@ export class FormioWrapper {
         downloadButton.disabled = false;
         return error;
       });
+  }
+
+  _sendEmail(options = {}) {
+    const { admin = false } = options;
+    if (admin) {
+      this.wizard.data.email = this.formAdminEmail;
+    }
+    this.wizard.submit();
   }
 }
