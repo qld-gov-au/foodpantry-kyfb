@@ -28,11 +28,10 @@
     margin-top: 20px;
   }
 
-  .required-element::after { 
-    content: "*"; 
+  .required-element::after {
+    content: "*";
     color: #f85c50;
   }
-
 }
 
 ol.kyfb {
@@ -103,7 +102,6 @@ ol.kyfb {
 #formio:focus {
   outline: none;
 }
-
 
 #formnav {
   display: none;
