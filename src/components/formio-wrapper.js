@@ -20,6 +20,9 @@ export class FormioWrapper {
     this.termsConfig = configuration.termsConfig;
     this.formName = configuration.formName;
     this.extraTriggers = configuration.extraTriggersOnActions;
+    this.submissionInfo = configuration.submissionInfo;
+    this.submissionEndpoint = `https://api.forms.platforms.qld.gov.au/project/${this.submissionInfo.projectID}/form/${this.submissionInfo.formID}/submission`;
+    this.formAdminEmail = configuration.formAdminEmail;
 
     this.formElement = {};
 
@@ -64,12 +67,14 @@ export class FormioWrapper {
   initialise() {
     if (!this.formLocation) return;
     this.formElement = document.querySelector('#formio');
+    // create main form
     Formio.createForm(
       this.formElement,
       this.formLocation,
       this.formSettings,
     ).then((wizard) => {
       this.wizard = wizard;
+      this.submissionData = this.wizard.submission.data;
       this.formTitle = !this.formTitle ? wizard._form.title : this.formTitle;
       this.loaded = true;
       this.wizard.on('initialized', () => {
@@ -82,7 +87,23 @@ export class FormioWrapper {
       this.wizard.on('change', () => {
         this._firePageChangeEvent();
       });
+      this.wizard.on('downloadPDF', () => {
+        this.wizard.data.sendEmail = false;
+        this._downloadPDF();
+      });
+      this.wizard.on('sendEmail', () => {
+        this.wizard.data.sendEmail = true;
+        this._sendEmail();
+      });
+      this.wizard.on('nextPage', ({ page }) => {
+        if (page === 3) {
+          this.wizard.data.sendEmail = true;
+          this._sendEmail({ admin: true });
+        }
+      });
     });
+    // create PDF instance
+    this.createPDFInstance();
   }
 
   /**
@@ -216,7 +237,9 @@ export class FormioWrapper {
 
     if (page === 0) {
       previousButton.displayed = false;
-      cancelButton.displayed = false;
+      if (this.buttonConfig.hideCancelOnFirst) {
+        cancelButton.displayed = false;
+      }
       if (this.buttonConfig.startOnFirst) {
         nextButton.title = 'Start';
       }
@@ -252,6 +275,18 @@ export class FormioWrapper {
   _shouldNextPageBeSkipped(page, pages) {
     if (!this.termsConfig.skipIfTermsAlreadyAccepted) return false;
     const pageTitle = pages[page + 1].component.title;
+    if (!pageTitle.toLowerCase().includes(this.termsConfig.title)) return false;
+    return this._areTermsAccepted(page, pages);
+  }
+
+  /**
+   * @param {Number} page the current page number
+   * @param {Array} pages the wizard pages
+   * @return {Boolean}
+   */
+  _shouldPreviousPageBeSkipped(page, pages) {
+    if (!this.termsConfig.skipIfTermsAlreadyAccepted) return false;
+    const pageTitle = pages[page - 1].component.title;
     if (!pageTitle.toLowerCase().includes(this.termsConfig.title)) return false;
     return this._areTermsAccepted(page, pages);
   }
@@ -340,6 +375,17 @@ export class FormioWrapper {
     if (!this.loaded) {
       this.notLoaded();
     }
+    if (
+      this._shouldPreviousPageBeSkipped(this.wizard.page, this.wizard.pages)
+    ) {
+      const proposedPage = this.wizard.page - 2;
+      const targetPage = proposedPage <= 0 ? proposedPage : this.wizard.page - 1;
+      if (this.wizard._data) {
+        this.wizard._data[this.termsConfig.dataName] = true;
+      }
+      this._goToPage(targetPage);
+      return true;
+    }
     this.wizard.prevPage();
     return true;
   }
@@ -383,5 +429,88 @@ export class FormioWrapper {
     }
     const formio = document.querySelector('#formio');
     formio.focus();
+  }
+
+  createPDFInstance() {
+    Formio.createForm(
+      document.createElement('div'),
+      'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/kyfbpdf',
+    ).then((pdfInstance) => {
+      this.pdfInstance = pdfInstance;
+    });
+  }
+
+  /**
+   * @return {Response}
+   */
+  _formSubmission() {
+    this.pdfInstance.data = this.submissionData;
+    return this.pdfInstance.submit();
+  }
+
+  /**
+   * @return {void}
+   */
+  _downloadPDF() {
+    if (this.requestedDownload) return;
+    this.requestedDownload = true;
+    // wizard event does not capture EventTarget
+    const downloadButton = document.querySelector(
+      '[name="data[downloadSummary]"',
+    );
+    downloadButton.disabled = true;
+    this._formSubmission()
+      .then(successBody => fetch(`${this.submissionEndpoint}/${successBody._id}/download`)
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res}`);
+          }
+          return res.blob();
+        })
+        .then((blob) => {
+          const newBlob = new Blob([blob], { type: 'application/pdf' });
+
+          // IE 11
+          if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(newBlob);
+            return;
+          }
+
+          // For other browsers
+          const data = window.URL.createObjectURL(newBlob);
+          const link = document.createElement('a');
+          link.href = data;
+          link.download = `Know Your Food Business summary - ${this.submissionData.topicName}.pdf`;
+          link.click();
+          setTimeout(() => {
+            // For Firefox
+            window.URL.revokeObjectURL(data);
+          }, 100);
+
+          downloadButton.disabled = false;
+          this.requestedDownload = false;
+        }))
+      .catch((error) => {
+        downloadButton.disabled = false;
+        this.requestedDownload = false;
+        return error;
+      });
+  }
+
+  _sendEmail(options = {}) {
+    if (this.requestedEmail) return;
+    const { admin = false } = options;
+    const emailButton = document.querySelector('[name="data[emailButton]"');
+    if (!admin) {
+      emailButton.disabled = true;
+      this.requestedEmail = true;
+      setTimeout(() => {
+        this.requestedEmail = false;
+        emailButton.disabled = false;
+      }, 10000);
+    } else {
+      this.wizard.data.email = this.formAdminEmail;
+    }
+    this.wizard.submit();
   }
 }

@@ -38,6 +38,7 @@ describe('Formio Wrapper Tests.', () => {
       scrollTarget: 0,
       buttonConfig: {
         startOnFirst: true,
+        hideCancelOnFirst: true,
         acceptWhenTermsFound: true,
       },
       termsConfig: {
@@ -49,6 +50,10 @@ describe('Formio Wrapper Tests.', () => {
       },
       navigationCSS: {
         baseClass: 'qg-btn btn-link',
+      },
+      submissionInfo: {
+        projectID: '5f44969319d1a97a819d80a7',
+        formID: '5f8f7e6c8095d22a27f6a03a',
       },
     };
 
@@ -204,6 +209,34 @@ describe('Formio Wrapper Tests.', () => {
     wrapper.wizard.nextPage = () => {};
     const spied = spy(wrapper, '_shouldNextPageBeSkipped');
     wrapper._goToNextPage();
+    spied.restore();
+    assert.calledOnce(spied);
+  });
+
+  it('_goToPreviousPage skips if terms are accepted', async () => {
+    wrapper.loaded = true;
+    sessionStorage.setItem(configuration.termsConfig.termsStorageName, true);
+    wrapper.wizard.page = 2;
+    wrapper.wizard.pages = [
+      {
+        component: {
+          title: 'something',
+        },
+      },
+      {
+        component: {
+          title: 'terms and conditions',
+        },
+      },
+      {
+        component: {
+          title: 'something',
+        },
+      },
+    ];
+    wrapper.wizard.prevPage = () => {};
+    const spied = spy(wrapper, '_shouldPreviousPageBeSkipped');
+    wrapper._goToPreviousPage();
     spied.restore();
     assert.calledOnce(spied);
   });
@@ -411,6 +444,34 @@ describe('Formio Wrapper Tests.', () => {
 
     sessionStorage.setItem(configuration.termsConfig.termsStorageName, false);
     response = wrapper._shouldNextPageBeSkipped(0, pages);
+    expect(response).equals(false);
+  });
+
+  it('determines if _shouldPreviousPageBeSkipped is working', async () => {
+    sessionStorage.setItem(configuration.termsConfig.termsStorageName, false);
+    wrapper.termsConfig.skipIfTermsAlreadyAccepted = false;
+    const pages = [
+      { component: { title: 'Something mundane' } },
+      { component: { title: 'terms and conditions' } },
+      { component: { title: 'Another boring title' } },
+    ];
+    let response = wrapper._shouldPreviousPageBeSkipped(0, []);
+    expect(response).equals(false);
+    wrapper.termsConfig.skipIfTermsAlreadyAccepted = true;
+    response = wrapper._shouldPreviousPageBeSkipped(2, pages);
+    expect(response).equals(false);
+
+    response = wrapper._shouldPreviousPageBeSkipped(2, pages);
+    expect(response).equals(false);
+
+    response = wrapper._shouldPreviousPageBeSkipped(1, pages);
+    expect(response).equals(false);
+    sessionStorage.setItem(configuration.termsConfig.termsStorageName, true);
+    response = wrapper._shouldPreviousPageBeSkipped(2, pages);
+    expect(response).equals(true);
+
+    sessionStorage.setItem(configuration.termsConfig.termsStorageName, false);
+    response = wrapper._shouldPreviousPageBeSkipped(1, pages);
     expect(response).equals(false);
   });
 
