@@ -452,6 +452,8 @@ export class FormioWrapper {
    * @return {void}
    */
   _downloadPDF() {
+    if (this.requestedDownload) return;
+    this.requestedDownload = true;
     // wizard event does not capture EventTarget
     const downloadButton = document.querySelector(
       '[name="data[downloadSummary]"',
@@ -486,16 +488,27 @@ export class FormioWrapper {
           }, 100);
 
           downloadButton.disabled = false;
+          this.requestedDownload = false;
         }))
       .catch((error) => {
         downloadButton.disabled = false;
+        this.requestedDownload = false;
         return error;
       });
   }
 
   _sendEmail(options = {}) {
+    if (this.requestedEmail) return;
     const { admin = false } = options;
-    if (admin) {
+    const emailButton = document.querySelector('[name="data[emailButton]"');
+    if (!admin) {
+      emailButton.disabled = true;
+      this.requestedEmail = true;
+      setTimeout(() => {
+        this.requestedEmail = false;
+        emailButton.disabled = false;
+      }, 10000);
+    } else {
       this.wizard.data.email = this.formAdminEmail;
     }
     this.wizard.submit();
