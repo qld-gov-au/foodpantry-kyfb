@@ -34,4 +34,7 @@ The following code needs to be improved, ideally sooner rather than later.
 * Configuration needs cleaning up.
 * Button group might need to be improved to handle print/pdf
 
+## Formio SWE 
+Formio currently doesn't appear to be able to import css files.
+
 

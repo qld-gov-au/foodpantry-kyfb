@@ -4,6 +4,7 @@ import { FormioWrapper } from './components/formio-wrapper';
 import { ButtonGroup } from './components/button-group';
 import { TopicsList } from './components/topics-list';
 import { ReapplySelected } from './scripts/reapply-selected';
+// import { configuration } from './config';
 
 (() => {
   const configuration = {
@@ -54,7 +55,6 @@ import { ReapplySelected } from './scripts/reapply-selected';
   };
 
   const cssReapplier = new ReapplySelected();
-
   const kyfb = new FormioWrapper(configuration);
   const bg = new ButtonGroup(document.querySelector('.button-container'));
 

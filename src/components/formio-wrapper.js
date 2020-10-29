@@ -27,7 +27,6 @@ export class FormioWrapper {
     this.formElement = {};
     this.wizard = {};
     this.loaded = false;
-
     this._addListeners(this.baseObject);
   }
 
@@ -120,11 +119,11 @@ export class FormioWrapper {
     const newEvent = new CustomEvent(event, {
       bubbles: true,
       detail: {
-        title: this.formTitle,
+        title: this.config.form.title,
         page: this.wizard && this.wizard.page ? this.wizard.page : 0,
       },
     });
-    window.dispatchEvent(newEvent);
+    this.config.baseElement.dispatchEvent(newEvent);
     return newEvent;
   }
 
@@ -136,13 +135,13 @@ export class FormioWrapper {
     const event = new CustomEvent('formiowrapperPageChange', {
       bubbles: true,
       detail: {
-        title: this.formTitle,
+        title: this.config.form.title,
         page: this.wizard && this.wizard.page ? this.wizard.page : 0,
         navigation: this.buildProgressMenuData(),
         buttons: this.buildButtonData(),
       },
     });
-    window.dispatchEvent(event);
+    this.config.baseElement.dispatchEvent(event);
   }
 
   /**
@@ -171,7 +170,7 @@ export class FormioWrapper {
         invalidPreviousStep = true;
       }
       const outputObject = {
-        cssClass: `${this.navigationCSS.baseClass} ${activeClass} ${visitedClass}`,
+        cssClass: `${this.config.navigation.baseClass} ${activeClass} ${visitedClass}`,
         detail: {
           page: offset,
         },
@@ -214,10 +213,12 @@ export class FormioWrapper {
     const { pages } = this.wizard;
     const { data } = this.wizard;
 
+    const { baseClass } = this.config.buttons.css;
+
     const previousButton = {
       title: 'Back',
       event: 'formiowrapperGoToPrevious',
-      cssClass: `${this.buttonCSS.baseClass} ${this.buttonCSS.previous}`,
+      cssClass: `${baseClass} ${this.config.buttons.css.previous}`,
       disabled: false,
       displayed: true,
       visited: false,
@@ -226,7 +227,7 @@ export class FormioWrapper {
     const nextButton = {
       title: 'Next',
       event: 'formiowrapperGoToNext',
-      cssClass: `${this.buttonCSS.baseClass} ${this.buttonCSS.next}`,
+      cssClass: `${baseClass} ${this.config.buttons.css.next}`,
       disabled: !this._checkPageValidity(page, pages, data),
       displayed: true,
       visited: false,
@@ -235,7 +236,7 @@ export class FormioWrapper {
     const cancelButton = {
       title: 'Cancel',
       event: 'formiowrapperCancel',
-      cssClass: `${this.buttonCSS.baseClass} ${this.buttonCSS.cancel}`,
+      cssClass: `${baseClass} ${this.config.buttons.css.cancel}`,
       disabled: false,
       displayed: true,
       visited: false,
@@ -253,6 +254,10 @@ export class FormioWrapper {
 
     if (page === this.wizard.pages.length - 1) {
       nextButton.displayed = false;
+      if (!this.config.buttons.showButtonsOnLast) {
+        previousButton.displayed = false;
+        cancelButton.displayed = false;
+      }
     }
 
     const currentPageTitle = this.wizard.pages[page].component.title;
@@ -270,7 +275,7 @@ export class FormioWrapper {
    */
   _determineTitleChange(currentPageTitle) {
     if (!this.buttonConfig.acceptWhenTermsFound) return false;
-    return currentPageTitle.toLowerCase().includes(this.termsConfig.title);
+    return currentPageTitle.toLowerCase().includes(this.config.terms.title);
   }
 
   /**
@@ -279,9 +284,9 @@ export class FormioWrapper {
    * @return {Boolean}
    */
   _shouldNextPageBeSkipped(page, pages) {
-    if (!this.termsConfig.skipIfTermsAlreadyAccepted) return false;
+    if (!this.config.terms.skipIfTermsAlreadyAccepted) return false;
     const pageTitle = pages[page + 1].component.title;
-    if (!pageTitle.toLowerCase().includes(this.termsConfig.title)) return false;
+    if (!pageTitle.toLowerCase().includes(this.config.terms.title)) return false;
     return this._areTermsAccepted(page, pages);
   }
 
@@ -303,16 +308,18 @@ export class FormioWrapper {
    * @return {Boolean}
    */
   _areTermsAccepted(page, pages) {
-    const termsStorage = this.termsConfig.termsStorageType;
-    const storedValue = termsStorage.getItem(this.termsConfig.termsStorageName);
+    const termsStorage = this.config.terms.termsStorageType;
+    const storedValue = termsStorage.getItem(
+      this.config.terms.termsStorageName,
+    );
     const storageValue = JSON.parse(storedValue);
     if (storageValue === false) return false;
     if (storageValue === true) return true;
 
     const previousPageNumber = page;
     const previousPageTitle = pages[previousPageNumber].component.title;
-    if (previousPageTitle.toLowerCase().includes(this.termsConfig.title)) {
-      termsStorage.setItem(this.termsConfig.termsStorageName, true);
+    if (previousPageTitle.toLowerCase().includes(this.config.terms.title)) {
+      termsStorage.setItem(this.config.terms.termsStorageName, true);
       return true;
     }
     return false;
@@ -343,7 +350,7 @@ export class FormioWrapper {
         ? proposedPage
         : this.wizard.page + 1;
       if (this.wizard._data) {
-        this.wizard._data[this.termsConfig.dataName] = true;
+        this.wizard._data[this.config.terms.dataName] = true;
       }
       this._goToPage(targetPage);
       return true;
@@ -363,12 +370,17 @@ export class FormioWrapper {
     if (!page) return false;
     if (!pages || !pages.length) return false;
     if (page === pages.length - 1) {
-      let completed = JSON.parse(this.storage.getItem(this.storageName));
+      let completed = JSON.parse(
+        this.config.storage.type.getItem(this.config.storage.name),
+      );
       if (!completed || !completed.length) {
         completed = [];
       }
-      completed.push(this.formTitle);
-      this.storage.setItem(this.storageName, JSON.stringify(completed));
+      completed.push(this.form.title);
+      this.config.storage.type.setItem(
+        this.config.storage.name,
+        JSON.stringify(completed),
+      );
       return completed;
     }
     return false;
@@ -427,13 +439,13 @@ export class FormioWrapper {
   /**
    */
   scrollToTop() {
-    if (this.scrollTarget !== -1) {
-      window.scroll({
-        top: this.scrollTarget,
-        behavior: this.scrollType,
+    if (this.config.scroll.target !== -1) {
+      this.config.baseElement.scroll({
+        top: this.config.scroll.target,
+        behavior: this.config.scroll.type,
       });
     }
-    const formio = document.querySelector('#formio');
+    const formio = document.querySelector(this.form.selector);
     formio.focus();
   }
 
