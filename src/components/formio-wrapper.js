@@ -480,7 +480,7 @@ export class FormioWrapper {
           const data = window.URL.createObjectURL(newBlob);
           const link = document.createElement('a');
           link.href = data;
-          link.download = 'know-your-food-business_summary.pdf';
+          link.download = `Know Your Food Business summary - ${this.submissionData.topicName}.pdf`;
           link.click();
           setTimeout(() => {
             // For Firefox
