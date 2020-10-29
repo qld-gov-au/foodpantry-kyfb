@@ -11,6 +11,7 @@ import { ReapplySelected } from './scripts/reapply-selected';
     storage: localStorage,
     storageName: 'completedTopics',
     formLocation: '',
+    baseObject: window,
     formSettings: {
       buttonSettings: {
         showCancel: false,

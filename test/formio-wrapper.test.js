@@ -48,6 +48,7 @@ describe('Formio Wrapper Tests.', () => {
         dataName: 'termsAndConditions',
         skipIfTermsAlreadyAccepted: false,
       },
+      extraTriggersOnActions: {},
       navigationCSS: {
         baseClass: 'qg-btn btn-link',
       },

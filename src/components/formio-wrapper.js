@@ -23,43 +23,12 @@ export class FormioWrapper {
     this.submissionInfo = configuration.submissionInfo;
     this.submissionEndpoint = `https://api.forms.platforms.qld.gov.au/project/${this.submissionInfo.projectID}/form/${this.submissionInfo.formID}/submission`;
     this.formAdminEmail = configuration.formAdminEmail;
-
+    this.baseObject = configuration.baseObject;
     this.formElement = {};
-
     this.wizard = {};
     this.loaded = false;
 
-    window.addEventListener('DOMContentLoaded', () => {
-      this.initialise();
-    });
-
-    window.addEventListener('formiowrapperGoToNext', () => {
-      this._goToNextPage();
-      if (this.extraTriggers.next) {
-        this._fireExtraEvent(this.extraTriggers.next);
-      }
-    });
-
-    window.addEventListener('formiowrapperGoToPrevious', () => {
-      this._goToPreviousPage();
-      if (this.extraTriggers.previous) {
-        this._fireExtraEvent(this.extraTriggers.previous);
-      }
-    });
-
-    window.addEventListener('formiowrapperCancel', () => {
-      this._goToPage(0);
-      if (this.extraTriggers.cancel) {
-        this._fireExtraEvent(this.extraTriggers.cancel);
-      }
-    });
-
-    window.addEventListener('goToPage', (event) => {
-      this._goToPage(Number(event.detail.page));
-      if (this.extraTriggers.goto) {
-        this._fireExtraEvent(this.extraTriggers.goto);
-      }
-    });
+    this._addListeners(this.baseObject);
   }
 
   /**
@@ -104,6 +73,43 @@ export class FormioWrapper {
     });
     // create PDF instance
     this.createPDFInstance();
+  }
+
+  /**
+   * @param {Object} baseObject object to trigger listeners and events on
+   */
+  _addListeners(baseObject = window) {
+    baseObject.addEventListener('DOMContentLoaded', () => {
+      this.initialise();
+    });
+
+    baseObject.addEventListener('formiowrapperGoToNext', () => {
+      this._goToNextPage();
+      if (this.extraTriggers.next) {
+        this._fireExtraEvent(this.extraTriggers.next);
+      }
+    });
+
+    baseObject.addEventListener('formiowrapperGoToPrevious', () => {
+      this._goToPreviousPage();
+      if (this.extraTriggers.previous) {
+        this._fireExtraEvent(this.extraTriggers.previous);
+      }
+    });
+
+    baseObject.addEventListener('formiowrapperCancel', () => {
+      this._goToPage(0);
+      if (this.extraTriggers.cancel) {
+        this._fireExtraEvent(this.extraTriggers.cancel);
+      }
+    });
+
+    baseObject.addEventListener('goToPage', (event) => {
+      this._goToPage(Number(event.detail.page));
+      if (this.extraTriggers.goto) {
+        this._fireExtraEvent(this.extraTriggers.goto);
+      }
+    });
   }
 
   /**
