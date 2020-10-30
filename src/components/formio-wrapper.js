@@ -64,10 +64,6 @@ export class FormioWrapper {
   initialise() {
     if (!this.formLocation) return;
     this.formElement = document.querySelector('#formio');
-    // responds to form changing events
-    this.formElement.addEventListener('click', () => {
-      this._firePageChangeEvent();
-    });
     Formio.createForm(
       this.formElement,
       this.formLocation,
@@ -80,7 +76,10 @@ export class FormioWrapper {
         this._firePageChangeEvent();
       });
       this.wizard.on('render', () => {
+        this._firePageChangeEvent();
         this.scrollToTop();
+      });
+      this.wizard.on('change', () => {
         this._firePageChangeEvent();
       });
     });
@@ -376,10 +375,13 @@ export class FormioWrapper {
   /**
    */
   scrollToTop() {
-    if (this.scrollTarget === -1) return;
-    window.scroll({
-      top: this.scrollTarget,
-      behavior: this.scrollType,
-    });
+    if (this.scrollTarget !== -1) {
+      window.scroll({
+        top: this.scrollTarget,
+        behavior: this.scrollType,
+      });
+    }
+    const formio = document.querySelector('#formio');
+    formio.focus();
   }
 }
