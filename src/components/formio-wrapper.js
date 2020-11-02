@@ -427,7 +427,7 @@ export class FormioWrapper {
         behavior: this.scrollType,
       });
     }
-    const formio = document.querySelector('#formio');
+    const formio = document.querySelector('#focusTarget');
     formio.focus();
   }
 
