@@ -57,7 +57,7 @@
     {
       "label": "HTML",
       "attrs": [{ "attr": "", "value": "" }],
-      "content": "<style>\n\n@media print {\n  .builder-component .well {\n    background-color: #fff;\n  }\n\n  .formio-component-radio label {\n    display: none;\n  }\n\n  .formio-component-radio .form-radio {\n    display: flex;\n    flex-direction: row;\n  }\n  .formio-component-radio .form-radio .form-check {\n    flex-grow: 2;\n    padding: 20px 10px;\n    margin: 5px;\n    border-radius: 5px;\n    border: 1px solid #979797;\n    background-color: #fff;\n  }\n  .formio-component-radio .form-radio .form-check .form-check-label {\n    display: flex;\n    align-items: center;\n  }\n  .formio-component-radio\n    .form-radio\n    .form-check\n    .form-check-label\n    .form-check-input {\n    position: relative;\n    margin: 0;\n  }\n  .formio-component-radio\n    .form-radio\n    .form-check\n    .form-check-label\n    input[type='radio']:after {\n    width: 24px;\n    height: 24px;\n    border-radius: 24px;\n    top: -3px;\n    position: relative;\n    background-color: #fff;\n    content: '';\n    display: inline-block;\n    visibility: visible;\n    border: 1px solid #979797;\n  }\n  .formio-component-radio\n    .form-radio\n    .form-check\n    .form-check-label\n    input[type='radio']:checked:after {\n    width: 21px;\n    height: 21px;\n    background-color: #4a4a4a;\n    border: 4px solid #fff;\n  }\n  .formio-component-radio .form-radio .form-check .form-check-label span {\n    margin: 0 20px;\n  }\n\n  .formio-component-radio\n    .form-radio\n    .form-check\n    .radio\n    input[type='radio']:after {\n    background-color: #007eb1;\n    color: #fff;\n  }\n\n  .radio input[type='radio']:after {\n    background-color: #007eb1;\n    color: #fff;\n  }\n\n  .alert.alert-info {\n    border: none;\n    border-left: 5px solid #005e85;\n    background-color: #eef3f6;\n  }\n  .qg-card {\n    flex-direction: column;\n  }\n  [hidden] {\n    display: none !important;\n  }\n  hr.notes {\n    padding-top: 20px;\n  }\n  .alert.alert-danger,\n  .alert.alert-info,\n  .alert.alert-success,\n  .alert.alert-tip,\n  .alert.alert-warning {\n    font-weight: 400;\n    color: #000;\n    margin: 0;\n    border-radius: 0;\n  }\n  .alert.alert-danger h2 i,\n  .alert.alert-info h2 i,\n  .alert.alert-success h2 i,\n  .alert.alert-tip h2 i,\n  .alert.alert-warning h2 i {\n    margin-right: 10px;\n  }\n  .builder-component .well {\n    background-color: #fff;\n  }\n\n  .qg-card {\n    margin-bottom: 2rem;\n    display: flex;\n  }\n  .qg-card.card__full-width {\n    padding: 0 !important;\n  }\n\n  .qg-card .content .details {\n    padding: 1em;\n  }\n  .qg-card.card__light-theme .content .details {\n    color: #000;\n  }\n  .qg-card.card__light-theme .content {\n    background: none;\n  }\n  .qg-card .content {\n    width: 100%;\n    border: 1px solid #d3d3d3;\n    position: relative;\n    overflow: hidden;\n    border-radius: 4px;\n  }\n\n  h3 {\n    margin-bottom: 12px;\n  }\n  h3 {\n    font-size: 1.125rem;\n  }\n  p {\n    margin-bottom: 0.75rem;\n  }\n  .qg-card.card__light-theme .content .qg-card__footer {\n    border-top: 1px solid #d3d3d3;\n  }\n  .qg-card .qg-card__footer {\n    padding: 1em;\n  }\n  .formio-component-radio .form-radio .form-check.radio-selected {\n    background-color: #007eb1;\n    color: #fff;\n  }\n  .kyfb-header {\n  display: flex;\n}\n\n.kyfb-header > .kyfb-heading {\n  flex-grow: 2;\n  text-align: center;\n}\n\n.kyfb-email{\n  color: #005e85\n}\n\n}\n\n\n</style>",
+      "content": "<style>\n\n@media print {\n  .builder-component .well {\n    background-color: #fff;\n  }\n\n  .formio-component-radio label {\n    display: none;\n  }\n\n  .formio-component-radio .form-radio {\n    display: flex;\n    flex-direction: row;\n  }\n  .formio-component-radio .form-radio .form-check {\n    flex-grow: 2;\n    padding: 20px 10px;\n    margin: 5px;\n    border-radius: 5px;\n    border: 1px solid #979797;\n    background-color: #fff;\n  }\n  .formio-component-radio .form-radio .form-check .form-check-label {\n    display: flex;\n    align-items: center;\n  }\n  .formio-component-radio\n    .form-radio\n    .form-check\n    .form-check-label\n    .form-check-input {\n    position: relative;\n    margin: 0;\n  }\n  .formio-component-radio\n    .form-radio\n    .form-check\n    .form-check-label\n    input[type='radio']:after {\n    width: 24px;\n    height: 24px;\n    border-radius: 24px;\n    top: -3px;\n    position: relative;\n    background-color: #fff;\n    content: '';\n    display: inline-block;\n    visibility: visible;\n    border: 1px solid #979797;\n  }\n  .formio-component-radio\n    .form-radio\n    .form-check\n    .form-check-label\n    input[type='radio']:checked:after {\n    width: 21px;\n    height: 21px;\n    background-color: #4a4a4a;\n    border: 4px solid #fff;\n  }\n  .formio-component-radio .form-radio .form-check .form-check-label span {\n    margin: 0 20px;\n  }\n\n  .formio-component-radio\n    .form-radio\n    .form-check\n    .radio\n    input[type='radio']:after {\n    background-color: #007eb1;\n    color: #fff;\n  }\n\n  .radio input[type='radio']:after {\n    background-color: #007eb1;\n    color: #fff;\n  }\n\n  .alert.alert-info {\n    border: none;\n    border-left: 5px solid #005e85;\n    background-color: #eef3f6;\n  }\n  .qg-card {\n    flex-direction: column;\n  }\n  [hidden] {\n    display: none !important;\n  }\n  hr.notes {\n    padding-top: 20px;\n  }\n  .alert.alert-danger,\n  .alert.alert-info,\n  .alert.alert-success,\n  .alert.alert-tip,\n  .alert.alert-warning {\n    font-weight: 400;\n    color: #000;\n    margin: 0;\n    border-radius: 0;\n  }\n  .alert.alert-danger h2 i,\n  .alert.alert-info h2 i,\n  .alert.alert-success h2 i,\n  .alert.alert-tip h2 i,\n  .alert.alert-warning h2 i {\n    margin-right: 10px;\n  }\n  .builder-component .well {\n    background-color: #fff;\n  }\n\n  .qg-card {\n    margin-bottom: 2rem;\n    display: flex;\n  }\n  .qg-card.card__full-width {\n    padding: 0 !important;\n  }\n\n  .qg-card .content .details {\n    padding: 1em;\n  }\n  .qg-card.card__light-theme .content .details {\n    color: #000;\n  }\n  .qg-card.card__light-theme .content {\n    background: none;\n  }\n  .qg-card .content {\n    width: 100%;\n    border: 1px solid #d3d3d3;\n    position: relative;\n    overflow: hidden;\n    border-radius: 4px;\n  }\n\n  h3 {\n    margin-bottom: 12px;\n  }\n  h3 {\n    font-size: 1.125rem;\n  }\n  p {\n    margin-bottom: 0.75rem;\n  }\n  .qg-card.card__light-theme .content .qg-card__footer {\n    border-top: 1px solid #d3d3d3;\n  }\n  .qg-card .qg-card__footer {\n    padding: 1em;\n  }\n  .formio-component-radio .form-radio .form-check.radio-selected {\n    background-color: #007eb1;\n    color: #fff;\n  }\n  .kyfb-header {\n  display: flex;\n}\n\n.kyfb-header > .kyfb-heading {\n  flex-grow: 2;\n  text-align: center;\n}\n\n  .kyfb-email,\n  .qg-card__footer a,\n  .resource-url {\n    color: #005e85;\n  }\n\n  .question-margin {\n    margin-top: 40px;\n    margin-bottom: 0px;\n  }\n\n  .required-element:after {\n    content: '*';\n    color: #f85c50;\n  }\n\n}\n\n\n</style>",
       "refreshOnChange": false,
       "tableView": false,
       "key": "html2",
@@ -83,14 +83,14 @@
           "input": false
         },
         {
-          "input": false,
-          "key": "html17",
-          "tableView": false,
           "label": "HTML",
-          "type": "htmlelement",
           "attrs": [{ "attr": "", "value": "" }],
-          "content": "<b>Do you stop pests from entering your food business?</b>\n<p>Ways to stop pests may include:</p>\n\n<ul>\n  <li>flyscreens on windows and doors</li>\n  <li>\n    seal any holes, cracks or gaps in ceilings, walls, floors or around pipes\n    etc.\n  </li>\n  <li>remove waste regularly</li>\n  <li>keep your food business clean, inside and outside.</li>\n</ul>",
-          "refreshOnChange": false
+          "content": "<p class=\"question-margin\">\n  <b class=\"required-element\">\n    Do you stop pests from entering your food business?\n  </b>\n  <br />\n  <small class=\"hint\">\n    Ways to stop pests may include:\n    <ul>\n      <li>flyscreens on windows and doors</li>\n      <li>\n        seal any holes, cracks or gaps in ceilings, walls, floors or around\n        pipes etc.\n      </li>\n      <li>remove waste regularly</li>\n      <li>keep your food business clean, inside and outside.</li>\n    </ul>\n  </small>\n</p>",
+          "refreshOnChange": false,
+          "tableView": false,
+          "key": "html17",
+          "type": "htmlelement",
+          "input": false
         },
         {
           "label": "<b>Do you stop pests from entering your food business?</b>",
@@ -129,14 +129,14 @@
           "input": false
         },
         {
-          "input": false,
-          "key": "html19",
-          "tableView": false,
           "label": "HTML",
-          "type": "htmlelement",
           "attrs": [{ "attr": "", "value": "" }],
-          "content": "<b>Do you have regular pest control done to remove pests?</b>",
-          "refreshOnChange": false
+          "content": "<p class=\"question-margin\">\n   <b class=\"required-element\">\n    Do you have regular pest control done to remove\n    pests?\n  </b>\n</p>",
+          "refreshOnChange": false,
+          "tableView": false,
+          "key": "html19",
+          "type": "htmlelement",
+          "input": false
         },
         {
           "label": "<b>Do you have regular pest control done to remove pests?</b>",
@@ -179,14 +179,14 @@
           "input": false
         },
         {
-          "input": false,
-          "key": "html22",
-          "tableView": false,
           "label": "HTML",
-          "type": "htmlelement",
           "attrs": [{ "attr": "", "value": "" }],
-          "content": "<b>Do animals enter food handling areas?</b>\n        <p>\n            For example, dogs, birds or other animals in the kitchen, \n            storerooms and the loading dock.\n        </p>",
-          "refreshOnChange": false
+          "content": "<p class=\"question-margin\">\n  <b class=\"required-element\"> Do animals enter food handling areas? </b>\n  <br />\n  <small class=\"hint\">\n    <span>\n      For example, dogs, birds or other animals in the kitchen, storerooms and\n      the loading dock.\n    </span>\n  </small>\n</p>",
+          "refreshOnChange": false,
+          "tableView": false,
+          "key": "html22",
+          "type": "htmlelement",
+          "input": false
         },
         {
           "label": "<b>Do animals enter food handling areas?</b>",
@@ -232,14 +232,14 @@
           "input": false
         },
         {
-          "input": false,
-          "key": "html25",
-          "tableView": false,
           "label": "HTML",
-          "type": "htmlelement",
           "attrs": [{ "attr": "", "value": "" }],
-          "content": "<b>Do you allow animals in outdoor dining areas?</b>\n        <p>\n            Select no if you do not have an outdoor dining area.\n        </p>",
-          "refreshOnChange": false
+          "content": "<p class=\"question-margin\">\n  <b class=\"required-element\">\n    Do you allow animals in outdoor dining areas?\n  </b>\n  <br />\n  <small class=\"hint\">\n    <span> Select no if you do not have an outdoor dining area. </span>\n  </small>\n</p>",
+          "refreshOnChange": false,
+          "tableView": false,
+          "key": "html25",
+          "type": "htmlelement",
+          "input": false
         },
         {
           "label": "<b>Do you allow animals in outdoor dining areas?</b>",
@@ -286,7 +286,7 @@
         {
           "label": "HTML",
           "attrs": [{ "attr": "", "value": "" }],
-          "content": "<h2 id=\"resources-info\">\n    Resources\n</h2>\n\n<p>\n    Below is a list of resources that you can view for more information about\n    this topic.\n</p>\n\n<article class=\"qg-card card__full-width card__light-theme\">\n    <div class=\"content\">\n        <div class=\"details\">\n            <h3>Controlling pests</h3>\n            <p class=\"desc-margin\">\n                Key information on controlling pests in a food business and\n                practical tips to reduce food safety risks.\n            </p>\n        </div>\n        <div class=\"qg-card__footer\">\n            <a\n                class=\"anchor-margin\"\n                href=\"https://www.foodstandards.gov.au/foodsafety/standards/Documents/Pests_Final.pdf\" \n                target=\"_blank\"\n                rel=\"noopener\"\n                aria-label=\"Download the controlling pests factsheet PDF 121 KB\">\n                Download factsheet (PDF, 121 KB)\n            </a>\n        </div>\n    </div>\n</article>\n\n<article class=\"qg-card card__full-width card__light-theme\">\n    <div class=\"content\">\n        <div class=\"details\">\n            <h3>Pest management</h3>\n            <p>\n                Appendix 7 from Safe Food Australia with additional information\n                referred to in the Controlling Pests factsheet.\n            </p>\n        </div>\n        <div class=\"qg-card__footer\">\n            <a\n                href=\"https://www.foodstandards.gov.au/publications/Documents/Safe%20Food%20Australia/Appendix%207%20-%20Pest%20management.pdf\"\n                target=\"_blank\"\n                rel=\"noopener\"\n                aria-label=\"Download the pest management guideline PDF 40 KB\">\n                Download guideline (PDF, 40 KB)\n            </a>\n        </div>\n    </div>\n</article>\n<article class=\"qg-card card__full-width card__light-theme\">\n    <div class=\"content\">\n        <div class=\"details\">\n            <h3>Animals in food premises</h3>\n            <p>\n                Information about the legislative requirements for animals in\n                food business including definitions, tips for maintaining food\n                safety standards and customer responsibilities.\n            </p>\n        </div>\n        <div class=\"qg-card__footer\">\n            <a\n                href=\"https://www.health.qld.gov.au/public-health/industry-environment/food-safety/requirements/animals\"\n                target=\"_blank\"\n                rel=\"noopener\"\n                aria-label=\"Go to the animals in food premise website\">\n                Go to website\n            </a>\n        </div>\n    </div>\n</article>",
+          "content": "<h2 id=\"resources-info\">Resources</h2>\n\n<p>\n  Below is a list of resources that you can view for more information about this\n  topic.\n</p>\n\n<article class=\"qg-card card__full-width card__light-theme\">\n  <div class=\"content\">\n    <div class=\"details\">\n      <h3>Controlling pests</h3>\n      <p class=\"desc-margin\">\n        Key information on controlling pests in a food business and practical\n        tips to reduce food safety risks.\n      </p>\n    </div>\n    <div class=\"qg-card__footer\">\n      <a\n        class=\"anchor-margin\"\n        href=\"https://www.foodstandards.gov.au/foodsafety/standards/Documents/Pests_Final.pdf\"\n        target=\"_blank\"\n        rel=\"noopener\"\n        aria-label=\"Download the controlling pests factsheet PDF 121 KB\"\n      >\n        Download factsheet (PDF, 121 KB)\n      </a>\n      <span class=\"resource-url\">\n        (https://www.foodstandards.gov.au/foodsafety/standards/Documents/Pests_Final.pdf)\n      </span>\n    </div>\n  </div>\n</article>\n\n<article class=\"qg-card card__full-width card__light-theme\">\n  <div class=\"content\">\n    <div class=\"details\">\n      <h3>Pest management</h3>\n      <p>\n        Appendix 7 from Safe Food Australia with additional information referred\n        to in the Controlling Pests factsheet.\n      </p>\n    </div>\n    <div class=\"qg-card__footer\">\n      <a\n        href=\"https://www.foodstandards.gov.au/publications/Documents/Safe%20Food%20Australia/Appendix%207%20-%20Pest%20management.pdf\"\n        target=\"_blank\"\n        rel=\"noopener\"\n        aria-label=\"Download the pest management guideline PDF 40 KB\"\n      >\n        Download guideline (PDF, 40 KB)\n      </a>\n      <span class=\"resource-url\">\n        (https://www.foodstandards.gov.au/publications/Documents/Safe%20Food%20Australia/Appendix%207%20-%20Pest%20management.pdf)\n      </span>\n    </div>\n  </div>\n</article>\n<article class=\"qg-card card__full-width card__light-theme\">\n  <div class=\"content\">\n    <div class=\"details\">\n      <h3>Animals in food premises</h3>\n      <p>\n        Information about the legislative requirements for animals in food\n        business including definitions, tips for maintaining food safety\n        standards and customer responsibilities.\n      </p>\n    </div>\n    <div class=\"qg-card__footer\">\n      <a\n        href=\"https://www.health.qld.gov.au/public-health/industry-environment/food-safety/requirements/animals\"\n        target=\"_blank\"\n        rel=\"noopener\"\n        aria-label=\"Go to the animals in food premise website\"\n      >\n        Go to website\n      </a>\n      <span class=\"resource-url\">\n        (https://www.health.qld.gov.au/public-health/industry-environment/food-safety/requirements/animals)\n      </span>\n    </div>\n  </div>\n</article>",
           "refreshOnChange": false,
           "tableView": false,
           "key": "html42",
@@ -316,7 +316,7 @@
         {
           "label": "HTML",
           "attrs": [{ "attr": "", "value": "" }],
-          "content": "<p class=\"question-margin\">\n  <b class=\"required-element\">\n      Does each hand wash basin have: \n  </b>\n</p>\n\n<ul>\n  <li>warm running water</li>\n  <li>soap</li>\n  <li>single use towel or other method to dry hands</li>\n  <li>bin for used towels</li>\n</ul>",
+          "content": "<p class=\"question-margin\">\n  <b>\n    Does each hand wash basin have:\n    <ul>\n      <li>warm running water</li>\n      <li>soap</li>\n      <li>single use towel or other method to dry hands</li>\n      <li class=\"required-element\">bin for used towels</li>\n    </ul>\n  </b>\n</p>",
           "refreshOnChange": false,
           "tableView": false,
           "key": "html",
@@ -361,7 +361,7 @@
         {
           "label": "HTML",
           "attrs": [{ "attr": "", "value": "" }],
-          "content": "<p class=\"question-margin\">\n  <b class=\"required-element\">\n    Do staff use the hand wash basins for other kitchen tasks? \n  </b>\n</p>\n\n<small class=\"hint\">\n  <p>For example, to:</p>\n  <ul>\n    <li>rinse dishes</li>\n    <li>rinse fruit and vegetables</li>\n    <li>fill up a mop bucket</li>\n  </ul>\n</small>",
+          "content": "<p class=\"question-margin\">\n  <b class=\"required-element\">\n    Do staff use the hand wash basins for other kitchen tasks?\n  </b>\n  <br />\n  <small class=\"hint\">\n    For example, to:\n    <ul>\n      <li>rinse dishes</li>\n      <li>rinse fruit and vegetables</li>\n      <li>fill up a mop bucket</li>\n    </ul>\n  </small>\n</p>",
           "refreshOnChange": false,
           "tableView": false,
           "key": "html12",
@@ -408,7 +408,7 @@
         {
           "label": "HTML",
           "attrs": [{ "attr": "", "value": "" }],
-          "content": "<p class=\"question-margin\">\n    <b class=\"required-element\">\n        Do staff know how and when to:\n    </b>\n</p>\n\n<ul>\n    <li>wash hands</li>\n    <li>change gloves</li>\n</ul>",
+          "content": "<p class=\"question-margin\">\n  <b>\n    Do staff know how and when to:\n    <ul>\n      <li>wash hands</li>\n      <li class=\"required-element\">change gloves</li>\n    </ul>\n  </b>\n</p>",
           "refreshOnChange": false,
           "tableView": false,
           "key": "html3",
@@ -502,7 +502,7 @@
         {
           "label": "HTML",
           "attrs": [{ "attr": "", "value": "" }],
-          "content": "<b>Do staff ensure that nothing from their body or clothing contaminates food?</b>",
+          "content": "<p class=\"question-margin\">\n  <b class=\"required-element\">\n    Do staff ensure that nothing from their body or clothing contaminates food?\n  </b>\n  <br />\n  <small class=\"hint\">\n    <span>\n      For example, nails, jewellery, clothing, hair, bandages, saliva, mucus or\n      blood.\n    </span>\n  </small>\n</p>",
           "refreshOnChange": false,
           "tableView": false,
           "key": "html34",
@@ -712,7 +712,7 @@
         {
           "label": "HTML",
           "attrs": [{ "attr": "", "value": "" }],
-          "content": "<p class=\"question-margin\">\n  <b class=\"required-element\">\n    Do you have a staff illness procedure or policy? \n  </b>\n</p>\n<small class=\"hint\">\n<p>For example: A procedure or policy that has rules such as:</p>\n<ul>\n  <li>when staff should not work</li>\n  <li>when they can start work again</li>\n  <li>how long should they stay away</li>\n</ul>\n</small>",
+          "content": "<p class=\"question-margin\">\n  <b class=\"required-element\">\n    Do you have a staff illness procedure or policy?\n  </b>\n  <br />\n  <small class=\"hint\">\n    For example: A procedure or policy that has rules such as:\n    <ul>\n      <li>when staff should not work</li>\n      <li>when they can start work again</li>\n      <li>how long should they stay away</li>\n    </ul>\n  </small>\n</p>",
           "refreshOnChange": false,
           "tableView": false,
           "key": "html28",
@@ -768,7 +768,7 @@
         {
           "label": "HTML",
           "attrs": [{ "attr": "", "value": "" }],
-          "content": "<b>Do you keep a confidential log when staff are sick?</b>",
+          "content": "<p class=\"question-margin\">\n  <b class=\"required-element\">\n    Do you keep a confidential log when staff are sick?\n  </b>\n  <br />\n  <small class=\"hint\">\n    <span> For example: personal diary entry </span>\n  </small>\n</p>",
           "refreshOnChange": false,
           "tableView": false,
           "key": "html40",
@@ -816,7 +816,7 @@
         {
           "label": "HTML",
           "attrs": [{ "attr": "", "value": "" }],
-          "content": "<b>Do you ensure any personal or medical information provided  by a food handler is kept confidential?</b>",
+          "content": "<p class=\"question-margin\">\n  <b class=\"required-element\">\n    Do you ensure any personal or medical information provided by a food handler\n    is kept confidential?\n  </b>\n  <br />\n  <small class=\"hint\">\n    <span>\n      For example: not tell anyone (such as other staff or customers) except\n      those allowed by legislation.\n    </span>\n  </small>\n</p>",
           "refreshOnChange": false,
           "tableView": false,
           "key": "html41",
@@ -872,7 +872,7 @@
         {
           "label": "HTML",
           "attrs": [{ "attr": "", "value": "" }],
-          "content": "<h2 id=\"resources-info\">\n    Resources\n</h2>\n\n<p>\n    Below is a list of resources that you can view for more information about\n    this topic.\n</p>\n\n<article class=\"qg-card card__full-width card__light-theme\">\n    <div class=\"content\">\n        <div class=\"details\">\n            <h3>Do Food Safely</h3>\n            <p class=\"desc-margin\">Free online food safety training</p>\n        </div>\n        <div class=\"qg-card__footer\">\n            <a\n                class=\"anchor-margin\"\n                href=\"https://dofoodsafely.health.vic.gov.au/index.php/en/\"\n                target=\"_blank\"\n                rel=\"noopener\"\n                aria-label=\"Go to the Do Food Safely website\">\n                Go to website\n            </a>\n        </div>\n    </div>\n</article>\n\n<article class=\"qg-card card__full-width card__light-theme\">\n    <div class=\"content\">\n        <div class=\"details\">\n            <h3>Food handler exclusion guidelines </h3>\n            <p>\n                A guide for determining suitable exclusion periods for ill food\n                handlers.\n            </p>\n        </div>\n        <div class=\"qg-card__footer\">\n            <a\n                href=\"https://www.health.qld.gov.au/__data/assets/pdf_file/0036/684495/food-handler-exclusion-guide.pdf\"\n                target=\"_blank\"\n                rel=\"noopener\"\n                aria-label=\"Download the food handler exclusion guidelines factsheet PDF 156 KB\">\n                Download factsheet (PDF, 156 KB)\n            </a>\n        </div>\n    </div>\n</article>\n<article class=\"qg-card card__full-width card__light-theme\">\n    <div class=\"content\">\n        <div class=\"details\">\n            <h3>Food handler health and hygiene </h3>\n            <p>\n                Key information on the health and hygiene responsibilities of\n                both food handlers and food businesses.\n            </p>\n        </div>\n        <div class=\"qg-card__footer\">\n            <a\n                href=\"https://www.health.qld.gov.au/__data/assets/word_doc/0035/442988/food-handler-health-hygiene.doc\"\n                target=\"_blank\"\n                rel=\"noopener\"\n                aria-label=\"Download the food handler health and hygiene factsheet DOC 999 KB\">\n                Download factsheet (DOC, 999 KB)\n            </a>\n        </div>\n    </div>\n</article>\n<article class=\"qg-card card__full-width card__light-theme\">\n    <div class=\"content\">\n        <div class=\"details\">\n            <h3>Feeling sick poster </h3>\n            <p>A sign that can be printed and displayed as a reminder.</p>\n        </div>\n        <div class=\"qg-card__footer\">\n            <a\n                href=\"https://www.health.qld.gov.au/__data/assets/pdf_file/0020/560702/poster-feeling-sick.pdf\"\n                target=\"_blank\"\n                rel=\"noopener\"\n                aria-label=\"Download the feeling sick poster PDF 73 KB\">\n                Download poster (PDF, 73 KB)\n            </a>\n        </div>\n    </div>\n</article>\n<article class=\"qg-card card__full-width card__light-theme\">\n    <div class=\"content\">\n        <div class=\"details\">\n            <h3>Hand Hygiene </h3>\n            <p>\n                A video to demonstrate the proper hand washing technique.\n            </p>\n        </div>\n        <div class=\"qg-card__footer\">\n            <a\n                href=\"https://www.healthier.qld.gov.au/guide/hand-washing-its-the-easiest-thing-you-can-do/\"\n                target=\"_blank\"\n                rel=\"noopener\">\n                Watch Video\n            </a>\n        </div>\n    </div>\n</article>\n<article class=\"qg-card card__full-width card__light-theme\">\n    <div class=\"content\">\n        <div class=\"details\">\n            <h3>Food handler</h3>\n            <p>A sign that can be printed and displayed as a reminder.</p>\n        </div>\n        <div class=\"qg-card__footer\">\n            <a\n                href=\"https://www.health.qld.gov.au/__data/assets/pdf_file/0028/560719/poster-are-you-a-food-handler.pdf\"\n                target=\"_blank\"\n                rel=\"noopener\"\n                aria-label=\"Download the food handler poster PDF\n                82 KB\">\n                Download poster (PDF, 82 KB)\n            </a>\n        </div>\n    </div>\n</article>\n<article class=\"qg-card card__full-width card__light-theme\">\n    <div class=\"content\">\n        <div class=\"details\">\n            <h3>Health and hygiene policy</h3>\n            <p>An example policy that can be used.</p>\n        </div>\n        <div class=\"qg-card__footer\">\n            <a\n                href=\"https://www.health.qld.gov.au/__data/assets/pdf_file/0043/998746/health-hygiene-policy.pdf\"\n                target=\"_blank\"\n                rel=\"noopener\"\n                aria-label=\"Download the health and hygiene policy template PDF 87 KB\">\n                Download template (PDF, 87 KB)\n            </a>\n        </div>\n    </div>\n</article>\n<article class=\"qg-card card__full-width card__light-theme\">\n    <div class=\"content\">\n        <div class=\"details\">\n            <h3>Staff illness log</h3>\n            <p>A record sheet you can use or modify to record staff illness.</p>\n        </div>\n        <div class=\"qg-card__footer\">\n            <a\n                href=\"https://www.health.qld.gov.au/__data/assets/word_doc/0041/998753/staff-illness-log.docx\"\n                target=\"_blank\"\n                rel=\"noopener\"\n                aria-label=\"Download the staff illness log template DOC 65 KB\">\n                Download template (DOC, 65 KB)\n            </a>\n        </div>\n    </div>\n</article>\n<article class=\"qg-card card__full-width card__light-theme\">\n    <div class=\"content\">\n        <div class=\"details\">\n            <h3>Staff training record</h3>\n            <p>A record sheet you can use or modify to record any staff training.</p>\n        </div>\n        <div class=\"qg-card__footer\">\n            <a\n                href=\"https://www.health.qld.gov.au/__data/assets/word_doc/0042/998754/staff-training-record.docx\"\n                target=\"_blank\"\n                rel=\"noopener\"\n                aria-label=\"Download the staff training record template DOC 64 KB\">\n                Download template (DOC, 64KB)\n            </a>\n        </div>\n    </div>\n</article>",
+          "content": "<h2 id=\"resources-info\">Resources</h2>\n\n<p>\n  Below is a list of resources that you can view for more information about this\n  topic.\n</p>\n\n<article class=\"qg-card card__full-width card__light-theme\">\n  <div class=\"content\">\n    <div class=\"details\">\n      <h3>Do Food Safely</h3>\n      <p class=\"desc-margin\">Free online food safety training</p>\n    </div>\n    <div class=\"qg-card__footer\">\n      <a\n        class=\"anchor-margin\"\n        href=\"https://dofoodsafely.health.vic.gov.au/index.php/en/\"\n        target=\"_blank\"\n        rel=\"noopener\"\n        aria-label=\"Go to the Do Food Safely website\"\n      >\n        Go to website\n      </a>\n      <span class=\"resource-url\">\n        (https://dofoodsafely.health.vic.gov.au/index.php/en/)\n      </span>\n    </div>\n  </div>\n</article>\n\n<article class=\"qg-card card__full-width card__light-theme\">\n  <div class=\"content\">\n    <div class=\"details\">\n      <h3>Food handler exclusion guidelines</h3>\n      <p>\n        A guide for determining suitable exclusion periods for ill food\n        handlers.\n      </p>\n    </div>\n    <div class=\"qg-card__footer\">\n      <a\n        href=\"https://www.health.qld.gov.au/__data/assets/pdf_file/0036/684495/food-handler-exclusion-guide.pdf\"\n        target=\"_blank\"\n        rel=\"noopener\"\n        aria-label=\"Download the food handler exclusion guidelines factsheet PDF 156 KB\"\n      >\n        Download factsheet (PDF, 156 KB)\n      </a>\n      <span class=\"resource-url\">\n        (https://www.health.qld.gov.au/__data/assets/pdf_file/0036/684495/food-handler-exclusion-guide.pdf)\n      </span>\n    </div>\n  </div>\n</article>\n<article class=\"qg-card card__full-width card__light-theme\">\n  <div class=\"content\">\n    <div class=\"details\">\n      <h3>Food handler health and hygiene</h3>\n      <p>\n        Key information on the health and hygiene responsibilities of both food\n        handlers and food businesses.\n      </p>\n    </div>\n    <div class=\"qg-card__footer\">\n      <a\n        href=\"https://www.health.qld.gov.au/__data/assets/word_doc/0035/442988/food-handler-health-hygiene.doc\"\n        target=\"_blank\"\n        rel=\"noopener\"\n        aria-label=\"Download the food handler health and hygiene factsheet DOC 999 KB\"\n      >\n        Download factsheet (DOC, 999 KB)\n      </a>\n      <span class=\"resource-url\">\n        (https://www.health.qld.gov.au/__data/assets/word_doc/0035/442988/food-handler-health-hygiene.doc)\n      </span>\n    </div>\n  </div>\n</article>\n<article class=\"qg-card card__full-width card__light-theme\">\n  <div class=\"content\">\n    <div class=\"details\">\n      <h3>Feeling sick poster</h3>\n      <p>A sign that can be printed and displayed as a reminder.</p>\n    </div>\n    <div class=\"qg-card__footer\">\n      <a\n        href=\"https://www.health.qld.gov.au/__data/assets/pdf_file/0020/560702/poster-feeling-sick.pdf\"\n        target=\"_blank\"\n        rel=\"noopener\"\n        aria-label=\"Download the feeling sick poster PDF 73 KB\"\n      >\n        Download poster (PDF, 73 KB)\n      </a>\n      <span class=\"resource-url\">\n        (https://www.health.qld.gov.au/__data/assets/pdf_file/0020/560702/poster-feeling-sick.pdf)\n      </span>\n    </div>\n  </div>\n</article>\n<article class=\"qg-card card__full-width card__light-theme\">\n  <div class=\"content\">\n    <div class=\"details\">\n      <h3>Hand Hygiene</h3>\n      <p>A video to demonstrate the proper hand washing technique.</p>\n    </div>\n    <div class=\"qg-card__footer\">\n      <a\n        href=\"https://www.healthier.qld.gov.au/guide/hand-washing-its-the-easiest-thing-you-can-do/\"\n        target=\"_blank\"\n        rel=\"noopener\"\n      >\n        Watch Video\n      </a>\n      <span class=\"resource-url\">\n        (https://www.healthier.qld.gov.au/guide/hand-washing-its-the-easiest-thing-you-can-do/)\n      </span>\n    </div>\n  </div>\n</article>\n<article class=\"qg-card card__full-width card__light-theme\">\n  <div class=\"content\">\n    <div class=\"details\">\n      <h3>Food handler</h3>\n      <p>A sign that can be printed and displayed as a reminder.</p>\n    </div>\n    <div class=\"qg-card__footer\">\n      <a\n        href=\"https://www.health.qld.gov.au/__data/assets/pdf_file/0028/560719/poster-are-you-a-food-handler.pdf\"\n        target=\"_blank\"\n        rel=\"noopener\"\n        aria-label=\"Download the food handler poster PDF\n                82 KB\"\n      >\n        Download poster (PDF, 82 KB)\n      </a>\n      <span class=\"resource-url\">\n        (https://www.health.qld.gov.au/__data/assets/pdf_file/0028/560719/poster-are-you-a-food-handler.pdf)\n      </span>\n    </div>\n  </div>\n</article>\n<article class=\"qg-card card__full-width card__light-theme\">\n  <div class=\"content\">\n    <div class=\"details\">\n      <h3>Health and hygiene policy</h3>\n      <p>An example policy that can be used.</p>\n    </div>\n    <div class=\"qg-card__footer\">\n      <a\n        href=\"https://www.health.qld.gov.au/__data/assets/pdf_file/0043/998746/health-hygiene-policy.pdf\"\n        target=\"_blank\"\n        rel=\"noopener\"\n        aria-label=\"Download the health and hygiene policy template PDF 87 KB\"\n      >\n        Download template (PDF, 87 KB)\n      </a>\n      <span class=\"resource-url\">\n        (https://www.health.qld.gov.au/__data/assets/pdf_file/0043/998746/health-hygiene-policy.pdf)\n      </span>\n    </div>\n  </div>\n</article>\n<article class=\"qg-card card__full-width card__light-theme\">\n  <div class=\"content\">\n    <div class=\"details\">\n      <h3>Staff illness log</h3>\n      <p>A record sheet you can use or modify to record staff illness.</p>\n    </div>\n    <div class=\"qg-card__footer\">\n      <a\n        href=\"https://www.health.qld.gov.au/__data/assets/word_doc/0041/998753/staff-illness-log.docx\"\n        target=\"_blank\"\n        rel=\"noopener\"\n        aria-label=\"Download the staff illness log template DOC 65 KB\"\n      >\n        Download template (DOC, 65 KB)\n      </a>\n      <span class=\"resource-url\">\n        (https://www.health.qld.gov.au/__data/assets/word_doc/0041/998753/staff-illness-log.docx)\n      </span>\n    </div>\n  </div>\n</article>\n<article class=\"qg-card card__full-width card__light-theme\">\n  <div class=\"content\">\n    <div class=\"details\">\n      <h3>Staff training record</h3>\n      <p>A record sheet you can use or modify to record any staff training.</p>\n    </div>\n    <div class=\"qg-card__footer\">\n      <a\n        href=\"https://www.health.qld.gov.au/__data/assets/word_doc/0042/998754/staff-training-record.docx\"\n        target=\"_blank\"\n        rel=\"noopener\"\n        aria-label=\"Download the staff training record template DOC 64 KB\"\n      >\n        Download template (DOC, 64KB)\n      </a>\n      <span class=\"resource-url\">\n        (https://www.health.qld.gov.au/__data/assets/word_doc/0042/998754/staff-training-record.docx)\n      </span>\n    </div>\n  </div>\n</article>",
           "refreshOnChange": false,
           "tableView": false,
           "key": "html43",
@@ -893,7 +893,7 @@
     }
   ],
   "revisions": "current",
-  "_vid": 227,
+  "_vid": 239,
   "title": "KYFB - PDF",
   "display": "form",
   "access": [
@@ -934,12 +934,12 @@
   "settings": {
     "header": "",
     "hideTitle": true,
-    "footer": "<html>\n<style>\np.footer{\nmargin: 10px;\n  font-size: \n  7px;\n}\n</style>\n<p   class=\"footer\">https://www.qld.gov.au/health/staying-healthy/food-pantry/know-your-food-business</p>\n</html>"
+    "footer": "<html>\n<style>\np.footer{\n  font-size: \n  7px;\n}\n</style>\n<p   class=\"footer\">https://www.qld.gov.au/health/staying-healthy/food-pantry/know-your-food-business</p>\n</html>"
   },
   "name": "kyfbPdf",
   "path": "kyfbpdf",
   "project": "5f44969319d1a97a819d80a7",
   "created": "2020-10-21T00:18:52.283Z",
-  "modified": "2020-10-29T05:20:10.740Z",
+  "modified": "2020-11-02T06:31:47.084Z",
   "machineName": "fesrqwsyzlbtegd:kyfbPdf"
 }
