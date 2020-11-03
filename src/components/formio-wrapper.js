@@ -7,27 +7,13 @@ export class FormioWrapper {
    * @returns {void}
    */
   constructor(configuration) {
-    this.formTitle = configuration.formTitle;
-    this.storage = configuration.storage;
-    this.storageName = configuration.storageName;
-    this.formLocation = configuration.formLocation;
-    this.buttonCSS = configuration.buttonCSS;
-    this.navigationCSS = configuration.navigationCSS;
-    this.scrollTarget = configuration.scrollTarget;
-    this.scrollType = configuration.scrollType;
-    this.formSettings = configuration.formSettings;
-    this.buttonConfig = configuration.buttonConfig;
-    this.termsConfig = configuration.termsConfig;
-    this.formName = configuration.formName;
-    this.extraTriggers = configuration.extraTriggersOnActions;
-    this.submissionInfo = configuration.submissionInfo;
-    this.submissionEndpoint = `https://api.forms.platforms.qld.gov.au/project/${this.submissionInfo.projectID}/form/${this.submissionInfo.formID}/submission`;
-    this.formAdminEmail = configuration.formAdminEmail;
-    this.baseObject = configuration.baseObject;
+    this.config = configuration;
+
+    this.submissionEndpoint = `${this.config.form.location}${this.config.form.endpoint}`;
     this.formElement = {};
     this.wizard = {};
     this.loaded = false;
-    this._addListeners(this.baseObject);
+    this._addListeners(this.config.form.baseElement);
   }
 
   /**
@@ -39,11 +25,13 @@ export class FormioWrapper {
     Formio.createForm(
       this.formElement,
       this.formLocation,
-      this.formSettings,
+      this.config.form.formioConfig,
     ).then((wizard) => {
       this.wizard = wizard;
       this.submissionData = this.wizard.submission.data;
-      this.formTitle = !this.formTitle ? wizard._form.title : this.formTitle;
+      this.config.form.title = !this.config.form.title
+        ? wizard._form.title
+        : this.config.form.title;
       this.loaded = true;
       this.wizard.on('initialized', () => {
         this._firePageChangeEvent();
@@ -84,29 +72,29 @@ export class FormioWrapper {
 
     baseObject.addEventListener('formiowrapperGoToNext', () => {
       this._goToNextPage();
-      if (this.extraTriggers.next) {
-        this._fireExtraEvent(this.extraTriggers.next);
+      if (this.config.extraTriggersOnActions.next) {
+        this._fireExtraEvent(this.config.extraTriggersOnActions.next);
       }
     });
 
     baseObject.addEventListener('formiowrapperGoToPrevious', () => {
       this._goToPreviousPage();
-      if (this.extraTriggers.previous) {
-        this._fireExtraEvent(this.extraTriggers.previous);
+      if (this.config.extraTriggersOnActions.previous) {
+        this._fireExtraEvent(this.config.extraTriggersOnActions.previous);
       }
     });
 
     baseObject.addEventListener('formiowrapperCancel', () => {
       this._goToPage(0);
-      if (this.extraTriggers.cancel) {
-        this._fireExtraEvent(this.extraTriggers.cancel);
+      if (this.config.extraTriggersOnActions.cancel) {
+        this._fireExtraEvent(this.config.extraTriggersOnActions.cancel);
       }
     });
 
     baseObject.addEventListener('goToPage', (event) => {
       this._goToPage(Number(event.detail.page));
-      if (this.extraTriggers.goto) {
-        this._fireExtraEvent(this.extraTriggers.goto);
+      if (this.config.extraTriggersOnActions.goto) {
+        this._fireExtraEvent(this.config.extraTriggersOnActions.goto);
       }
     });
   }
@@ -123,7 +111,7 @@ export class FormioWrapper {
         page: this.wizard && this.wizard.page ? this.wizard.page : 0,
       },
     });
-    this.config.baseElement.dispatchEvent(newEvent);
+    this.config.form.baseElement.dispatchEvent(newEvent);
     return newEvent;
   }
 
@@ -141,7 +129,7 @@ export class FormioWrapper {
         buttons: this.buildButtonData(),
       },
     });
-    this.config.baseElement.dispatchEvent(event);
+    this.config.form.baseElement.dispatchEvent(event);
   }
 
   /**
@@ -244,11 +232,9 @@ export class FormioWrapper {
 
     if (page === 0) {
       previousButton.displayed = false;
-      if (this.buttonConfig.hideCancelOnFirst) {
+      if (this.config.buttons.overwriteFirstButton) {
         cancelButton.displayed = false;
-      }
-      if (this.buttonConfig.startOnFirst) {
-        nextButton.title = 'Start';
+        nextButton.title = this.config.buttons.overwriteValue;
       }
     }
 
@@ -274,7 +260,7 @@ export class FormioWrapper {
    * @return {Boolean}
    */
   _determineTitleChange(currentPageTitle) {
-    if (!this.buttonConfig.acceptWhenTermsFound) return false;
+    if (!this.config.buttons.acceptWhenTermsFound) return false;
     return currentPageTitle.toLowerCase().includes(this.config.terms.title);
   }
 
@@ -296,9 +282,9 @@ export class FormioWrapper {
    * @return {Boolean}
    */
   _shouldPreviousPageBeSkipped(page, pages) {
-    if (!this.termsConfig.skipIfTermsAlreadyAccepted) return false;
+    if (!this.config.terms.skipIfTermsAlreadyAccepted) return false;
     const pageTitle = pages[page - 1].component.title;
-    if (!pageTitle.toLowerCase().includes(this.termsConfig.title)) return false;
+    if (!pageTitle.toLowerCase().includes(this.config.terms.title)) return false;
     return this._areTermsAccepted(page, pages);
   }
 
@@ -376,7 +362,7 @@ export class FormioWrapper {
       if (!completed || !completed.length) {
         completed = [];
       }
-      completed.push(this.form.title);
+      completed.push(this.config.form.title);
       this.config.storage.type.setItem(
         this.config.storage.name,
         JSON.stringify(completed),
@@ -399,7 +385,7 @@ export class FormioWrapper {
       const proposedPage = this.wizard.page - 2;
       const targetPage = proposedPage <= 0 ? proposedPage : this.wizard.page - 1;
       if (this.wizard._data) {
-        this.wizard._data[this.termsConfig.dataName] = true;
+        this.wizard._data[this.config.terms.dataName] = true;
       }
       this._goToPage(targetPage);
       return true;
@@ -440,7 +426,7 @@ export class FormioWrapper {
    */
   scrollToTop() {
     if (this.config.scroll.target !== -1) {
-      this.config.baseElement.scroll({
+      this.config.form.baseElement.scroll({
         top: this.config.scroll.target,
         behavior: this.config.scroll.type,
       });
@@ -527,7 +513,7 @@ export class FormioWrapper {
         emailButton.disabled = false;
       }, 10000);
     } else {
-      this.wizard.data.email = this.formAdminEmail;
+      this.wizard.data.email = this.config.form.adminEmail;
     }
     this.wizard.submit();
   }

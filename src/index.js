@@ -4,55 +4,55 @@ import { FormioWrapper } from './components/formio-wrapper';
 import { ButtonGroup } from './components/button-group';
 import { TopicsList } from './components/topics-list';
 import { ReapplySelected } from './scripts/reapply-selected';
-// import { configuration } from './config';
+import { configuration } from './config';
 
 (() => {
-  const configuration = {
-    formTitle: '',
-    storage: localStorage,
-    storageName: 'completedTopics',
-    formLocation: '',
-    baseObject: window,
-    formSettings: {
-      buttonSettings: {
-        showCancel: false,
-        showPrevious: false,
-        showNext: false,
-        showSubmit: false,
-      },
-    },
-    buttonCSS: {
-      baseClass: 'qg-btn',
-      previous: 'btn-default',
-      next: 'btn-primary',
-      cancel: 'btn-link',
-    },
-    scrollTarget: 0,
-    scrollType: 'auto',
-    buttonConfig: {
-      startOnFirst: true,
-      hideCancelOnFirst: false,
-      acceptWhenTermsFound: true,
-    },
-    termsConfig: {
-      title: 'terms of use',
-      termsStorageType: sessionStorage,
-      termsStorageName: 'termsAndConditions',
-      skipIfTermsAlreadyAccepted: true,
-      dataName: 'termsAndConditions',
-    },
-    navigationCSS: {
-      baseClass: 'qg-btn btn-link',
-    },
-    extraTriggersOnActions: {
-      cancel: 'cancelKYFBForm',
-    },
-    submissionInfo: {
-      projectID: '5f44969319d1a97a819d80a7',
-      formID: '5f8f7e6c8095d22a27f6a03a',
-    },
-    formAdminEmail: '',
-  };
+  // const configuration = {
+  //   formTitle: '',
+  //   storage: localStorage,
+  //   storageName: 'completedTopics',
+  //   formLocation: '',
+  //   baseObject: window,
+  //   formSettings: {
+  //     buttonSettings: {
+  //       showCancel: false,
+  //       showPrevious: false,
+  //       showNext: false,
+  //       showSubmit: false,
+  //     },
+  //   },
+  //   buttonCSS: {
+  //     baseClass: 'qg-btn',
+  //     previous: 'btn-default',
+  //     next: 'btn-primary',
+  //     cancel: 'btn-link',
+  //   },
+  //   scrollTarget: 0,
+  //   scrollType: 'auto',
+  //   buttonConfig: {
+  //     startOnFirst: true,
+  //     hideCancelOnFirst: false,
+  //     acceptWhenTermsFound: true,
+  //   },
+  //   termsConfig: {
+  //     title: 'terms of use',
+  //     termsStorageType: sessionStorage,
+  //     termsStorageName: 'termsAndConditions',
+  //     skipIfTermsAlreadyAccepted: true,
+  //     dataName: 'termsAndConditions',
+  //   },
+  //   navigationCSS: {
+  //     baseClass: 'qg-btn btn-link',
+  //   },
+  //   extraTriggersOnActions: {
+  //     cancel: 'cancelKYFBForm',
+  //   },
+  //   submissionInfo: {
+  //     projectID: '5f44969319d1a97a819d80a7',
+  //     formID: '5f8f7e6c8095d22a27f6a03a',
+  //   },
+  //   formAdminEmail: '',
+  // };
 
   const cssReapplier = new ReapplySelected();
   const kyfb = new FormioWrapper(configuration);
