@@ -15,7 +15,7 @@
   p button {
     margin-right: 5px;
   }
-  
+
   .heading-primary {
     font-size: 1.5625rem;
   }
@@ -24,19 +24,24 @@
     display: none;
   }
 
+  > .alert.alert-success {
+    display: none;
+  }
+
   .question-margin {
-    margin-top: 20px;
+    margin-top: 40px;
+    margin-bottom: 0px;
   }
 
   .required-element::after {
-    content: "*";
+    content: '*';
     color: #f85c50;
   }
 }
 
 ol.kyfb {
   counter-reset: kyfb-counter;
-  text-align:left;
+  text-align: left;
   text-size-adjust: 100%;
   margin-left: 0;
   padding-left: 0;
@@ -44,12 +49,12 @@ ol.kyfb {
   flex-direction: column;
   li {
     counter-increment: kyfb-counter;
-    font-size: .875rem;
-    transition: all .2s;
+    font-size: 0.875rem;
+    transition: all 0.2s;
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    padding-left: 60px!important;
+    padding-left: 60px !important;
     button {
       width: 100%;
       text-align: left;
@@ -75,7 +80,8 @@ ol.kyfb {
     &:hover {
       background-color: #d1d1d1;
     }
-    &:active, &.active {
+    &:active,
+    &.active {
       background-color: #005e85;
       color: white;
     }
@@ -109,5 +115,5 @@ ol.kyfb {
 
 // https://meowni.ca/hidden.is.a.lie.html
 [hidden] {
-  display:none !important
+  display: none !important;
 }
