@@ -88,80 +88,110 @@
         {
           "label": "HTML",
           "attrs": [{ "attr": "", "value": "" }],
-          "content": "<h1>Animals and pests</h1>\n\n<p class=\"question-margin\">\n  <b class=\"required-element\">\n    Do you stop pests from entering your food business?\n  </b>\n  <br />\n  <small class=\"hint\">\n    Ways to stop pests may include:\n    <ul>\n      <li>flyscreens on windows and doors</li>\n      <li>\n        seal any holes, cracks or gaps in ceilings, walls, floors or around\n        pipes etc.\n      </li>\n      <li>remove waste regularly</li>\n      <li>keep your food business clean, inside and outside.</li>\n    </ul>\n  </small>\n</p>",
+          "content": "<h1>Animals and pests</h1>",
           "refreshOnChange": false,
           "tableView": false,
-          "key": "html4",
+          "key": "html17",
           "type": "htmlelement",
           "input": false
         },
         {
-          "label": "<b>Do you stop pests from entering your food business?</b>",
-          "optionsLabelPosition": "right",
-          "tabindex": "0",
-          "inline": false,
-          "tableView": true,
-          "values": [
-            { "label": "Yes", "value": "true", "shortcut": "" },
-            { "label": "No", "value": "false", "shortcut": "" }
-          ],
-          "validate": { "required": true },
-          "key": "stopPests",
-          "type": "radio",
-          "input": true
+          "legend": " Do you stop pests from entering your food business?",
+          "customClass": "required_fieldset",
+          "tableView": false,
+          "key": "fieldSet",
+          "type": "fieldset",
+          "label": " Do you stop pests from entering your food business?",
+          "input": false,
+          "components": [
+            {
+              "label": "HTML",
+              "attrs": [{ "attr": "", "value": "" }],
+              "content": "<small class=\"hint\">\n    Ways to stop pests may include:\n    <ul>\n      <li>flyscreens on windows and doors</li>\n      <li>\n        seal any holes, cracks or gaps in ceilings, walls, floors or around\n        pipes etc.\n      </li>\n      <li>remove waste regularly</li>\n      <li>keep your food business clean, inside and outside.</li>\n    </ul>\n  </small>",
+              "refreshOnChange": false,
+              "tableView": false,
+              "key": "html4",
+              "type": "htmlelement",
+              "input": false
+            },
+            {
+              "label": "<b>Do you stop pests from entering your food business?</b>",
+              "optionsLabelPosition": "right",
+              "tabindex": "0",
+              "inline": false,
+              "tableView": true,
+              "values": [
+                { "label": "Yes", "value": "true", "shortcut": "" },
+                { "label": "No", "value": "false", "shortcut": "" }
+              ],
+              "validate": { "required": true },
+              "key": "stopPests",
+              "type": "radio",
+              "input": true
+            },
+            {
+              "label": "HTML",
+              "attrs": [{ "attr": "", "value": "" }],
+              "content": "<div class=\"alert alert-info\" role=\"alert\"> <h2><i class=\"fa fa-smile-o\"></i>Well done.</h2> <p> Regular inspection and maintenance of your premises helps to stop pests entering your food business. </p>\n</div>",
+              "refreshOnChange": false,
+              "tableView": false,
+              "key": "html5",
+              "conditional": {
+                "show": true,
+                "when": "stopPests",
+                "eq": "true"
+              },
+              "type": "htmlelement",
+              "input": false
+            },
+            {
+              "label": "HTML",
+              "attrs": [{ "attr": "", "value": "" }],
+              "content": "<div class=\"alert alert-info\" role=\"alert\"> <h2><i class=\"fa fa-exclamation-triangle\"></i>Warning!</h2> <p> Your food may become contaminated from pests. Pests must be stopped from entering your premises. Keeping a clean business will also help to discourage pests. </p> <p> For tips on how to stop pests, see the Controlling Pests factsheet at the end of this topic. </p>\n</div>",
+              "refreshOnChange": false,
+              "tableView": false,
+              "key": "html6",
+              "conditional": {
+                "show": true,
+                "when": "stopPests",
+                "eq": "false"
+              },
+              "type": "htmlelement",
+              "input": false
+            }
+          ]
         },
         {
-          "label": "HTML",
-          "attrs": [{ "attr": "", "value": "" }],
-          "content": "<div class=\"alert alert-info\" role=\"alert\"> <h2><i class=\"fa fa-smile-o\"></i>Well done.</h2> <p> Regular inspection and maintenance of your premises helps to stop pests entering your food business. </p>\n</div>",
-          "refreshOnChange": false,
+          "legend": "Do you have regular pest control done to remove     pests?",
+          "customClass": "required_fieldset",
           "tableView": false,
-          "key": "html5",
-          "conditional": { "show": true, "when": "stopPests", "eq": "true" },
-          "type": "htmlelement",
-          "input": false
-        },
-        {
-          "label": "HTML",
-          "attrs": [{ "attr": "", "value": "" }],
-          "content": "<div class=\"alert alert-info\" role=\"alert\"> <h2><i class=\"fa fa-exclamation-triangle\"></i>Warning!</h2> <p> Your food may become contaminated from pests. Pests must be stopped from entering your premises. Keeping a clean business will also help to discourage pests. </p> <p> For tips on how to stop pests, see the Controlling Pests factsheet at the end of this topic. </p>\n</div>",
-          "refreshOnChange": false,
-          "tableView": false,
-          "key": "html6",
-          "conditional": { "show": true, "when": "stopPests", "eq": "false" },
-          "type": "htmlelement",
-          "input": false
-        },
-        {
-          "label": "HTML",
-          "attrs": [{ "attr": "", "value": "" }],
-          "content": "<p class=\"question-margin\">\n   <b class=\"required-element\">\n    Do you have regular pest control done to remove\n    pests?\n  </b>\n</p>",
-          "refreshOnChange": false,
-          "tableView": false,
-          "key": "html7",
+          "key": "fieldSet1",
           "conditional": { "show": false, "when": "stopPests" },
-          "type": "htmlelement",
-          "input": false
-        },
-        {
-          "label": "<b>Do you have regular pest control done to remove pests?.</b>",
-          "optionsLabelPosition": "right",
-          "tabindex": "0",
-          "inline": false,
-          "tableView": true,
-          "values": [
-            { "label": "Yes", "value": "true", "shortcut": "" },
-            { "label": "No", "value": "false", "shortcut": "" }
-          ],
-          "clearOnHide": false,
-          "validate": { "required": true },
-          "key": "pestControl",
-          "conditional": { "show": false, "when": "stopPests" },
-          "type": "radio",
-          "input": true,
-          "lockKey": true,
-          "source": "5f59bd4325c1d7fe371109d2",
-          "isNew": true
+          "type": "fieldset",
+          "label": "Do you have regular pest control done to remove     pests?",
+          "input": false,
+          "components": [
+            {
+              "label": "<b>Do you have regular pest control done to remove pests?.</b>",
+              "optionsLabelPosition": "right",
+              "tabindex": "0",
+              "inline": false,
+              "tableView": true,
+              "values": [
+                { "label": "Yes", "value": "true", "shortcut": "" },
+                { "label": "No", "value": "false", "shortcut": "" }
+              ],
+              "clearOnHide": false,
+              "validate": { "required": true },
+              "key": "pestControl",
+              "conditional": { "show": false, "when": "stopPests" },
+              "type": "radio",
+              "input": true,
+              "lockKey": true,
+              "source": "5f59bd4325c1d7fe371109d2",
+              "isNew": true
+            }
+          ]
         },
         {
           "label": "HTML",
@@ -186,115 +216,147 @@
           "input": false
         },
         {
-          "label": "HTML",
-          "attrs": [{ "attr": "", "value": "" }],
-          "content": "<p class=\"question-margin\">\n  <b class=\"required-element\"> Do animals enter food handling areas? </b>\n  <br />\n  <small class=\"hint\">\n    <span>\n      For example, dogs, birds or other animals in the kitchen, storerooms and\n      the loading dock.\n    </span>\n  </small>\n</p>",
-          "refreshOnChange": false,
+          "legend": "Do animals enter food handling areas?",
+          "customClass": "required_fieldset",
           "tableView": false,
-          "key": "html10",
+          "key": "fieldSet2",
           "conditional": { "show": false, "when": "pestControl" },
-          "type": "htmlelement",
-          "input": false
+          "type": "fieldset",
+          "label": "Do animals enter food handling areas?",
+          "input": false,
+          "components": [
+            {
+              "label": "HTML",
+              "attrs": [{ "attr": "", "value": "" }],
+              "content": "<small class=\"hint\">\n    <span>\n      For example, dogs, birds or other animals in the kitchen, storerooms and\n      the loading dock.\n    </span>\n</small>",
+              "refreshOnChange": false,
+              "tableView": false,
+              "key": "html10",
+              "conditional": { "show": false, "when": "pestControl" },
+              "type": "htmlelement",
+              "input": false
+            },
+            {
+              "label": "<b>Do animals enter food handling areas?</b>",
+              "optionsLabelPosition": "right",
+              "tabindex": "0",
+              "inline": false,
+              "tableView": false,
+              "values": [
+                { "label": "Yes", "value": "true", "shortcut": "" },
+                { "label": "No", "value": "false", "shortcut": "" }
+              ],
+              "validate": { "required": true },
+              "key": "pestControl1",
+              "conditional": { "show": false, "when": "pestControl" },
+              "type": "radio",
+              "input": true,
+              "lockKey": true,
+              "source": "5f59bd4325c1d7fe371109d2",
+              "isNew": true
+            },
+            {
+              "label": "HTML",
+              "attrs": [{ "attr": "", "value": "" }],
+              "content": "<div class=\"alert alert-info\" role=\"alert\"> <h2><i class=\"fa fa-exclamation-triangle\"></i>Warning!</h2> <p>They may contaminate food and surfaces.</p> <p>The only live animals that you can have include:</p> <ul> <li>fish in decorative tanks</li> <li>live seafood for sale.</li> </ul> <p> If you keep live animals, you will need to have food safety processes in place to keep and handle the live animals. For example: </p> <ul> <li>protect food handling areas when you clean fish tanks</li> <li>clean tanks using equipment that is not used to prepare food</li> <li>practice good hand hygiene after handling the animals.</li> </ul> <p> Further information can be found on the web page listed at the end of the topic. </p>\n</div>",
+              "refreshOnChange": false,
+              "tableView": false,
+              "key": "html11",
+              "conditional": {
+                "show": true,
+                "when": "pestControl1",
+                "eq": "true"
+              },
+              "type": "htmlelement",
+              "input": false
+            },
+            {
+              "label": "HTML",
+              "attrs": [{ "attr": "", "value": "" }],
+              "content": "<div class=\"alert alert-info\" role=\"alert\"> <h2><i class=\"fa fa-smile-o\"></i>Well done</h2> <p> Animals (other than live seafood for sale, or decorative fish tanks) are not allowed in areas where you handle food. </p>\n</div>",
+              "refreshOnChange": false,
+              "tableView": false,
+              "key": "html12",
+              "conditional": {
+                "show": true,
+                "when": "pestControl1",
+                "eq": "false"
+              },
+              "type": "htmlelement",
+              "input": false
+            }
+          ]
         },
         {
-          "label": "<b>Do animals enter food handling areas?</b>",
-          "optionsLabelPosition": "right",
-          "tabindex": "0",
-          "inline": false,
+          "legend": "Do you allow animals in outdoor dining areas?",
+          "customClass": "required_fieldset",
           "tableView": false,
-          "values": [
-            { "label": "Yes", "value": "true", "shortcut": "" },
-            { "label": "No", "value": "false", "shortcut": "" }
-          ],
-          "validate": { "required": true },
-          "key": "pestControl1",
-          "conditional": { "show": false, "when": "pestControl" },
-          "type": "radio",
-          "input": true,
-          "lockKey": true,
-          "source": "5f59bd4325c1d7fe371109d2",
-          "isNew": true
-        },
-        {
-          "label": "HTML",
-          "attrs": [{ "attr": "", "value": "" }],
-          "content": "<div class=\"alert alert-info\" role=\"alert\"> <h2><i class=\"fa fa-exclamation-triangle\"></i>Warning!</h2> <p>They may contaminate food and surfaces.</p> <p>The only live animals that you can have include:</p> <ul> <li>fish in decorative tanks</li> <li>live seafood for sale.</li> </ul> <p> If you keep live animals, you will need to have food safety processes in place to keep and handle the live animals. For example: </p> <ul> <li>protect food handling areas when you clean fish tanks</li> <li>clean tanks using equipment that is not used to prepare food</li> <li>practice good hand hygiene after handling the animals.</li> </ul> <p> Further information can be found on the web page listed at the end of the topic. </p>\n</div>",
-          "refreshOnChange": false,
-          "tableView": false,
-          "key": "html11",
-          "conditional": { "show": true, "when": "pestControl1", "eq": "true" },
-          "type": "htmlelement",
-          "input": false
-        },
-        {
-          "label": "HTML",
-          "attrs": [{ "attr": "", "value": "" }],
-          "content": "<div class=\"alert alert-info\" role=\"alert\"> <h2><i class=\"fa fa-smile-o\"></i>Well done</h2> <p> Animals (other than live seafood for sale, or decorative fish tanks) are not allowed in areas where you handle food. </p>\n</div>",
-          "refreshOnChange": false,
-          "tableView": false,
-          "key": "html12",
-          "conditional": {
-            "show": true,
-            "when": "pestControl1",
-            "eq": "false"
-          },
-          "type": "htmlelement",
-          "input": false
-        },
-        {
-          "label": "HTML",
-          "attrs": [{ "attr": "", "value": "" }],
-          "content": "<p class=\"question-margin\">\n  <b class=\"required-element\">\n    Do you allow animals in outdoor dining areas?\n  </b>\n  <br />\n  <small class=\"hint\">\n    <span> Select no if you do not have an outdoor dining area. </span>\n  </small>\n</p>",
-          "refreshOnChange": false,
-          "tableView": false,
-          "key": "html13",
+          "key": "fieldSet3",
           "conditional": { "show": false, "when": "pestControl1" },
-          "type": "htmlelement",
-          "input": false
-        },
-        {
-          "label": "<b>Do you allow animals in outdoor dining areas?</b>",
-          "optionsLabelPosition": "right",
-          "inline": false,
-          "tableView": false,
-          "values": [
-            { "label": "Yes", "value": "true", "shortcut": "" },
-            { "label": "No", "value": "false", "shortcut": "" }
-          ],
-          "validate": { "required": true },
-          "key": "pestControl2",
-          "conditional": { "show": false, "when": "pestControl1" },
-          "type": "radio",
-          "input": true,
-          "lockKey": true,
-          "source": "5f59bd4325c1d7fe371109d2",
-          "isNew": true
-        },
-        {
-          "label": "HTML",
-          "attrs": [{ "attr": "", "value": "" }],
-          "content": "<div class=\"alert alert-info\" role=\"alert\"> <h2><i class=\"fa fa-exclamation-triangle\"></i>Warning!</h2> <p>Only dogs are the allowed in outdoor dining areas.</p> <p>Remember:</p> <ul> <li>It is your choice to allow dogs into your outdoor areas.</li> <li> You are responsible for making sure they do not contaminate any part of your premises. </li> <li> You must allow assistance animals in all customer areas. Assistance animals are registered animals (e.g.: guide dogs) and do not include pets or companion animals. </li> </ul> <p> To find out more about the responsibilities you and your customers must follow when allowing dogs in outdoor dining areas, see the webpage content provided at the end of the topic. </p>\n</div>",
-          "refreshOnChange": false,
-          "tableView": false,
-          "key": "html14",
-          "conditional": { "show": true, "when": "pestControl2", "eq": "true" },
-          "type": "htmlelement",
-          "input": false
-        },
-        {
-          "label": "HTML",
-          "attrs": [{ "attr": "", "value": "" }],
-          "content": "<div class=\"alert alert-info\" role=\"alert\"> <h2><i class=\"fa fa-info-circle\"></i>Did you know?</h2> <p>You can choose to allow dogs in outdoor dining areas.</p> <p> Remember, assistance animals are allowed in all customer areas. Assistance animals are registered animals (e.g.: guide dogs) and do not include pets or companion animals. </p> <p> Further information about the responsibilities you and your customers must follow can be found at the end of the topic. </p>\n</div>",
-          "refreshOnChange": false,
-          "tableView": false,
-          "key": "html15",
-          "conditional": {
-            "show": true,
-            "when": "pestControl2",
-            "eq": "false"
-          },
-          "type": "htmlelement",
-          "input": false
+          "type": "fieldset",
+          "label": "Do you allow animals in outdoor dining areas?",
+          "input": false,
+          "components": [
+            {
+              "label": "HTML",
+              "attrs": [{ "attr": "", "value": "" }],
+              "content": "<small class=\"hint\">\n  <span> Select no if you do not have an outdoor dining area. </span>\n</small>",
+              "refreshOnChange": false,
+              "tableView": false,
+              "key": "html13",
+              "conditional": { "show": false, "when": "pestControl1" },
+              "type": "htmlelement",
+              "input": false
+            },
+            {
+              "label": "<b>Do you allow animals in outdoor dining areas?</b>",
+              "optionsLabelPosition": "right",
+              "inline": false,
+              "tableView": false,
+              "values": [
+                { "label": "Yes", "value": "true", "shortcut": "" },
+                { "label": "No", "value": "false", "shortcut": "" }
+              ],
+              "validate": { "required": true },
+              "key": "pestControl2",
+              "conditional": { "show": false, "when": "pestControl1" },
+              "type": "radio",
+              "input": true,
+              "lockKey": true,
+              "source": "5f59bd4325c1d7fe371109d2",
+              "isNew": true
+            },
+            {
+              "label": "HTML",
+              "attrs": [{ "attr": "", "value": "" }],
+              "content": "<div class=\"alert alert-info\" role=\"alert\"> <h2><i class=\"fa fa-exclamation-triangle\"></i>Warning!</h2> <p>Only dogs are the allowed in outdoor dining areas.</p> <p>Remember:</p> <ul> <li>It is your choice to allow dogs into your outdoor areas.</li> <li> You are responsible for making sure they do not contaminate any part of your premises. </li> <li> You must allow assistance animals in all customer areas. Assistance animals are registered animals (e.g.: guide dogs) and do not include pets or companion animals. </li> </ul> <p> To find out more about the responsibilities you and your customers must follow when allowing dogs in outdoor dining areas, see the webpage content provided at the end of the topic. </p>\n</div>",
+              "refreshOnChange": false,
+              "tableView": false,
+              "key": "html14",
+              "conditional": {
+                "show": true,
+                "when": "pestControl2",
+                "eq": "true"
+              },
+              "type": "htmlelement",
+              "input": false
+            },
+            {
+              "label": "HTML",
+              "attrs": [{ "attr": "", "value": "" }],
+              "content": "<div class=\"alert alert-info\" role=\"alert\"> <h2><i class=\"fa fa-info-circle\"></i>Did you know?</h2> <p>You can choose to allow dogs in outdoor dining areas.</p> <p> Remember, assistance animals are allowed in all customer areas. Assistance animals are registered animals (e.g.: guide dogs) and do not include pets or companion animals. </p> <p> Further information about the responsibilities you and your customers must follow can be found at the end of the topic. </p>\n</div>",
+              "refreshOnChange": false,
+              "tableView": false,
+              "key": "html15",
+              "conditional": {
+                "show": true,
+                "when": "pestControl2",
+                "eq": "false"
+              },
+              "type": "htmlelement",
+              "input": false
+            }
+          ]
         }
       ]
     },
@@ -371,7 +433,7 @@
     }
   ],
   "revisions": "current",
-  "_vid": 50,
+  "_vid": 54,
   "title": "kyfb - Animals and Pests",
   "display": "wizard",
   "access": [
@@ -414,6 +476,6 @@
   "path": "animalsandpests",
   "project": "5f44969319d1a97a819d80a7",
   "created": "2020-10-01T03:19:18.282Z",
-  "modified": "2020-11-02T05:41:40.196Z",
+  "modified": "2020-11-03T05:43:33.268Z",
   "machineName": "fesrqwsyzlbtegd:kyfbDanielTest"
 }
