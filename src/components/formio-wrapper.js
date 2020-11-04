@@ -75,6 +75,7 @@ export class FormioWrapper {
     ).then((wizard) => {
       this.wizard = wizard;
       this.submissionData = this.wizard.submission.data;
+      this.wizard.data.adminEmail = this.formAdminEmail;
       this.formTitle = !this.formTitle ? wizard._form.title : this.formTitle;
       this.loaded = true;
       this.wizard.on('initialized', () => {
@@ -92,13 +93,13 @@ export class FormioWrapper {
         this._downloadPDF();
       });
       this.wizard.on('sendEmail', () => {
-        this.wizard.data.sendEmail = true;
+        this.wizard.data.sendEmail = 'user';
         this._sendEmail();
       });
       this.wizard.on('nextPage', ({ page }) => {
         if (page === 3) {
-          this.wizard.data.sendEmail = true;
-          this._sendEmail({ admin: true });
+          this.wizard.data.sendEmail = 'admin';
+          this._sendEmail();
         }
       });
     });
@@ -497,19 +498,16 @@ export class FormioWrapper {
       });
   }
 
-  _sendEmail(options = {}) {
+  _sendEmail() {
     if (this.requestedEmail) return;
-    const { admin = false } = options;
     const emailButton = document.querySelector('[name="data[emailButton]"');
-    if (!admin) {
+    if (this.wizard.sendEmail === 'user') {
       emailButton.disabled = true;
       this.requestedEmail = true;
       setTimeout(() => {
         this.requestedEmail = false;
         emailButton.disabled = false;
       }, 10000);
-    } else {
-      this.wizard.data.email = this.formAdminEmail;
     }
     this.wizard.submit();
   }
