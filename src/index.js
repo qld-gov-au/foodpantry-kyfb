@@ -94,10 +94,14 @@ import { ReapplySelected } from './scripts/reapply-selected';
     );
   });
 
+  let firstInit = true;
+
   window.addEventListener('kyfb-topic-change', (event) => {
     kyfb.formLocation = event.detail.topic;
     kyfb.formTitle = event.detail.title;
-    kyfb.initialise();
+
+    kyfb.initialise(firstInit);
+    firstInit = false;
     if (event.detail.topic) {
       document.querySelector('#forms').hidden = false;
       document.querySelector('#topics').hidden = true;
