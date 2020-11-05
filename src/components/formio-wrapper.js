@@ -11,6 +11,7 @@ export class FormioWrapper {
     this.storage = configuration.storage;
     this.storageName = configuration.storageName;
     this.formLocation = configuration.formLocation;
+    this.stageLocation = configuration.stageLocation;
     this.buttonCSS = configuration.buttonCSS;
     this.navigationCSS = configuration.navigationCSS;
     this.scrollTarget = configuration.scrollTarget;
@@ -21,7 +22,8 @@ export class FormioWrapper {
     this.formName = configuration.formName;
     this.extraTriggers = configuration.extraTriggersOnActions;
     this.submissionInfo = configuration.submissionInfo;
-    this.submissionEndpoint = `https://api.forms.platforms.qld.gov.au/project/${this.submissionInfo.projectID}/form/${this.submissionInfo.formID}/submission`;
+    this.submissionForm = `${this.stageLocation}/${this.submissionInfo.formName}`;
+    this.submissionEndpoint = `${this.submissionForm}/submission`;
     this.formAdminEmail = configuration.formAdminEmail;
 
     this.formElement = {};
@@ -433,12 +435,11 @@ export class FormioWrapper {
   }
 
   createPDFInstance() {
-    Formio.createForm(
-      document.createElement('div'),
-      'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/kyfbpdf',
-    ).then((pdfInstance) => {
-      this.pdfInstance = pdfInstance;
-    });
+    Formio.createForm(document.createElement('div'), this.submissionForm).then(
+      (pdfInstance) => {
+        this.pdfInstance = pdfInstance;
+      },
+    );
   }
 
   /**
