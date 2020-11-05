@@ -80,9 +80,9 @@ export class FormioWrapper {
       this.loaded = true;
       if (firstInit) {
         this._attachHandlers();
+        this.createPDFInstance();
       }
     });
-    this.createPDFInstance();
   }
 
   _attachHandlers() {
