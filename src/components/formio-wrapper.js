@@ -64,9 +64,7 @@ export class FormioWrapper {
     });
   }
 
-  /**
-   */
-  initialise() {
+  initialise(firstInit) {
     if (!this.formLocation) return;
     this.formElement = document.querySelector('#formio');
     // create main form
@@ -80,33 +78,38 @@ export class FormioWrapper {
       this.wizard.data.adminEmail = this.formAdminEmail;
       this.formTitle = !this.formTitle ? wizard._form.title : this.formTitle;
       this.loaded = true;
-      this.wizard.on('initialized', () => {
-        this._firePageChangeEvent();
-      });
-      this.wizard.on('render', () => {
-        this._firePageChangeEvent();
-        this.scrollToTop();
-      });
-      this.wizard.on('change', () => {
-        this._firePageChangeEvent();
-      });
-      this.wizard.on('downloadPDF', () => {
-        this.wizard.data.sendEmail = false;
-        this._downloadPDF();
-      });
-      this.wizard.on('sendEmail', () => {
-        this.wizard.data.sendEmail = 'user';
-        this._sendEmail();
-      });
-      this.wizard.on('nextPage', ({ page }) => {
-        if (page === 3) {
-          this.wizard.data.sendEmail = 'admin';
-          this._sendEmail();
-        }
-      });
+      if (firstInit) {
+        this._attachHandlers();
+      }
     });
-    // create PDF instance
     this.createPDFInstance();
+  }
+
+  _attachHandlers() {
+    this.wizard.on('initialized', () => {
+      this._firePageChangeEvent();
+    });
+    this.wizard.on('render', () => {
+      this._firePageChangeEvent();
+      this.scrollToTop();
+    });
+    this.wizard.on('change', () => {
+      this._firePageChangeEvent();
+    });
+    this.wizard.on('downloadPDF', () => {
+      this.wizard.data.sendEmail = false;
+      this._downloadPDF();
+    });
+    this.wizard.on('sendEmail', () => {
+      this.wizard.data.sendEmail = 'user';
+      this._sendEmail();
+    });
+    this.wizard.on('nextPage', ({ page }) => {
+      if (page === 3) {
+        this.wizard.data.sendEmail = 'admin';
+        this._sendEmail();
+      }
+    });
   }
 
   /**
