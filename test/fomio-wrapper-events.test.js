@@ -5,7 +5,7 @@ import { stub, spy, assert } from 'sinon';
 import { FormioWrapper } from '../src/components/formio-wrapper';
 import { configuration } from './config.js';
 
-describe('Formio Wrapper Tests.', () => {
+describe('Formio Wrapper Event Tests.', () => {
   let wrapper = {};
   let element;
   beforeEach(async () => {
@@ -72,7 +72,7 @@ describe('Formio Wrapper Tests.', () => {
 
     assert.calledTwice(spiedInitialise);
     assert.calledTwice(spiedGoToNext);
-    assert.calledTwice(spiedFireExtraEvent);
+    assert.called(spiedFireExtraEvent);
     assert.calledTwice(spiedGoToPreviousPage);
     assert.called(spiedGoToPage);
   });

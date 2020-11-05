@@ -183,7 +183,10 @@ describe('Formio Wrapper Tests.', () => {
 
   it('_goToNextPage skips if terms are accepted', async () => {
     wrapper.loaded = true;
-    sessionStorage.setItem(configuration.terms.termsStorageName, true);
+    wrapper.config.terms.termsStorageType.setItem(
+      configuration.terms.termsStorageName,
+      true,
+    );
     wrapper.wizard.page = 1;
     wrapper.wizard.pages = [
       {
@@ -211,7 +214,10 @@ describe('Formio Wrapper Tests.', () => {
 
   it('_goToPreviousPage skips if terms are accepted', async () => {
     wrapper.loaded = true;
-    sessionStorage.setItem(configuration.terms.termsStorageName, true);
+    wrapper.config.terms.termsStorageType.setItem(
+      configuration.terms.termsStorageName,
+      true,
+    );
     wrapper.wizard.page = 2;
     wrapper.wizard.pages = [
       {
@@ -241,19 +247,40 @@ describe('Formio Wrapper Tests.', () => {
     const response = wrapper._checkPageValidity(-1, [], {});
     expect(response).equals(false);
     const checkPageValidity = () => true;
+    const checkPageValidity2 = () => false;
 
-    const pages = [
+    let pages = [
       {
         checkValidity: checkPageValidity,
       },
       {
         checkValidity: checkPageValidity,
+      },
+      {
+        checkValidity: checkPageValidity2,
       },
     ];
     const spied = spy(pages[1], 'checkValidity');
     wrapper._checkPageValidity(1, pages, {});
     spied.restore();
     assert.calledOnce(spied);
+
+    pages = [
+      {
+        checkValidity: checkPageValidity,
+      },
+      {
+        checkValidity: checkPageValidity2,
+      },
+      {
+        checkValidity: checkPageValidity2,
+      },
+    ];
+
+    let result = wrapper._checkPageValidity(1, pages, {});
+    expect(result).equals(false);
+    result = wrapper._checkPageValidity(2, pages, {});
+    expect(result).equals(false);
   });
 
   it('determine title page functioning correctly', async () => {
@@ -363,188 +390,219 @@ describe('Formio Wrapper Tests.', () => {
     stubbedValidity.restore();
   });
 
-  // it('buildProgressMenuData works as anticipated', async () => {
-  //   const stubbedValidity = stub(wrapper, '_checkPageValidity').returns(true);
-  //   wrapper.wizard.page = 1;
-  //   const badProgresss = wrapper.buildProgressMenuData();
-  //   expect(badProgresss.length).equals(0);
+  it('buildProgressMenuData works as anticipated', async () => {
+    const stubbedValidity = stub(wrapper, '_checkPageValidity').returns(true);
+    wrapper.wizard.page = 1;
+    const badProgresss = wrapper.buildProgressMenuData();
+    expect(badProgresss.length).equals(0);
 
-  //   wrapper.wizard.components = [
-  //     {
-  //       component: {
-  //         title: 'First Page',
-  //       },
-  //     },
-  //     {
-  //       component: {
-  //         title: 'terms and conditions',
-  //       },
-  //     },
-  //     {
-  //       component: {
-  //         title: 'something',
-  //       },
-  //     },
-  //   ];
-  //   wrapper.wizard._seenPages = [0, 1];
+    wrapper.wizard.components = [
+      {
+        component: {
+          title: 'First Page',
+        },
+      },
+      {
+        component: {
+          title: 'terms and conditions',
+        },
+      },
+      {
+        component: {
+          title: 'something',
+        },
+      },
+    ];
+    wrapper.wizard._seenPages = [0, 1];
 
-  //   const initialProgressBar = wrapper.buildProgressMenuData();
-  //   expect(initialProgressBar.length).equals(3);
-  //   expect(initialProgressBar[0].cssClass).includes('qg-btn btn-link');
-  //   expect(typeof initialProgressBar[0].detail).equals('object');
-  //   expect(initialProgressBar[0].title).equals('First Page');
-  //   expect(initialProgressBar[0].event).equals('goToPage');
-  //   expect(initialProgressBar[0].disabled).equals(false);
-  //   expect(initialProgressBar[0].displayed).equals(true);
+    const initialProgressBar = wrapper.buildProgressMenuData();
+    expect(initialProgressBar.length).equals(3);
+    expect(initialProgressBar[0].cssClass).includes('qg-btn btn-link');
+    expect(typeof initialProgressBar[0].detail).equals('object');
+    expect(initialProgressBar[0].title).equals('First Page');
+    expect(initialProgressBar[0].event).equals('goToPage');
+    expect(initialProgressBar[0].disabled).equals(false);
+    expect(initialProgressBar[0].displayed).equals(true);
 
-  //   expect(initialProgressBar[1].cssClass).includes('qg-btn btn-link');
-  //   expect(initialProgressBar[1].cssClass).includes('active');
-  //   expect(initialProgressBar[1].cssClass).includes('visited');
-  //   expect(typeof initialProgressBar[1].detail).equals('object');
-  //   expect(initialProgressBar[1].title).equals('terms and conditions');
-  //   expect(initialProgressBar[1].event).equals('goToPage');
-  //   expect(initialProgressBar[1].disabled).equals(false);
-  //   expect(initialProgressBar[1].displayed).equals(true);
+    expect(initialProgressBar[1].cssClass).includes('qg-btn btn-link');
+    expect(initialProgressBar[1].cssClass).includes('active');
+    expect(initialProgressBar[1].cssClass).includes('visited');
+    expect(typeof initialProgressBar[1].detail).equals('object');
+    expect(initialProgressBar[1].title).equals('terms and conditions');
+    expect(initialProgressBar[1].event).equals('goToPage');
+    expect(initialProgressBar[1].disabled).equals(false);
+    expect(initialProgressBar[1].displayed).equals(true);
 
-  //   expect(initialProgressBar[2].cssClass).includes('qg-btn btn-link');
-  //   expect(typeof initialProgressBar[2].detail).equals('object');
-  //   expect(initialProgressBar[2].title).equals('something');
-  //   expect(initialProgressBar[2].event).equals('goToPage');
-  //   expect(initialProgressBar[2].disabled).equals(true);
-  //   expect(initialProgressBar[2].displayed).equals(true);
-  //   stubbedValidity.restore();
-  // });
+    expect(initialProgressBar[2].cssClass).includes('qg-btn btn-link');
+    expect(typeof initialProgressBar[2].detail).equals('object');
+    expect(initialProgressBar[2].title).equals('something');
+    expect(initialProgressBar[2].event).equals('goToPage');
+    expect(initialProgressBar[2].disabled).equals(true);
+    expect(initialProgressBar[2].displayed).equals(true);
+    stubbedValidity.restore();
+  });
 
-  // it('determines if _shouldNextPageBeSkipped is working', async () => {
-  //   sessionStorage.setItem(configuration.termsConfig.termsStorageName, false);
-  //   wrapper.termsConfig.skipIfTermsAlreadyAccepted = false;
-  //   const pages = [
-  //     { component: { title: 'Something mundane' } },
-  //     { component: { title: 'terms and conditions' } },
-  //     { component: { title: 'Another boring title' } },
-  //   ];
-  //   let response = wrapper._shouldNextPageBeSkipped(0, []);
-  //   expect(response).equals(false);
-  //   wrapper.termsConfig.skipIfTermsAlreadyAccepted = true;
-  //   response = wrapper._shouldNextPageBeSkipped(0, pages);
-  //   expect(response).equals(false);
+  it('determines if _shouldNextPageBeSkipped is working', async () => {
+    wrapper.config.terms.termsStorageType.setItem(
+      configuration.terms.termsStorageName,
+      false,
+    );
+    wrapper.config.terms.skipIfTermsAlreadyAccepted = false;
+    const pages = [
+      { component: { title: 'Something mundane' } },
+      { component: { title: wrapper.config.terms.title } },
+      { component: { title: 'Another boring title' } },
+    ];
+    let response = wrapper._shouldNextPageBeSkipped(0, []);
+    expect(response).equals(false);
+    wrapper.config.terms.skipIfTermsAlreadyAccepted = true;
+    response = wrapper._shouldNextPageBeSkipped(0, pages);
+    expect(response).equals(false);
 
-  //   response = wrapper._shouldNextPageBeSkipped(0, pages);
-  //   expect(response).equals(false);
+    response = wrapper._shouldNextPageBeSkipped(0, pages);
+    expect(response).equals(false);
 
-  //   response = wrapper._shouldNextPageBeSkipped(1, pages);
-  //   expect(response).equals(false);
-  //   sessionStorage.setItem(configuration.termsConfig.termsStorageName, true);
-  //   response = wrapper._shouldNextPageBeSkipped(0, pages);
-  //   expect(response).equals(true);
+    response = wrapper._shouldNextPageBeSkipped(1, pages);
+    expect(response).equals(false);
 
-  //   sessionStorage.setItem(configuration.termsConfig.termsStorageName, false);
-  //   response = wrapper._shouldNextPageBeSkipped(0, pages);
-  //   expect(response).equals(false);
-  // });
+    wrapper.config.terms.termsStorageType.setItem(
+      wrapper.config.terms.termsStorageName,
+      true,
+    );
+    response = wrapper._shouldNextPageBeSkipped(0, pages);
+    expect(response).equals(true);
 
-  // it('determines if _shouldPreviousPageBeSkipped is working', async () => {
-  //   sessionStorage.setItem(configuration.termsConfig.termsStorageName, false);
-  //   wrapper.termsConfig.skipIfTermsAlreadyAccepted = false;
-  //   const pages = [
-  //     { component: { title: 'Something mundane' } },
-  //     { component: { title: 'terms and conditions' } },
-  //     { component: { title: 'Another boring title' } },
-  //   ];
-  //   let response = wrapper._shouldPreviousPageBeSkipped(0, []);
-  //   expect(response).equals(false);
-  //   wrapper.termsConfig.skipIfTermsAlreadyAccepted = true;
-  //   response = wrapper._shouldPreviousPageBeSkipped(2, pages);
-  //   expect(response).equals(false);
+    wrapper.config.terms.termsStorageType.setItem(
+      configuration.terms.termsStorageName,
+      false,
+    );
+    response = wrapper._shouldNextPageBeSkipped(0, pages);
+    expect(response).equals(false);
+  });
 
-  //   response = wrapper._shouldPreviousPageBeSkipped(2, pages);
-  //   expect(response).equals(false);
+  it('determines if _shouldPreviousPageBeSkipped is working', async () => {
+    wrapper.config.terms.termsStorageType.setItem(
+      configuration.terms.termsStorageName,
+      false,
+    );
+    wrapper.config.terms.skipIfTermsAlreadyAccepted = false;
+    const pages = [
+      { component: { title: 'Something mundane' } },
+      { component: { title: wrapper.config.terms.title } },
+      { component: { title: 'Another boring title' } },
+    ];
+    let response = wrapper._shouldPreviousPageBeSkipped(0, []);
+    expect(response).equals(false);
 
-  //   response = wrapper._shouldPreviousPageBeSkipped(1, pages);
-  //   expect(response).equals(false);
-  //   sessionStorage.setItem(configuration.termsConfig.termsStorageName, true);
-  //   response = wrapper._shouldPreviousPageBeSkipped(2, pages);
-  //   expect(response).equals(true);
+    wrapper.config.terms.skipIfTermsAlreadyAccepted = true;
+    response = wrapper._shouldPreviousPageBeSkipped(2, pages);
+    expect(response).equals(false);
 
-  //   sessionStorage.setItem(configuration.termsConfig.termsStorageName, false);
-  //   response = wrapper._shouldPreviousPageBeSkipped(1, pages);
-  //   expect(response).equals(false);
-  // });
+    response = wrapper._shouldPreviousPageBeSkipped(2, pages);
+    expect(response).equals(false);
 
-  // it('Terms already accepted sets storage', async () => {
-  //   wrapper.termsConfig.skipIfTermsAlreadyAccepted = false;
-  //   const pages = [
-  //     { component: { title: 'Something mundane' } },
-  //     { component: { title: 'terms and conditions' } },
-  //     { component: { title: 'Another boring title' } },
-  //   ];
-  //   wrapper.wizard._seenPages = [0];
-  //   sessionStorage.setItem(configuration.termsConfig.termsStorageName, true);
-  //   let response = wrapper._areTermsAccepted(1, pages);
-  //   expect(response).equals(true);
+    response = wrapper._shouldPreviousPageBeSkipped(1, pages);
+    expect(response).equals(false);
 
-  //   sessionStorage.setItem(configuration.termsConfig.termsStorageName, false);
-  //   response = wrapper._areTermsAccepted(1, pages);
-  //   expect(response).equals(false);
+    wrapper.config.terms.termsStorageType.setItem(
+      configuration.terms.termsStorageName,
+      true,
+    );
+    response = wrapper._shouldPreviousPageBeSkipped(2, pages);
+    expect(response).equals(true);
 
-  //   sessionStorage.removeItem(configuration.termsConfig.termsStorageName);
-  //   response = wrapper._areTermsAccepted(1, pages);
-  //   expect(response).equals(true);
-  // });
+    wrapper.config.terms.termsStorageType.setItem(
+      configuration.terms.termsStorageName,
+      false,
+    );
+    response = wrapper._shouldPreviousPageBeSkipped(1, pages);
+    expect(response).equals(false);
+  });
 
-  // it('_updateIfCompleted works', async () => {
-  //   configuration.storage.removeItem(configuration.storageName);
-  //   wrapper.termsConfig.skipIfTermsAlreadyAccepted = false;
-  //   const pages = [
-  //     { component: { title: 'Something mundane' } },
-  //     { component: { title: 'terms and conditions' } },
-  //     { component: { title: 'Another boring title' } },
-  //   ];
-  //   wrapper.formTitle = 'Test form';
-  //   let response = wrapper._updateIfCompleted(1, []);
-  //   expect(response).equals(false);
-  //   response = wrapper._updateIfCompleted(0, pages);
-  //   expect(response).equals(false);
-  //   response = wrapper._updateIfCompleted(1, pages);
-  //   expect(response).equals(false);
-  //   response = wrapper._updateIfCompleted(2, pages);
-  //   expect(response.length).equals(1);
-  //   expect(response[0]).equals('Test form');
-  // });
+  it('Terms already accepted sets storage', async () => {
+    wrapper.config.terms.skipIfTermsAlreadyAccepted = false;
+    const pages = [
+      { component: { title: 'Something mundane' } },
+      { component: { title: wrapper.config.terms.title } },
+      { component: { title: 'Another boring title' } },
+    ];
+    wrapper.wizard._seenPages = [0];
+    wrapper.config.terms.termsStorageType.setItem(
+      configuration.terms.termsStorageName,
+      true,
+    );
+    let response = wrapper._areTermsAccepted(1, pages);
+    expect(response).equals(true);
 
-  // it('ensure gotonext page doesnt go to far', async () => {
-  //   wrapper.loaded = true;
-  //   wrapper.wizard.page = 1;
-  //   wrapper.wizard.pages = [
-  //     {
-  //       component: {
-  //         title: 'something',
-  //       },
-  //     },
-  //     {
-  //       component: {
-  //         title: 'terms and conditions',
-  //       },
-  //     },
-  //   ];
-  //   wrapper._shouldNextPageBeSkipped = () => {
-  //     return true;
-  //   };
-  //   wrapper.wizard.setPage = () => {};
-  //   const spied = spy(wrapper, '_goToPage');
-  //   wrapper._goToNextPage();
-  //   spied.restore();
-  //   assert.calledOnce(spied);
-  //   expect(spied.getCall(0).calledWith(2)).equals(true);
-  // });
+    wrapper.config.terms.termsStorageType.setItem(
+      configuration.terms.termsStorageName,
+      false,
+    );
+    response = wrapper._areTermsAccepted(1, pages);
+    expect(response).equals(false);
 
-  // it('_fireExtraEvent works', async () => {
-  //   wrapper.formTitle = 'Test form';
-  //   let response = wrapper._fireExtraEvent('testEvent');
-  //   expect(typeof response).equals('object');
-  //   expect(response.bubbles).equals(true);
-  //   expect(response.detail.title).equals('Test form');
-  // });
+    sessionStorage.removeItem(configuration.terms.termsStorageName);
+    response = wrapper._areTermsAccepted(1, pages);
+    expect(response).equals(true);
+  });
+
+  it('_updateIfCompleted works', async () => {
+    wrapper.config.terms.termsStorageType.removeItem(configuration.storageName);
+    wrapper.config.terms.skipIfTermsAlreadyAccepted = false;
+    const pages = [
+      { component: { title: 'Something mundane' } },
+      { component: { title: wrapper.config.terms.title } },
+      { component: { title: 'Another boring title' } },
+    ];
+    wrapper.config.form.title = 'Test form';
+    let response = wrapper._updateIfCompleted(1, []);
+    expect(response).equals(false);
+    response = wrapper._updateIfCompleted(0, pages);
+    expect(response).equals(false);
+    response = wrapper._updateIfCompleted(1, pages);
+    expect(response).equals(false);
+    response = wrapper._updateIfCompleted(2, pages);
+    expect(response.length).equals(1);
+    expect(response[0]).equals('Test form');
+  });
+
+  it('ensure gotonext page doesnt go to far', async () => {
+    wrapper.loaded = true;
+    wrapper.wizard.page = 1;
+    wrapper.wizard.pages = [
+      { component: { title: 'Something mundane' } },
+      { component: { title: wrapper.config.terms.title } },
+      { component: { title: 'Another boring title' } },
+    ];
+    wrapper._shouldNextPageBeSkipped = () => {
+      return true;
+    };
+    wrapper.wizard.setPage = () => {};
+    const spied = spy(wrapper, '_goToPage');
+    wrapper._goToNextPage();
+    spied.restore();
+    assert.calledOnce(spied);
+    expect(spied.getCall(0).calledWith(2)).equals(true);
+  });
+
+  it('_fireExtraEvent works', async () => {
+    wrapper.formTitle = 'Test form';
+    let response = wrapper._fireExtraEvent('testEvent');
+    expect(typeof response).equals('object');
+    expect(response.bubbles).equals(true);
+    expect(response.detail.title).equals('Test form');
+  });
+
+  it('form submission', async () => {
+    if (!wrapper.pdfInstance) {
+      wrapper.pdfInstance = {};
+    }
+    wrapper.pdfInstance.submit = () => {};
+    const spied = spy(wrapper.pdfInstance, 'submit');
+    wrapper._formSubmission();
+    spied.restore();
+    assert.calledOnce(spied);
+  });
 
   afterEach(async () => {
     // element = null;

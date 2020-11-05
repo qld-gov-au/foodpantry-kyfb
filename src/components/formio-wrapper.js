@@ -368,7 +368,9 @@ export class FormioWrapper {
       if (!completed || !completed.length) {
         completed = [];
       }
-      completed.push(this.config.form.title);
+      if (this.config.form.title) {
+        completed.push(this.config.form.title);
+      }
       this.config.storage.type.setItem(
         this.config.storage.name,
         JSON.stringify(completed),

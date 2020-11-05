@@ -46,6 +46,9 @@ export const configuration = {
     name: 'completedTopics',
   },
   extraTriggersOnActions: {
-    cancel: 'cancelKYFBForm',
+    cancel: 'doNothing',
+    next: 'doNothing',
+    goto: 'doNothing',
+    previous: 'doNothing',
   },
 };
