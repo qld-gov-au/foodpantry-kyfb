@@ -11,6 +11,7 @@ import { ReapplySelected } from './scripts/reapply-selected';
     storage: localStorage,
     storageName: 'completedTopics',
     formLocation: '',
+    stageLocation: 'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd',
     formSettings: {
       buttonSettings: {
         showCancel: false,
@@ -46,10 +47,9 @@ import { ReapplySelected } from './scripts/reapply-selected';
       cancel: 'cancelKYFBForm',
     },
     submissionInfo: {
-      projectID: '5f44969319d1a97a819d80a7',
-      formID: '5f8f7e6c8095d22a27f6a03a',
+      formName: 'kyfbpdf',
     },
-    formAdminEmail: 'anthony.canu@smartservice.qld.gov.au',
+    formAdminEmail: 'jordan.binskin.cfa@smartservice.qld.gov.au',
   };
 
   const cssReapplier = new ReapplySelected();
@@ -82,8 +82,16 @@ import { ReapplySelected } from './scripts/reapply-selected';
 
     const sectionNavigation = new ButtonGroup(sectionNavTarget, 'navigation');
 
-    const topicsList = new TopicsList('topics', localStorage);
-    const secondaryTopics = new TopicsList('SummaryTopics', localStorage);
+    const topicsList = new TopicsList(
+      'topics',
+      localStorage,
+      configuration.stageLocation,
+    );
+    const secondaryTopics = new TopicsList(
+      'SummaryTopics',
+      localStorage,
+      configuration.stageLocation,
+    );
   });
 
   window.addEventListener('kyfb-topic-change', (event) => {
