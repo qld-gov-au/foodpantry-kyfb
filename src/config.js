@@ -1,14 +1,15 @@
 export const configuration = {
   form: {
     baseElement: window,
+    queryElement: document,
     formioConfig: {
       showCancel: false,
       showPrevious: false,
       showNext: false,
       showSubmit: false,
       adminEmail: '',
-      endpoint: '/submission',
     },
+    endpoint: '/submission',
     selector: '#formio',
     title: '',
     location: '',
@@ -16,6 +17,7 @@ export const configuration = {
   scroll: {
     target: 0,
     type: 'auto',
+    focusTarget: '#focusTarget',
   },
   terms: {
     title: 'terms of use',

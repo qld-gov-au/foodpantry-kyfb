@@ -10,6 +10,7 @@ export class FormioWrapper {
     this.config = configuration;
 
     this.submissionEndpoint = `${this.config.form.location}${this.config.form.endpoint}`;
+    this.formLocation = this.config.form.location;
     this.formElement = {};
     this.wizard = {};
     this.loaded = false;
@@ -20,7 +21,9 @@ export class FormioWrapper {
    */
   initialise() {
     if (!this.formLocation) return;
-    this.formElement = document.querySelector('#formio');
+    this.formElement = this.config.form.queryElement.querySelector(
+      this.config.form.selector,
+    );
     // create main form
     Formio.createForm(
       this.formElement,
@@ -38,7 +41,10 @@ export class FormioWrapper {
       });
       this.wizard.on('render', () => {
         this._firePageChangeEvent();
-        this.scrollToTop();
+        this.scrollToTop(
+          this.config.form.baseElement,
+          this.config.form.queryElement,
+        );
       });
       this.wizard.on('change', () => {
         this._firePageChangeEvent();
@@ -140,7 +146,6 @@ export class FormioWrapper {
     if (!this.wizard || !this.wizard.components) {
       return navigationArray;
     }
-    // this.wizard.setPage(this.wizard.page);
     let invalidPreviousStep = false;
     this.wizard.components.forEach((page, offset) => {
       const isValid = this._checkPageValidity(
@@ -201,12 +206,12 @@ export class FormioWrapper {
     const { pages } = this.wizard;
     const { data } = this.wizard;
 
-    const { baseClass } = this.config.buttons.css;
+    const { base } = this.config.buttons.css;
 
     const previousButton = {
       title: 'Back',
       event: 'formiowrapperGoToPrevious',
-      cssClass: `${baseClass} ${this.config.buttons.css.previous}`,
+      cssClass: `${base} ${this.config.buttons.css.previous}`,
       disabled: false,
       displayed: true,
       visited: false,
@@ -215,7 +220,7 @@ export class FormioWrapper {
     const nextButton = {
       title: 'Next',
       event: 'formiowrapperGoToNext',
-      cssClass: `${baseClass} ${this.config.buttons.css.next}`,
+      cssClass: `${base} ${this.config.buttons.css.next}`,
       disabled: !this._checkPageValidity(page, pages, data),
       displayed: true,
       visited: false,
@@ -224,7 +229,7 @@ export class FormioWrapper {
     const cancelButton = {
       title: 'Cancel',
       event: 'formiowrapperCancel',
-      cssClass: `${baseClass} ${this.config.buttons.css.cancel}`,
+      cssClass: `${base} ${this.config.buttons.css.cancel}`,
       disabled: false,
       displayed: true,
       visited: false,
@@ -260,7 +265,7 @@ export class FormioWrapper {
    * @return {Boolean}
    */
   _determineTitleChange(currentPageTitle) {
-    if (!this.config.buttons.acceptWhenTermsFound) return false;
+    if (!this.config.buttons.overwriteFirstButton) return false;
     return currentPageTitle.toLowerCase().includes(this.config.terms.title);
   }
 
@@ -330,6 +335,7 @@ export class FormioWrapper {
     if (!this.loaded) {
       this.notLoaded();
     }
+    if (this.wizard.page === this.wizard.pages.length - 1) return false;
     if (this._shouldNextPageBeSkipped(this.wizard.page, this.wizard.pages)) {
       const proposedPage = this.wizard.page + 2;
       const targetPage = proposedPage < this.wizard.pages.length
@@ -402,6 +408,7 @@ export class FormioWrapper {
     if (!this.loaded) {
       this.notLoaded();
     }
+    if (!this.wizard || !this.wizard.pages) return false;
 
     this._updateIfCompleted(pageNo, this.wizard.pages);
     this.wizard.setPage(pageNo);
@@ -423,16 +430,17 @@ export class FormioWrapper {
   }
 
   /**
+   * @param {HTMLElement} baseElement the base element for scrolling (window)
+   * @param {HTMLElement} focusTarget the element for query selecting (document)
    */
-  scrollToTop() {
+  scrollToTop(baseElement, focusTarget) {
     if (this.config.scroll.target !== -1) {
-      this.config.form.baseElement.scroll({
+      baseElement.scroll({
         top: this.config.scroll.target,
         behavior: this.config.scroll.type,
       });
     }
-    const formio = document.querySelector('#focusTarget');
-    formio.focus();
+    focusTarget.focus();
   }
 
   createPDFInstance() {
@@ -459,7 +467,7 @@ export class FormioWrapper {
     if (this.requestedDownload) return;
     this.requestedDownload = true;
     // wizard event does not capture EventTarget
-    const downloadButton = document.querySelector(
+    const downloadButton = this.config.form.queryElement.querySelector(
       '[name="data[downloadSummary]"',
     );
     downloadButton.disabled = true;
@@ -504,7 +512,9 @@ export class FormioWrapper {
   _sendEmail(options = {}) {
     if (this.requestedEmail) return;
     const { admin = false } = options;
-    const emailButton = document.querySelector('[name="data[emailButton]"');
+    const emailButton = this.config.form.queryElement.querySelector(
+      '[name="data[emailButton]"',
+    );
     if (!admin) {
       emailButton.disabled = true;
       this.requestedEmail = true;
