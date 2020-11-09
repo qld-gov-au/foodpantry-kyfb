@@ -16,7 +16,7 @@ export class FormioWrapper {
 
   initialise(firstInit = true) {
     if (!this.config.form.location) return;
-    this.submissionEndpoint = `${this.config.form.location}${this.config.form.endpoint}`;
+    this.submissionEndpoint = `${this.config.form.location}/${this.config.form.endpoint}`;
     this.formElement = document.querySelector('#formio');
     // create main form
     Formio.createForm(
@@ -447,7 +447,7 @@ export class FormioWrapper {
   createPDFInstance() {
     Formio.createForm(
       document.createElement('div'),
-      `${this.config.form.baseLocation}${this.config.form.pdfSubmission}`,
+      `${this.config.form.baseLocation}${this.config.form.pdfEndpoint}`,
     ).then((pdfInstance) => {
       this.pdfInstance = pdfInstance;
     });

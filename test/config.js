@@ -10,12 +10,13 @@ export const configuration = {
     },
     adminEmail: '',
     endpoint: 'submission',
+    pdfEndpoint: 'kyfbpdf',
     pdfSubmission: 'pdfSubmission',
     selector: '#formio',
     title: '',
     location:
       'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/formwizard',
-    baseLocation: 'https://github.com/formio/formio.js/issues/1984',
+    baseLocation: 'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd',
   },
   scroll: {
     target: 0,

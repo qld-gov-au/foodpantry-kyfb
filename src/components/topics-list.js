@@ -179,6 +179,7 @@ export class TopicsList {
             minorTopic.form,
             minorTopic.title,
             minorTopic.baseLocation,
+            minorTopic.email,
           );
         }
         return nothing;
@@ -207,6 +208,7 @@ export class TopicsList {
               minorTopic.form,
               minorTopic.title,
               minorTopic.baseLocation,
+              minorTopic.email,
             ),
           );
         }
