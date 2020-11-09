@@ -40,10 +40,14 @@ import { configuration } from './config';
     const secondaryTopics = new TopicsList('SummaryTopics', localStorage);
   });
 
+  let firstInit = true;
+
   window.addEventListener('kyfb-topic-change', (event) => {
     kyfb.config.form.location = event.detail.topic;
+    kyfb.config.form.baseLocation = event.detail.base;
     kyfb.config.form.title = event.detail.title;
-    kyfb.initialise();
+    kyfb.initialise(firstInit);
+    firstInit = false;
     if (event.detail.topic) {
       document.querySelector('#forms').hidden = false;
       document.querySelector('#topics').hidden = true;

@@ -9,12 +9,13 @@ export const configuration = {
       showSubmit: false,
       adminEmail: '',
     },
-    endpoint: '/submission',
-    pdfSubmission: '/pdfSubmission',
+    endpoint: 'submission',
+    pdfSubmission: 'pdfSubmission',
     selector: '#formio',
     title: '',
     location:
       'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/formwizard',
+    baseLocation: 'https://github.com/formio/formio.js/issues/1984',
   },
   scroll: {
     target: 0,

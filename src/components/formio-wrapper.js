@@ -14,14 +14,10 @@ export class FormioWrapper {
     this._addListeners(this.config.form.baseElement);
   }
 
-  /**
-   */
-  initialise() {
-    this.submissionEndpoint = `${this.config.form.location}${this.config.form.endpoint}`;
+  initialise(firstInit = true) {
     if (!this.config.form.location) return;
-    this.formElement = this.config.form.queryElement.querySelector(
-      this.config.form.selector,
-    );
+    this.submissionEndpoint = `${this.config.form.location}${this.config.form.endpoint}`;
+    this.formElement = document.querySelector('#formio');
     // create main form
     Formio.createForm(
       this.formElement,
@@ -30,34 +26,37 @@ export class FormioWrapper {
     ).then((wizard) => {
       this.wizard = wizard;
       this.submissionData = this.wizard.submission.data;
-      this.config.form.title = !this.config.form.title
-        ? wizard._form.title
-        : this.config.form.title;
+      this.wizard.data.adminEmail = this.formAdminEmail;
+      this.formTitle = !this.formTitle ? wizard._form.title : this.formTitle;
       this.loaded = true;
-      this.wizard.on('initialized', () => {
-        this._firePageChangeEvent();
-      });
-      this.wizard.on('render', () => {
-        this._firePageChangeEvent();
-        this.scrollToTop(
-          this.config.form.baseElement,
-          this.config.form.queryElement,
-        );
-      });
-      this.wizard.on('change', () => {
-        this._firePageChangeEvent();
-      });
-      this.wizard.on('downloadPDF', () => {
-        this.wizard.data.sendEmail = false;
-        this._downloadPDF();
-      });
-      this.wizard.on('sendEmail', () => {
-        this.wizard.data.sendEmail = true;
-        this._sendEmail();
-      });
+      if (firstInit) {
+        this._attachHandlers();
+        this.createPDFInstance();
+      }
     });
-    // create PDF instance
-    this.createPDFInstance();
+  }
+
+  /**
+   */
+  _attachHandlers() {
+    this.wizard.on('initialized', () => {
+      this._firePageChangeEvent();
+    });
+    this.wizard.on('render', () => {
+      this._firePageChangeEvent();
+      this.scrollToTop();
+    });
+    this.wizard.on('change', () => {
+      this._firePageChangeEvent();
+    });
+    this.wizard.on('downloadPDF', () => {
+      this.wizard.data.sendEmail = false;
+      this._downloadPDF();
+    });
+    this.wizard.on('sendEmail', () => {
+      this.wizard.data.sendEmail = 'user';
+      this._sendEmail();
+    });
   }
 
   /**
@@ -445,7 +444,7 @@ export class FormioWrapper {
   createPDFInstance() {
     Formio.createForm(
       document.createElement('div'),
-      `${this.config.form.location}${this.config.form.pdfSubmission}`,
+      `${this.config.form.baseLocation}${this.config.form.pdfSubmission}`,
     ).then((pdfInstance) => {
       this.pdfInstance = pdfInstance;
     });

@@ -37,7 +37,7 @@ describe('Formio Wrapper Tests.', () => {
     expect(wrapper.config.buttons.overwriteValue).equals('Start');
     expect(typeof wrapper.config.form.baseElement).equals('object');
     expect(typeof wrapper.config.form.location).equals('string');
-    expect(wrapper.formLocation).equals(
+    expect(wrapper.config.form.location).equals(
       'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/formwizard',
     );
     expect(wrapper.config.buttons.overwriteFirstButton).equals(true);
@@ -620,13 +620,20 @@ describe('Formio Wrapper Tests.', () => {
     assert.notCalled(spied);
   });
 
-  it('download pdf is not requested download', async () => {
-    wrapper.requestedDownload = false;
-    const stubFetch = stub(window, 'fetch');
-    window.fetch.returns(Promise.resolve(apiResponse()));
-    wrapper._downloadPDF();
-    stubFetch.restore();
-  });
+  // it('download pdf is not requested download', async () => {
+  //   wrapper.requestedDownload = false;
+  //   const stubFetch = stub(window, 'fetch');
+  //   window.fetch.returns(Promise.resolve(apiResponse()));
+  //   wrapper._downloadPDF();
+  //   stubFetch.restore();
+  // });
+  // it('download pdf is not requested download', async () => {
+  //   wrapper.requestedDownload = false;
+  //   const stubFetch = stub(window, 'fetch');
+  //   window.fetch.returns(Promise.resolve(apiResponse()));
+  //   wrapper._downloadPDF();
+  //   stubFetch.restore();
+  // });
 
   // /**
   //  * @return {void}
