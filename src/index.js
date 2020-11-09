@@ -36,8 +36,16 @@ import { configuration } from './config';
 
     const sectionNavigation = new ButtonGroup(sectionNavTarget, 'navigation');
 
-    const topicsList = new TopicsList('topics', localStorage);
-    const secondaryTopics = new TopicsList('SummaryTopics', localStorage);
+    const topicsList = new TopicsList(
+      'topics',
+      localStorage,
+      configuration.stageLocation,
+    );
+    const secondaryTopics = new TopicsList(
+      'SummaryTopics',
+      localStorage,
+      configuration.stageLocation,
+    );
   });
 
   let firstInit = true;
@@ -46,6 +54,7 @@ import { configuration } from './config';
     kyfb.config.form.location = event.detail.topic;
     kyfb.config.form.baseLocation = event.detail.base;
     kyfb.config.form.title = event.detail.title;
+    kyfb.config.form.adminEmail = event.detail.email;
     kyfb.initialise(firstInit);
     firstInit = false;
     if (event.detail.topic) {

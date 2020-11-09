@@ -19,14 +19,17 @@ export class Environment {
     switch (selectedEnvironment) {
       case 'development': {
         this.url = 'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/';
+        this.email = '';
         break;
       }
       case 'uat': {
         this.url = 'https://api.forms.platforms.qld.gov.au/uatsprint5-fesrqwsyzlbtegd/';
+        this.email = 'foodpantry@health.qld.gov.au';
         break;
       }
       default: {
         this.url = 'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/';
+        this.email = 'foodpantry@health.qld.gov.au';
         break;
       }
     }

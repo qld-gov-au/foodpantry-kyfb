@@ -441,6 +441,9 @@ export class FormioWrapper {
     focusTarget.focus();
   }
 
+  /**
+   * @return {void}
+   */
   createPDFInstance() {
     Formio.createForm(
       document.createElement('div'),
@@ -507,13 +510,15 @@ export class FormioWrapper {
       });
   }
 
-  _sendEmail(options = {}) {
+  /**
+   * @return {void}
+   */
+  _sendEmail() {
     if (this.requestedEmail) return;
-    const { admin = false } = options;
     const emailButton = this.config.form.queryElement.querySelector(
       '[name="data[emailButton]"',
     );
-    if (!admin) {
+    if (this.wizard.data.sendEmail === 'user') {
       emailButton.disabled = true;
       this.requestedEmail = true;
       setTimeout(() => {

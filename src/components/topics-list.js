@@ -14,16 +14,16 @@ export class TopicsList {
         name: 'People',
         topics: [
           {
-            title: 'Skills and knowledge',
-            form: `${environment.url}skillsandknowledge`,
             baseLocation: environment.url,
+            form: `${environment.url}skillsandknowledge`,
             image: 'https://www.qld.gov.au/?a=140634',
+            title: 'Skills and knowledge',
           },
           {
-            title: 'Health and hygiene',
-            form: `${environment.url}healthandhygiene`,
             baseLocation: environment.url,
+            form: `${environment.url}healthandhygiene`,
             image: 'https://www.qld.gov.au/?a=140674',
+            title: 'Health and hygiene',
           },
         ],
       },
@@ -31,40 +31,40 @@ export class TopicsList {
         name: 'Process',
         topics: [
           {
-            title: 'Receive food',
+            baseLocation: environment.url,
             form: `${environment.url}receivefood`,
-            baseLocation: environment.url,
             image: 'https://www.qld.gov.au/?a=140652',
+            title: 'Receive food',
           },
           {
-            title: 'Store food',
+            baseLocation: environment.url,
             form: `${environment.url}storefood`,
-            baseLocation: environment.url,
             image: 'https://www.qld.gov.au/?a=140651',
+            title: 'Store food',
           },
           {
-            title: 'Prepare food',
+            baseLocation: environment.url,
             form: `${environment.url}preparefood`,
-            baseLocation: environment.url,
             image: 'https://www.qld.gov.au/?a=140672',
+            title: 'Prepare food',
           },
           {
-            title: 'Display and serve food',
+            baseLocation: environment.url,
             form: `${environment.url}displayandservefood`,
-            baseLocation: environment.url,
             image: 'https://www.qld.gov.au/?a=140675',
+            title: 'Display and serve food',
           },
           {
-            title: 'Transport food',
+            baseLocation: environment.url,
             form: `${environment.url}transportfood`,
-            baseLocation: environment.url,
             image: 'https://www.qld.gov.au/?a=140646',
+            title: 'Transport food',
           },
           {
-            title: 'Complaints and recall',
-            form: `${environment.url}complaintsandrecall`,
             baseLocation: environment.url,
+            form: `${environment.url}complaintsandrecall`,
             image: 'https://www.qld.gov.au/?a=140671',
+            title: 'Complaints and recall',
           },
         ],
       },
@@ -72,22 +72,22 @@ export class TopicsList {
         name: 'Premises and equipment',
         topics: [
           {
-            title: 'Animals and pests',
+            baseLocation: environment.url,
             form: `${environment.url}animalsandpests`,
-            baseLocation: environment.url,
             image: 'https://www.qld.gov.au/?a=140677',
+            title: 'Animals and pests',
           },
           {
-            title: 'Clean and santise',
+            baseLocation: environment.url,
             form: `${environment.url}cleanandsantise`,
-            baseLocation: environment.url,
             image: 'https://www.qld.gov.au/?a=140676',
+            title: 'Clean and santise',
           },
           {
-            title: 'Maintenance',
-            form: `${environment.url}kyfbmaintenance`,
             baseLocation: environment.url,
+            form: `${environment.url}kyfbmaintenance`,
             image: 'https://www.qld.gov.au/?a=140673',
+            title: 'Maintenance',
           },
         ],
       },
@@ -220,10 +220,11 @@ export class TopicsList {
    * @param {String} form url of form to load
    * @param {String} title title of the topic
    * @param {String} baseLocation the base location
+   * @param {String} email admin email
    * @return {HTMLTemplateElement}
    */
   // eslint-disable-next-line class-methods-use-this
-  _generateNewArticle(image, form, title, baseLocation) {
+  _generateNewArticle(image, form, title, baseLocation, email) {
     return html`<article
       class="qg-card card__light-theme col-12 col-sm-6 col-lg-4"
     >
@@ -236,6 +237,7 @@ export class TopicsList {
             data-form=${form}
             data-title=${title}
             data-base=${baseLocation}
+            data-email=${email}
           >
             ${title}
           </button>
@@ -248,16 +250,18 @@ export class TopicsList {
    * @param {String} form the url for an anchor
    * @param {String} title the title of the completed topic
    * @param {String} baseLocation location base url
+   * @param {String} email admin email
    * @return {HTMLTemplateElement}
    */
   // eslint-disable-next-line class-methods-use-this
-  _generateCompletedTopic(form, title, baseLocation) {
+  _generateCompletedTopic(form, title, baseLocation, email) {
     return html` <li>
       <button
         @click=${this.loadNewForm}
         data-form=${form}
         data-title=${title}
         data-base=${baseLocation}
+        data-email=${email}
         class="btn btn-link"
       >
         ${title}
@@ -277,6 +281,7 @@ export class TopicsList {
         topic: event.target.dataset.form,
         base: event.target.dataset.base,
         title: event.target.dataset.title,
+        email: event.target.dataset.email,
       },
     });
     window.dispatchEvent(newEvent);
