@@ -8,6 +8,7 @@ import { configuration } from './config.js';
 describe('Formio Wrapper Tests.', () => {
   let wrapper = {};
   let element;
+  let apiResponse;
   beforeEach(async () => {
     element = await fixture(html` <div id="formio"></div> `);
     window.Formio = {};
@@ -17,6 +18,13 @@ describe('Formio Wrapper Tests.', () => {
     Formio._data = {};
 
     wrapper = new FormioWrapper(configuration);
+
+    apiResponse = function (body = {}) {
+      return new window.Response(JSON.stringify(body), {
+        status: 200,
+        headers: { 'Content-type': 'application/json' },
+      });
+    };
   });
 
   it('wrapper is initialised', async () => {
@@ -420,7 +428,7 @@ describe('Formio Wrapper Tests.', () => {
     expect(initialProgressBar[0].cssClass).includes('qg-btn btn-link');
     expect(typeof initialProgressBar[0].detail).equals('object');
     expect(initialProgressBar[0].title).equals('First Page');
-    expect(initialProgressBar[0].event).equals('goToPage');
+    expect(initialProgressBar[0].event).equals('formiowrapperGoToPage');
     expect(initialProgressBar[0].disabled).equals(false);
     expect(initialProgressBar[0].displayed).equals(true);
 
@@ -429,14 +437,14 @@ describe('Formio Wrapper Tests.', () => {
     expect(initialProgressBar[1].cssClass).includes('visited');
     expect(typeof initialProgressBar[1].detail).equals('object');
     expect(initialProgressBar[1].title).equals('terms and conditions');
-    expect(initialProgressBar[1].event).equals('goToPage');
+    expect(initialProgressBar[1].event).equals('formiowrapperGoToPage');
     expect(initialProgressBar[1].disabled).equals(false);
     expect(initialProgressBar[1].displayed).equals(true);
 
     expect(initialProgressBar[2].cssClass).includes('qg-btn btn-link');
     expect(typeof initialProgressBar[2].detail).equals('object');
     expect(initialProgressBar[2].title).equals('something');
-    expect(initialProgressBar[2].event).equals('goToPage');
+    expect(initialProgressBar[2].event).equals('formiowrapperGoToPage');
     expect(initialProgressBar[2].disabled).equals(true);
     expect(initialProgressBar[2].displayed).equals(true);
     stubbedValidity.restore();
@@ -603,6 +611,71 @@ describe('Formio Wrapper Tests.', () => {
     spied.restore();
     assert.calledOnce(spied);
   });
+
+  it('download pdf is requested download', async () => {
+    wrapper.requestedDownload = true;
+    const spied = spy(wrapper, '_formSubmission');
+    wrapper._downloadPDF();
+    spied.restore();
+    assert.notCalled(spied);
+  });
+
+  it('download pdf is not requested download', async () => {
+    wrapper.requestedDownload = false;
+    const stubFetch = stub(window, 'fetch');
+    window.fetch.returns(Promise.resolve(apiResponse()));
+    wrapper._downloadPDF();
+    stubFetch.restore();
+  });
+
+  // /**
+  //  * @return {void}
+  //  */
+  // _downloadPDF() {
+  //   if (this.requestedDownload) return;
+  //   this.requestedDownload = true;
+  //   // wizard event does not capture EventTarget
+  //   const downloadButton = this.config.form.queryElement.querySelector(
+  //     '[name="data[downloadSummary]"',
+  //   );
+  //   downloadButton.disabled = true;
+  //   this._formSubmission()
+  //     .then(successBody => fetch(`${this.submissionEndpoint}/${successBody._id}/download`)
+  //       .then((res) => {
+  //         if (!res.ok) {
+  //           throw new Error(`HTTP error! status: ${res}`);
+  //         }
+  //         return res.blob();
+  //       })
+  //       .then((blob) => {
+  //         const newBlob = new Blob([blob], { type: 'application/pdf' });
+
+  //         // IE 11
+  //         if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+  //           window.navigator.msSaveOrOpenBlob(newBlob);
+  //           return;
+  //         }
+
+  //         // For other browsers
+  //         const data = window.URL.createObjectURL(newBlob);
+  //         const link = document.createElement('a');
+  //         link.href = data;
+  //         link.download = `Know Your Food Business summary - ${this.submissionData.topicName}.pdf`;
+  //         link.click();
+  //         setTimeout(() => {
+  //           // For Firefox
+  //           window.URL.revokeObjectURL(data);
+  //         }, 100);
+
+  //         downloadButton.disabled = false;
+  //         this.requestedDownload = false;
+  //       }))
+  //     .catch((error) => {
+  //       downloadButton.disabled = false;
+  //       this.requestedDownload = false;
+  //       return error;
+  //     });
+  // }
 
   afterEach(async () => {
     // element = null;

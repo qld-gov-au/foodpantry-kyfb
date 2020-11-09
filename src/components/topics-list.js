@@ -1,4 +1,5 @@
 import { html, render, nothing } from 'lit-html';
+import { Environment } from '../environment';
 
 export class TopicsList {
   constructor(target, storage) {
@@ -6,6 +7,7 @@ export class TopicsList {
     this.domTarget = undefined;
     this.storage = storage;
     this.storageName = 'completedTopics';
+    const environment = new Environment();
 
     this.allTopics = [
       {
@@ -13,14 +15,12 @@ export class TopicsList {
         topics: [
           {
             title: 'Skills and knowledge',
-            form:
-              'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/skillsandknowledge',
+            form: `${environment.url}/skillsandknowledge`,
             image: 'https://www.qld.gov.au/?a=140634',
           },
           {
             title: 'Health and hygiene',
-            form:
-              'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/healthandhygiene',
+            form: `${environment.url}/healthandhygiene`,
             image: 'https://www.qld.gov.au/?a=140674',
           },
         ],
@@ -30,38 +30,32 @@ export class TopicsList {
         topics: [
           {
             title: 'Receive food',
-            form:
-              'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/receivefood',
+            form: `${environment.url}/fesrqwsyzlbtegd/receivefood`,
             image: 'https://www.qld.gov.au/?a=140652',
           },
           {
             title: 'Store food',
-            form:
-              'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/storefood',
+            form: `${environment.url}/storefood`,
             image: 'https://www.qld.gov.au/?a=140651',
           },
           {
             title: 'Prepare food',
-            form:
-              'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/preparefood',
+            form: `${environment.url}/preparefood`,
             image: 'https://www.qld.gov.au/?a=140672',
           },
           {
             title: 'Display and serve food',
-            form:
-              'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/displayandservefood',
+            form: `${environment.url}/displayandservefood`,
             image: 'https://www.qld.gov.au/?a=140675',
           },
           {
             title: 'Transport food',
-            form:
-              'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/transportfood',
+            form: `${environment.url}/transportfood`,
             image: 'https://www.qld.gov.au/?a=140646',
           },
           {
             title: 'Complaints and recall',
-            form:
-              'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/complaintsandrecall',
+            form: `${environment.url}/complaintsandrecall`,
             image: 'https://www.qld.gov.au/?a=140671',
           },
         ],
@@ -71,20 +65,17 @@ export class TopicsList {
         topics: [
           {
             title: 'Animals and pests',
-            form:
-              'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/animalsandpests',
+            form: `${environment.url}/animalsandpests`,
             image: 'https://www.qld.gov.au/?a=140677',
           },
           {
             title: 'Clean and santise',
-            form:
-              'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/cleanandsantise',
+            form: `${environment.url}/cleanandsantise`,
             image: 'https://www.qld.gov.au/?a=140676',
           },
           {
             title: 'Maintenance',
-            form:
-              'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/kyfbmaintenance',
+            form: `${environment.url}/kyfbmaintenance`,
             image: 'https://www.qld.gov.au/?a=140673',
           },
         ],

@@ -10,6 +10,7 @@ export const configuration = {
       adminEmail: '',
     },
     endpoint: '/submission',
+    pdfSubmission: '/pdfSubmission',
     selector: '#formio',
     title: '',
     location:

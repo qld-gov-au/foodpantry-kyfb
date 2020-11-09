@@ -8,9 +8,6 @@ export class FormioWrapper {
    */
   constructor(configuration) {
     this.config = configuration;
-
-    this.submissionEndpoint = `${this.config.form.location}${this.config.form.endpoint}`;
-    this.formLocation = this.config.form.location;
     this.formElement = {};
     this.wizard = {};
     this.loaded = false;
@@ -20,14 +17,15 @@ export class FormioWrapper {
   /**
    */
   initialise() {
-    if (!this.formLocation) return;
+    this.submissionEndpoint = `${this.config.form.location}${this.config.form.endpoint}`;
+    if (!this.config.form.location) return;
     this.formElement = this.config.form.queryElement.querySelector(
       this.config.form.selector,
     );
     // create main form
     Formio.createForm(
       this.formElement,
-      this.formLocation,
+      this.config.form.location,
       this.config.form.formioConfig,
     ).then((wizard) => {
       this.wizard = wizard;
@@ -56,12 +54,6 @@ export class FormioWrapper {
       this.wizard.on('sendEmail', () => {
         this.wizard.data.sendEmail = true;
         this._sendEmail();
-      });
-      this.wizard.on('nextPage', ({ page }) => {
-        if (page === 3) {
-          this.wizard.data.sendEmail = true;
-          this._sendEmail({ admin: true });
-        }
       });
     });
     // create PDF instance
@@ -97,11 +89,16 @@ export class FormioWrapper {
       }
     });
 
-    baseObject.addEventListener('goToPage', (event) => {
+    baseObject.addEventListener('formiowrapperGoToPage', (event) => {
       this._goToPage(Number(event.detail.page));
       if (this.config.extraTriggersOnActions.goto) {
         this._fireExtraEvent(this.config.extraTriggersOnActions.goto);
       }
+    });
+
+    baseObject.addEventListener('formiowrapperSendAdminEmail', () => {
+      this.wizard.data.sendEmail = true;
+      this._sendEmail({ admin: true });
     });
   }
 
@@ -167,7 +164,7 @@ export class FormioWrapper {
         detail: {
           page: offset,
         },
-        event: 'goToPage',
+        event: 'formiowrapperGoToPage',
         title: page.component.title,
         disabled: invalidPreviousStep,
         displayed: true,
@@ -448,7 +445,7 @@ export class FormioWrapper {
   createPDFInstance() {
     Formio.createForm(
       document.createElement('div'),
-      'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/kyfbpdf',
+      `${this.config.form.location}${this.config.form.pdfSubmission}`,
     ).then((pdfInstance) => {
       this.pdfInstance = pdfInstance;
     });

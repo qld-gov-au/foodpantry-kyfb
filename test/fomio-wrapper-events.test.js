@@ -57,7 +57,7 @@ describe('Formio Wrapper Event Tests.', () => {
     element.dispatchEvent(new CustomEvent('formiowrapperGoToNext'));
     element.dispatchEvent(new CustomEvent('formiowrapperGoToPrevious'));
     element.dispatchEvent(
-      new CustomEvent('goToPage', {
+      new CustomEvent('formiowrapperGoToPage', {
         bubbles: true,
         detail: { page: 1 },
       }),
@@ -100,7 +100,7 @@ describe('Formio Wrapper Event Tests.', () => {
 
     wrapper._addListeners(element);
     element.dispatchEvent(
-      new CustomEvent('goToPage', {
+      new CustomEvent('formiowrapperGoToPage', {
         bubbles: true,
         detail: { page: 1 },
       }),
