@@ -82,7 +82,7 @@ import { configuration } from './config';
 
   window.addEventListener('checkForAutoEmail', (event) => {
     if (event.detail.page === 3) {
-      const newEvent = new CustomEvent(event, {
+      const newEvent = new CustomEvent('formiowrapperSendAdminEmail', {
         bubbles: true,
       });
       window.dispatchEvent(newEvent);
