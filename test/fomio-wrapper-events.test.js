@@ -110,11 +110,4 @@ describe('Formio Wrapper Event Tests.', () => {
 
     assert.calledTwice(spiedGoToPage);
   });
-
-  // afterEach(async () => {
-  //   element = null;
-  //   window.Formio = null;
-  //   configuration = null;
-  //   wrapper = null;
-  // });
 });
