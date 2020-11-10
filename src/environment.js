@@ -6,6 +6,9 @@ export class Environment {
   constructor(environment = '', base = window.location.href) {
     let selectedEnvironment = 'production';
     if (!environment) {
+      if (base.includes('localhost')) {
+        selectedEnvironment = 'development';
+      }
       if (base.includes('dev')) {
         selectedEnvironment = 'development';
       }
