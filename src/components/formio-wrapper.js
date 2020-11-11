@@ -16,7 +16,7 @@ export class FormioWrapper {
 
   initialise(firstInit = true) {
     if (!this.config.form.location) return;
-    this.submissionEndpoint = `${this.config.form.location}/${this.config.form.endpoint}`;
+    this.submissionEndpoint = `${this.config.form.baseLocation}${this.config.form.pdfEndpoint}/${this.config.form.endpoint}`;
     this.formElement = document.querySelector('#formio');
 
     // create main form
@@ -45,7 +45,10 @@ export class FormioWrapper {
     });
     this.wizard.on('render', () => {
       this._firePageChangeEvent();
-      this.scrollToTop();
+      this.scrollToTop(
+        this.config.form.baseElement,
+        this.config.scroll.focusTarget,
+      );
     });
     this.wizard.on('change', () => {
       this._firePageChangeEvent();
@@ -439,7 +442,9 @@ export class FormioWrapper {
         behavior: this.config.scroll.type,
       });
     }
-    focusTarget.focus();
+    const target = this.config.form.queryElement.querySelector(focusTarget);
+    if (!target) return;
+    target.focus();
   }
 
   /**
