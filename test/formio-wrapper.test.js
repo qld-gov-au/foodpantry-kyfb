@@ -74,7 +74,7 @@ describe('Formio Wrapper Tests.', () => {
     const targetElement = document.querySelector(configuration.form.selector);
     const scroll = spy(element, 'scroll');
     const focus = spy(targetElement, 'focus');
-    wrapper.scrollToTop(element, targetElement);
+    wrapper.scrollToTop(element, configuration.form.selector);
     scroll.restore();
     focus.restore();
     assert.calledOnce(scroll);
