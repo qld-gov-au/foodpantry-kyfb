@@ -4,56 +4,10 @@ import { FormioWrapper } from './components/formio-wrapper';
 import { ButtonGroup } from './components/button-group';
 import { TopicsList } from './components/topics-list';
 import { ReapplySelected } from './scripts/reapply-selected';
+import { configuration } from './config';
 
 (() => {
-  const configuration = {
-    formTitle: '',
-    storage: localStorage,
-    storageName: 'completedTopics',
-    formLocation: '',
-    stageLocation: 'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd',
-    formSettings: {
-      buttonSettings: {
-        showCancel: false,
-        showPrevious: false,
-        showNext: false,
-        showSubmit: false,
-      },
-    },
-    buttonCSS: {
-      baseClass: 'qg-btn',
-      previous: 'btn-default',
-      next: 'btn-primary',
-      cancel: 'btn-link',
-    },
-    scrollTarget: 0,
-    scrollType: 'auto',
-    buttonConfig: {
-      startOnFirst: true,
-      hideCancelOnFirst: false,
-      acceptWhenTermsFound: true,
-    },
-    termsConfig: {
-      title: 'terms of use',
-      termsStorageType: sessionStorage,
-      termsStorageName: 'termsAndConditions',
-      skipIfTermsAlreadyAccepted: true,
-      dataName: 'termsAndConditions',
-    },
-    navigationCSS: {
-      baseClass: 'qg-btn btn-link',
-    },
-    extraTriggersOnActions: {
-      cancel: 'cancelKYFBForm',
-    },
-    submissionInfo: {
-      formName: 'kyfbpdf',
-    },
-    formAdminEmail: 'jordan.binskin.cfa@smartservice.qld.gov.au',
-  };
-
   const cssReapplier = new ReapplySelected();
-
   const kyfb = new FormioWrapper(configuration);
   const bg = new ButtonGroup(document.querySelector('.button-container'));
 
@@ -97,9 +51,10 @@ import { ReapplySelected } from './scripts/reapply-selected';
   let firstInit = true;
 
   window.addEventListener('kyfb-topic-change', (event) => {
-    kyfb.formLocation = event.detail.topic;
-    kyfb.formTitle = event.detail.title;
-
+    kyfb.config.form.location = event.detail.topic;
+    kyfb.config.form.baseLocation = event.detail.base;
+    kyfb.config.form.title = event.detail.title;
+    kyfb.config.form.adminEmail = event.detail.email;
     kyfb.initialise(firstInit);
     firstInit = false;
     if (event.detail.topic) {
@@ -123,6 +78,15 @@ import { ReapplySelected } from './scripts/reapply-selected';
     document.querySelector('#topics').hidden = false;
     document.querySelector('#home').hidden = false;
     document.querySelector('.guide-sub-nav').hidden = true;
+  });
+
+  window.addEventListener('checkForAutoEmail', (event) => {
+    if (event.detail.page === 3) {
+      const newEvent = new CustomEvent('formiowrapperSendAdminEmail', {
+        bubbles: true,
+      });
+      window.dispatchEvent(newEvent);
+    }
   });
 
   window.addEventListener('formiowrapperPageChange', (event) => {

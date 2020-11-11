@@ -16,7 +16,10 @@ The structure then of the KYFB app is as follows:
 Form.io is one way to quickly create modify and update forms on the fly. Like other similar technologies, it focuses on the submission and treatment of the data for these also. However, for the scope of the KYFB and LabelBuster, this functionality is limited only to the display of the forms.
 
 ## Wrapper
-The wrapper is designed to de-couple the application away from Formio, allowing swappable form solutions in the future and to simplify the rest of the application and not have to deal with the way Formio works directly while dealing with the application logic. This helps to enforce the single responsibility principle. Much of this is configurable to cater to the individual needs of the application allowing for full re-use of this wrapper. Also
+The wrapper is designed to de-couple the application away from Formio, allowing swappable form solutions in the future and to simplify the rest of the application and not have to deal with the way Formio works directly while dealing with the application logic. This helps to enforce the single responsibility principle. Much of this is configurable to cater to the individual needs of the application allowing for full re-use of this wrapper. 
+
+Update when wrapper is moved to own repo and describe the config when its fully solidified.
+
 
 ## Button Group 
 The button group controls the navigation of an individual form. It listens to the form updated trigger from the wrapper which includes all the data needed to build the navigation on the left and to build the buttons to go next, back, and cancel.
@@ -33,5 +36,3 @@ The following code needs to be improved, ideally sooner rather than later.
 * Reapply selected needs unit tests
 * Configuration needs cleaning up.
 * Button group might need to be improved to handle print/pdf
-
-
