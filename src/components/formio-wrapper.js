@@ -7,103 +7,102 @@ export class FormioWrapper {
    * @returns {void}
    */
   constructor(configuration) {
-    this.formTitle = configuration.formTitle;
-    this.storage = configuration.storage;
-    this.storageName = configuration.storageName;
-    this.formLocation = configuration.formLocation;
-    this.buttonCSS = configuration.buttonCSS;
-    this.navigationCSS = configuration.navigationCSS;
-    this.scrollTarget = configuration.scrollTarget;
-    this.scrollType = configuration.scrollType;
-    this.formSettings = configuration.formSettings;
-    this.buttonConfig = configuration.buttonConfig;
-    this.termsConfig = configuration.termsConfig;
-    this.formName = configuration.formName;
-    this.extraTriggers = configuration.extraTriggersOnActions;
-    this.submissionInfo = configuration.submissionInfo;
-    this.submissionEndpoint = `https://api.forms.platforms.qld.gov.au/project/${this.submissionInfo.projectID}/form/${this.submissionInfo.formID}/submission`;
-    this.formAdminEmail = configuration.formAdminEmail;
-
+    this.config = configuration;
     this.formElement = {};
-
     this.wizard = {};
     this.loaded = false;
+    this._addListeners(this.config.form.baseElement);
+  }
 
-    window.addEventListener('DOMContentLoaded', () => {
-      this.initialise();
-    });
+  initialise(firstInit = true) {
+    if (!this.config.form.location) return;
+    this.submissionEndpoint = `${this.config.form.baseLocation}${this.config.form.pdfEndpoint}/${this.config.form.endpoint}`;
+    this.formElement = document.querySelector('#formio');
 
-    window.addEventListener('formiowrapperGoToNext', () => {
-      this._goToNextPage();
-      if (this.extraTriggers.next) {
-        this._fireExtraEvent(this.extraTriggers.next);
-      }
-    });
-
-    window.addEventListener('formiowrapperGoToPrevious', () => {
-      this._goToPreviousPage();
-      if (this.extraTriggers.previous) {
-        this._fireExtraEvent(this.extraTriggers.previous);
-      }
-    });
-
-    window.addEventListener('formiowrapperCancel', () => {
-      this._goToPage(0);
-      if (this.extraTriggers.cancel) {
-        this._fireExtraEvent(this.extraTriggers.cancel);
-      }
-    });
-
-    window.addEventListener('goToPage', (event) => {
-      this._goToPage(Number(event.detail.page));
-      if (this.extraTriggers.goto) {
-        this._fireExtraEvent(this.extraTriggers.goto);
+    // create main form
+    Formio.createForm(
+      this.formElement,
+      this.config.form.location,
+      this.config.form.formioConfig,
+    ).then((wizard) => {
+      this.wizard = wizard;
+      this.submissionData = this.wizard.submission.data;
+      this.wizard.data.adminEmail = this.formAdminEmail;
+      this.formTitle = !this.formTitle ? wizard._form.title : this.formTitle;
+      this.loaded = true;
+      if (firstInit) {
+        this._attachHandlers();
+        this.createPDFInstance();
       }
     });
   }
 
   /**
    */
-  initialise() {
-    if (!this.formLocation) return;
-    this.formElement = document.querySelector('#formio');
-    // create main form
-    Formio.createForm(
-      this.formElement,
-      this.formLocation,
-      this.formSettings,
-    ).then((wizard) => {
-      this.wizard = wizard;
-      this.submissionData = this.wizard.submission.data;
-      this.formTitle = !this.formTitle ? wizard._form.title : this.formTitle;
-      this.loaded = true;
-      this.wizard.on('initialized', () => {
-        this._firePageChangeEvent();
-      });
-      this.wizard.on('render', () => {
-        this._firePageChangeEvent();
-        this.scrollToTop();
-      });
-      this.wizard.on('change', () => {
-        this._firePageChangeEvent();
-      });
-      this.wizard.on('downloadPDF', () => {
-        this.wizard.data.sendEmail = false;
-        this._downloadPDF();
-      });
-      this.wizard.on('sendEmail', () => {
-        this.wizard.data.sendEmail = true;
-        this._sendEmail();
-      });
-      this.wizard.on('nextPage', ({ page }) => {
-        if (page === 3) {
-          this.wizard.data.sendEmail = true;
-          this._sendEmail({ admin: true });
-        }
-      });
+  _attachHandlers() {
+    this.wizard.on('initialized', () => {
+      this._firePageChangeEvent();
     });
-    // create PDF instance
-    this.createPDFInstance();
+    this.wizard.on('render', () => {
+      this._firePageChangeEvent();
+      this.scrollToTop(
+        this.config.form.baseElement,
+        this.config.scroll.focusTarget,
+      );
+    });
+    this.wizard.on('change', () => {
+      this._firePageChangeEvent();
+    });
+    this.wizard.on('downloadPDF', () => {
+      this.wizard.data.sendEmail = false;
+      this._downloadPDF();
+    });
+    this.wizard.on('sendEmail', () => {
+      this.wizard.data.sendEmail = 'user';
+      this._sendEmail();
+    });
+  }
+
+  /**
+   * @param {Object} baseObject object to trigger listeners and events on
+   */
+  _addListeners(baseObject = window) {
+    baseObject.addEventListener('DOMContentLoaded', () => {
+      this.initialise();
+    });
+
+    baseObject.addEventListener('formiowrapperGoToNext', () => {
+      this._goToNextPage();
+      if (this.config.extraTriggersOnActions.next) {
+        this._fireExtraEvent(this.config.extraTriggersOnActions.next);
+      }
+    });
+
+    baseObject.addEventListener('formiowrapperGoToPrevious', () => {
+      this._goToPreviousPage();
+      if (this.config.extraTriggersOnActions.previous) {
+        this._fireExtraEvent(this.config.extraTriggersOnActions.previous);
+      }
+    });
+
+    baseObject.addEventListener('formiowrapperCancel', () => {
+      this._goToPage(0);
+      if (this.config.extraTriggersOnActions.cancel) {
+        this._fireExtraEvent(this.config.extraTriggersOnActions.cancel);
+      }
+    });
+
+    baseObject.addEventListener('formiowrapperGoToPage', (event) => {
+      this._goToPage(Number(event.detail.page));
+      if (this.config.extraTriggersOnActions.goto) {
+        this._fireExtraEvent(this.config.extraTriggersOnActions.goto);
+      }
+    });
+
+    baseObject.addEventListener('formiowrapperSendAdminEmail', () => {
+      this.wizard.data.sendEmail = true;
+      this._sendEmail({ admin: true });
+    });
   }
 
   /**
@@ -114,11 +113,11 @@ export class FormioWrapper {
     const newEvent = new CustomEvent(event, {
       bubbles: true,
       detail: {
-        title: this.formTitle,
+        title: this.config.form.title,
         page: this.wizard && this.wizard.page ? this.wizard.page : 0,
       },
     });
-    window.dispatchEvent(newEvent);
+    this.config.form.baseElement.dispatchEvent(newEvent);
     return newEvent;
   }
 
@@ -130,13 +129,13 @@ export class FormioWrapper {
     const event = new CustomEvent('formiowrapperPageChange', {
       bubbles: true,
       detail: {
-        title: this.formTitle,
+        title: this.config.form.title,
         page: this.wizard && this.wizard.page ? this.wizard.page : 0,
         navigation: this.buildProgressMenuData(),
         buttons: this.buildButtonData(),
       },
     });
-    window.dispatchEvent(event);
+    this.config.form.baseElement.dispatchEvent(event);
   }
 
   /**
@@ -147,7 +146,6 @@ export class FormioWrapper {
     if (!this.wizard || !this.wizard.components) {
       return navigationArray;
     }
-    // this.wizard.setPage(this.wizard.page);
     let invalidPreviousStep = false;
     this.wizard.components.forEach((page, offset) => {
       const isValid = this._checkPageValidity(
@@ -165,11 +163,11 @@ export class FormioWrapper {
         invalidPreviousStep = true;
       }
       const outputObject = {
-        cssClass: `${this.navigationCSS.baseClass} ${activeClass} ${visitedClass}`,
+        cssClass: `${this.config.navigation.baseClass} ${activeClass} ${visitedClass}`,
         detail: {
           page: offset,
         },
-        event: 'goToPage',
+        event: 'formiowrapperGoToPage',
         title: page.component.title,
         disabled: invalidPreviousStep,
         displayed: true,
@@ -208,10 +206,12 @@ export class FormioWrapper {
     const { pages } = this.wizard;
     const { data } = this.wizard;
 
+    const { base } = this.config.buttons.css;
+
     const previousButton = {
       title: 'Back',
       event: 'formiowrapperGoToPrevious',
-      cssClass: `${this.buttonCSS.baseClass} ${this.buttonCSS.previous}`,
+      cssClass: `${base} ${this.config.buttons.css.previous}`,
       disabled: false,
       displayed: true,
       visited: false,
@@ -220,7 +220,7 @@ export class FormioWrapper {
     const nextButton = {
       title: 'Next',
       event: 'formiowrapperGoToNext',
-      cssClass: `${this.buttonCSS.baseClass} ${this.buttonCSS.next}`,
+      cssClass: `${base} ${this.config.buttons.css.next}`,
       disabled: !this._checkPageValidity(page, pages, data),
       displayed: true,
       visited: false,
@@ -229,7 +229,7 @@ export class FormioWrapper {
     const cancelButton = {
       title: 'Cancel',
       event: 'formiowrapperCancel',
-      cssClass: `${this.buttonCSS.baseClass} ${this.buttonCSS.cancel}`,
+      cssClass: `${base} ${this.config.buttons.css.cancel}`,
       disabled: false,
       displayed: true,
       visited: false,
@@ -237,16 +237,18 @@ export class FormioWrapper {
 
     if (page === 0) {
       previousButton.displayed = false;
-      if (this.buttonConfig.hideCancelOnFirst) {
+      if (this.config.buttons.overwriteFirstButton) {
         cancelButton.displayed = false;
-      }
-      if (this.buttonConfig.startOnFirst) {
-        nextButton.title = 'Start';
+        nextButton.title = this.config.buttons.overwriteValue;
       }
     }
 
     if (page === this.wizard.pages.length - 1) {
       nextButton.displayed = false;
+      if (!this.config.buttons.showButtonsOnLast) {
+        previousButton.displayed = false;
+        cancelButton.displayed = false;
+      }
     }
 
     const currentPageTitle = this.wizard.pages[page].component.title;
@@ -263,8 +265,8 @@ export class FormioWrapper {
    * @return {Boolean}
    */
   _determineTitleChange(currentPageTitle) {
-    if (!this.buttonConfig.acceptWhenTermsFound) return false;
-    return currentPageTitle.toLowerCase().includes(this.termsConfig.title);
+    if (!this.config.buttons.overwriteFirstButton) return false;
+    return currentPageTitle.toLowerCase().includes(this.config.terms.title);
   }
 
   /**
@@ -273,9 +275,9 @@ export class FormioWrapper {
    * @return {Boolean}
    */
   _shouldNextPageBeSkipped(page, pages) {
-    if (!this.termsConfig.skipIfTermsAlreadyAccepted) return false;
+    if (!this.config.terms.skipIfTermsAlreadyAccepted) return false;
     const pageTitle = pages[page + 1].component.title;
-    if (!pageTitle.toLowerCase().includes(this.termsConfig.title)) return false;
+    if (!pageTitle.toLowerCase().includes(this.config.terms.title)) return false;
     return this._areTermsAccepted(page, pages);
   }
 
@@ -285,9 +287,9 @@ export class FormioWrapper {
    * @return {Boolean}
    */
   _shouldPreviousPageBeSkipped(page, pages) {
-    if (!this.termsConfig.skipIfTermsAlreadyAccepted) return false;
+    if (!this.config.terms.skipIfTermsAlreadyAccepted) return false;
     const pageTitle = pages[page - 1].component.title;
-    if (!pageTitle.toLowerCase().includes(this.termsConfig.title)) return false;
+    if (!pageTitle.toLowerCase().includes(this.config.terms.title)) return false;
     return this._areTermsAccepted(page, pages);
   }
 
@@ -297,16 +299,18 @@ export class FormioWrapper {
    * @return {Boolean}
    */
   _areTermsAccepted(page, pages) {
-    const termsStorage = this.termsConfig.termsStorageType;
-    const storedValue = termsStorage.getItem(this.termsConfig.termsStorageName);
+    const termsStorage = this.config.terms.termsStorageType;
+    const storedValue = termsStorage.getItem(
+      this.config.terms.termsStorageName,
+    );
     const storageValue = JSON.parse(storedValue);
     if (storageValue === false) return false;
     if (storageValue === true) return true;
 
     const previousPageNumber = page;
     const previousPageTitle = pages[previousPageNumber].component.title;
-    if (previousPageTitle.toLowerCase().includes(this.termsConfig.title)) {
-      termsStorage.setItem(this.termsConfig.termsStorageName, true);
+    if (previousPageTitle.toLowerCase().includes(this.config.terms.title)) {
+      termsStorage.setItem(this.config.terms.termsStorageName, true);
       return true;
     }
     return false;
@@ -331,13 +335,14 @@ export class FormioWrapper {
     if (!this.loaded) {
       this.notLoaded();
     }
+    if (this.wizard.page === this.wizard.pages.length - 1) return false;
     if (this._shouldNextPageBeSkipped(this.wizard.page, this.wizard.pages)) {
       const proposedPage = this.wizard.page + 2;
       const targetPage = proposedPage < this.wizard.pages.length
         ? proposedPage
         : this.wizard.page + 1;
       if (this.wizard._data) {
-        this.wizard._data[this.termsConfig.dataName] = true;
+        this.wizard._data[this.config.terms.dataName] = true;
       }
       this._goToPage(targetPage);
       return true;
@@ -357,12 +362,19 @@ export class FormioWrapper {
     if (!page) return false;
     if (!pages || !pages.length) return false;
     if (page === pages.length - 1) {
-      let completed = JSON.parse(this.storage.getItem(this.storageName));
+      let completed = JSON.parse(
+        this.config.storage.type.getItem(this.config.storage.name),
+      );
       if (!completed || !completed.length) {
         completed = [];
       }
-      completed.push(this.formTitle);
-      this.storage.setItem(this.storageName, JSON.stringify(completed));
+      if (this.config.form.title) {
+        completed.push(this.config.form.title);
+      }
+      this.config.storage.type.setItem(
+        this.config.storage.name,
+        JSON.stringify(completed),
+      );
       return completed;
     }
     return false;
@@ -381,7 +393,7 @@ export class FormioWrapper {
       const proposedPage = this.wizard.page - 2;
       const targetPage = proposedPage <= 0 ? proposedPage : this.wizard.page - 1;
       if (this.wizard._data) {
-        this.wizard._data[this.termsConfig.dataName] = true;
+        this.wizard._data[this.config.terms.dataName] = true;
       }
       this._goToPage(targetPage);
       return true;
@@ -398,6 +410,7 @@ export class FormioWrapper {
     if (!this.loaded) {
       this.notLoaded();
     }
+    if (!this.wizard || !this.wizard.pages) return false;
 
     this._updateIfCompleted(pageNo, this.wizard.pages);
     this.wizard.setPage(pageNo);
@@ -419,22 +432,29 @@ export class FormioWrapper {
   }
 
   /**
+   * @param {HTMLElement} baseElement the base element for scrolling (window)
+   * @param {HTMLElement} focusTarget the element for query selecting (document)
    */
-  scrollToTop() {
-    if (this.scrollTarget !== -1) {
-      window.scroll({
-        top: this.scrollTarget,
-        behavior: this.scrollType,
+  scrollToTop(baseElement, focusTarget) {
+    if (this.config.scroll.target !== -1) {
+      baseElement.scroll({
+        top: this.config.scroll.target,
+        behavior: this.config.scroll.type,
       });
     }
-    const formio = document.querySelector('#formio');
-    formio.focus();
+    const target = this.config.form.queryElement.querySelector(focusTarget);
+    if (!target) return;
+    target.focus();
   }
 
+  /**
+   * @return {void}
+   */
   createPDFInstance() {
+    if (!this.config.form.pdfEndpoint) return;
     Formio.createForm(
       document.createElement('div'),
-      'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/kyfbpdf',
+      `${this.config.form.baseLocation}${this.config.form.pdfEndpoint}`,
     ).then((pdfInstance) => {
       this.pdfInstance = pdfInstance;
     });
@@ -455,7 +475,7 @@ export class FormioWrapper {
     if (this.requestedDownload) return;
     this.requestedDownload = true;
     // wizard event does not capture EventTarget
-    const downloadButton = document.querySelector(
+    const downloadButton = this.config.form.queryElement.querySelector(
       '[name="data[downloadSummary]"',
     );
     downloadButton.disabled = true;
@@ -497,11 +517,15 @@ export class FormioWrapper {
       });
   }
 
-  _sendEmail(options = {}) {
+  /**
+   * @return {void}
+   */
+  _sendEmail() {
     if (this.requestedEmail) return;
-    const { admin = false } = options;
-    const emailButton = document.querySelector('[name="data[emailButton]"');
-    if (!admin) {
+    const emailButton = this.config.form.queryElement.querySelector(
+      '[name="data[emailButton]"',
+    );
+    if (this.wizard.data.sendEmail === 'user') {
       emailButton.disabled = true;
       this.requestedEmail = true;
       setTimeout(() => {
@@ -509,7 +533,7 @@ export class FormioWrapper {
         emailButton.disabled = false;
       }, 10000);
     } else {
-      this.wizard.data.email = this.formAdminEmail;
+      this.wizard.data.email = this.config.form.adminEmail;
     }
     this.wizard.submit();
   }

@@ -1,4 +1,5 @@
 import { html, render, nothing } from 'lit-html';
+import { Environment } from '../environment';
 
 export class TopicsList {
   constructor(target, storage) {
@@ -6,22 +7,23 @@ export class TopicsList {
     this.domTarget = undefined;
     this.storage = storage;
     this.storageName = 'completedTopics';
+    const environment = new Environment();
 
     this.allTopics = [
       {
         name: 'People',
         topics: [
           {
-            title: 'Skills and knowledge',
-            form:
-              'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/skillsandknowledge',
+            baseLocation: environment.url,
+            form: `${environment.url}skillsandknowledge`,
             image: 'https://www.qld.gov.au/?a=140634',
+            title: 'Skills and knowledge',
           },
           {
-            title: 'Health and hygiene',
-            form:
-              'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/healthandhygiene',
+            baseLocation: environment.url,
+            form: `${environment.url}healthandhygiene`,
             image: 'https://www.qld.gov.au/?a=140674',
+            title: 'Health and hygiene',
           },
         ],
       },
@@ -29,40 +31,40 @@ export class TopicsList {
         name: 'Process',
         topics: [
           {
-            title: 'Receive food',
-            form:
-              'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/receivefood',
+            baseLocation: environment.url,
+            form: `${environment.url}receivefood`,
             image: 'https://www.qld.gov.au/?a=140652',
+            title: 'Receive food',
           },
           {
-            title: 'Store food',
-            form:
-              'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/storefood',
+            baseLocation: environment.url,
+            form: `${environment.url}storefood`,
             image: 'https://www.qld.gov.au/?a=140651',
+            title: 'Store food',
           },
           {
-            title: 'Prepare food',
-            form:
-              'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/preparefood',
+            baseLocation: environment.url,
+            form: `${environment.url}preparefood`,
             image: 'https://www.qld.gov.au/?a=140672',
+            title: 'Prepare food',
           },
           {
-            title: 'Display and serve food',
-            form:
-              'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/displayandservefood',
+            baseLocation: environment.url,
+            form: `${environment.url}displayandservefood`,
             image: 'https://www.qld.gov.au/?a=140675',
+            title: 'Display and serve food',
           },
           {
-            title: 'Transport food',
-            form:
-              'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/transportfood',
+            baseLocation: environment.url,
+            form: `${environment.url}transportfood`,
             image: 'https://www.qld.gov.au/?a=140646',
+            title: 'Transport food',
           },
           {
-            title: 'Complaints and recall',
-            form:
-              'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/complaintsandrecall',
+            baseLocation: environment.url,
+            form: `${environment.url}complaintsandrecall`,
             image: 'https://www.qld.gov.au/?a=140671',
+            title: 'Complaints and recall',
           },
         ],
       },
@@ -70,22 +72,22 @@ export class TopicsList {
         name: 'Premises and equipment',
         topics: [
           {
-            title: 'Animals and pests',
-            form:
-              'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/animalsandpests',
+            baseLocation: environment.url,
+            form: `${environment.url}animalsandpests`,
             image: 'https://www.qld.gov.au/?a=140677',
+            title: 'Animals and pests',
           },
           {
-            title: 'Clean and santise',
-            form:
-              'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/cleanandsantise',
+            baseLocation: environment.url,
+            form: `${environment.url}cleanandsantise`,
             image: 'https://www.qld.gov.au/?a=140676',
+            title: 'Clean and santise',
           },
           {
-            title: 'Maintenance',
-            form:
-              'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/kyfbmaintenance',
+            baseLocation: environment.url,
+            form: `${environment.url}kyfbmaintenance`,
             image: 'https://www.qld.gov.au/?a=140673',
+            title: 'Maintenance',
           },
         ],
       },
@@ -176,6 +178,8 @@ export class TopicsList {
             minorTopic.image,
             minorTopic.form,
             minorTopic.title,
+            minorTopic.baseLocation,
+            minorTopic.email,
           );
         }
         return nothing;
@@ -200,7 +204,12 @@ export class TopicsList {
       topic.topics.forEach((minorTopic) => {
         if (completedTopics.indexOf(minorTopic.title) !== -1) {
           completed.push(
-            this._generateCompletedTopic(minorTopic.form, minorTopic.title),
+            this._generateCompletedTopic(
+              minorTopic.form,
+              minorTopic.title,
+              minorTopic.baseLocation,
+              minorTopic.email,
+            ),
           );
         }
       });
@@ -212,10 +221,12 @@ export class TopicsList {
    * @param {String} image url to image
    * @param {String} form url of form to load
    * @param {String} title title of the topic
+   * @param {String} baseLocation the base location
+   * @param {String} email admin email
    * @return {HTMLTemplateElement}
    */
   // eslint-disable-next-line class-methods-use-this
-  _generateNewArticle(image, form, title) {
+  _generateNewArticle(image, form, title, baseLocation, email) {
     return html`<article
       class="qg-card card__light-theme col-12 col-sm-6 col-lg-4"
     >
@@ -227,6 +238,8 @@ export class TopicsList {
             class="qg-btn btn-link"
             data-form=${form}
             data-title=${title}
+            data-base=${baseLocation}
+            data-email=${email}
           >
             ${title}
           </button>
@@ -238,12 +251,21 @@ export class TopicsList {
   /**
    * @param {String} form the url for an anchor
    * @param {String} title the title of the completed topic
+   * @param {String} baseLocation location base url
+   * @param {String} email admin email
    * @return {HTMLTemplateElement}
    */
   // eslint-disable-next-line class-methods-use-this
-  _generateCompletedTopic(form, title) {
+  _generateCompletedTopic(form, title, baseLocation, email) {
     return html` <li>
-      <button @click=${this.loadNewForm} data-form=${form} class="btn btn-link">
+      <button
+        @click=${this.loadNewForm}
+        data-form=${form}
+        data-title=${title}
+        data-base=${baseLocation}
+        data-email=${email}
+        class="btn btn-link"
+      >
         ${title}
       </button>
     </li>`;
@@ -259,7 +281,9 @@ export class TopicsList {
       bubbles: true,
       detail: {
         topic: event.target.dataset.form,
+        base: event.target.dataset.base,
         title: event.target.dataset.title,
+        email: event.target.dataset.email,
       },
     });
     window.dispatchEvent(newEvent);
