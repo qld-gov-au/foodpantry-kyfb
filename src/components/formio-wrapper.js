@@ -100,8 +100,8 @@ export class FormioWrapper {
     });
 
     baseObject.addEventListener('formiowrapperSendAdminEmail', () => {
-      this.wizard.data.sendEmail = true;
-      this._sendEmail({ admin: true });
+      this.wizard.data.sendEmail = 'admin';
+      this._sendEmail();
     });
   }
 
@@ -533,7 +533,7 @@ export class FormioWrapper {
         emailButton.disabled = false;
       }, 10000);
     } else {
-      this.wizard.data.email = this.config.form.adminEmail;
+      this.wizard.data.adminEmail = this.config.form.adminEmail;
     }
     this.wizard.submit();
   }
