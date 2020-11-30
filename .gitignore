@@ -22,6 +22,5 @@
 /out-tsc/
 .cache
 
-# Node/Yarn locks for now
+# Yarn locks for now
 yarn.lock
-package-lock.json
