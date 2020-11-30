@@ -21,7 +21,7 @@ module.exports = (config) => {
         nodeResolve: true,
       },
       // you can overwrite/extend the config further
-    })
+    }),
   );
   return config;
 };
