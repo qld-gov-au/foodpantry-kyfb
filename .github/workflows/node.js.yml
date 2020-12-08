@@ -1,0 +1,56 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests and deploy to binary repo
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Node.js CI
+
+on:
+  push:
+    branches:
+  pull_request:
+    branches: [ master, develop ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Cache
+      uses: actions/cache@v2.1.3
+      with:
+        # A list of files, directories, and wildcard patterns to cache and restore
+        path: node_modules
+        # An explicit key for restoring and saving the cache
+        key: foodpantry-kyfb-node_modules-${{ hashFiles('package-lock.json') }}
+        restore-keys: foodpantry-kyfb-node_modules
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install
+    - run: npm run lint
+    - run: npm run build
+    - run: npm run test
+    
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: dist
+        path: |
+          dist
+
+#    - name: Publish
+#      uses: qld-gov-au/gha-publish-to-git@master
+#      with:
+#        repository: qld-gov-au/foodpantry-kyfb-squiz
+#        branch: master
+#        github_token: '${{ secrets.GH_TOKEN  }}'
+#        github_pat: '${{ secrets.GH_PAT }}'
+#        source_folder: dist
+#      if: success() && github.event_name == 'push'
