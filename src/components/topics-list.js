@@ -79,9 +79,9 @@ export class TopicsList {
           },
           {
             baseLocation: environment.url,
-            form: `${environment.url}cleanandsantise`,
+            form: `${environment.url}kyfbCleanAndSanitise`,
             image: 'https://www.qld.gov.au/?a=140676',
-            title: 'Clean and santise',
+            title: 'Clean and sanitise',
           },
           {
             baseLocation: environment.url,
