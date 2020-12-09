@@ -30,6 +30,7 @@ import { configuration } from './config';
     }
     const unorderdList = document.createElement('ol');
     unorderdList.classList.add('kyfb', 'guide-sub-nav');
+    sectionNav.appendChild(unorderdList);
     const sectionNavTarget = sectionNav.querySelector('ol');
 
     const sectionNavigation = new ButtonGroup(sectionNavTarget, 'navigation');
