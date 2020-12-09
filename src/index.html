@@ -1,5 +1,18 @@
+<!DOCTYPE html>
 <link rel="stylesheet" href="./styles/main.scss" />
 <script src="https://unpkg.com/formiojs@latest/dist/formio.full.min.js"></script>
+
+<!-- Horrible code only impacting old browsers -->
+<script>
+  /* eslint-disable */
+  this.fetch ||
+    document.write('<script src="https://unpkg.com/unfetch"><\x2fscript>');
+  this.HTMLTemplateElement ||
+    document.write(
+      '<script src="https://polyfill.io/v3/polyfill.min.js?features=HTMLTemplateElement"><\x2fscript>',
+    );
+  /* eslint-enable */
+</script>
 
 <div class="app-container kyfb">
   <div id="home">
