@@ -136,7 +136,6 @@ export class TopicsList {
     let renderFinishedTopics;
 
     const renderTopics = this._renderTopics(this.allTopics, completedTopics);
-
     const completed = this._renderCompletedTopics(
       this.allTopics,
       completedTopics,
@@ -157,7 +156,6 @@ export class TopicsList {
         </ul>
       </div>`;
     }
-
     return html`${renderTopics} ${renderFinishedTopics}`;
   }
 
