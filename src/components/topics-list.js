@@ -228,7 +228,7 @@ export class TopicsList {
   // eslint-disable-next-line class-methods-use-this
   _generateNewArticle(image, form, title, baseLocation, email) {
     return html`<article
-      class="qg-card card__light-theme col-12 col-sm-6 col-lg-4"
+      class="qg-card qg-card__light-theme col-12 col-sm-6 col-lg-4"
     >
       <div class="content">
         <img src="${image}" alt="${title}" />
