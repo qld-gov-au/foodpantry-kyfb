@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-import 'whatwg-fetch';
 import { FormioWrapper } from './components/formio-wrapper';
 import { ButtonGroup } from './components/button-group';
 import { TopicsList } from './components/topics-list';
@@ -30,17 +29,17 @@ import { configuration } from './config';
         .parentElement;
     }
     const unorderdList = document.createElement('ol');
-    unorderdList.classList = 'kyfb guide-sub-nav';
+    unorderdList.classList.add('kyfb', 'guide-sub-nav');
     sectionNav.appendChild(unorderdList);
     const sectionNavTarget = sectionNav.querySelector('ol');
 
     const sectionNavigation = new ButtonGroup(sectionNavTarget, 'navigation');
-
     const topicsList = new TopicsList(
       'topics',
       localStorage,
       configuration.stageLocation,
     );
+
     const secondaryTopics = new TopicsList(
       'SummaryTopics',
       localStorage,
