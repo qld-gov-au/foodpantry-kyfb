@@ -71,12 +71,6 @@
     "sass": "^1.26.10",
     "sinon": "^9.0.3"
   },
-  "eslintConfig": {
-    "extends": [
-      "airbnb-base",
-      "eslint-config-prettier"
-    ]
-  },
   "prettier": {
     "singleQuote": true,
     "trailingComma": "all"
