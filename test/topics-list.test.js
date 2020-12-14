@@ -69,8 +69,8 @@ describe('Topics list test', () => {
       true,
     );
 
-    expect(articles[9].innerText).equals('Clean and santise');
-    expect(articles[9].innerHTML.includes('alt="Clean and santise"')).equals(
+    expect(articles[9].innerText).equals('Clean and sanitise');
+    expect(articles[9].innerHTML.includes('alt="Clean and sanitise"')).equals(
       true,
     );
 

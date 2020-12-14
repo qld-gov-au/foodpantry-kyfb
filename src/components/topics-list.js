@@ -79,9 +79,9 @@ export class TopicsList {
           },
           {
             baseLocation: environment.url,
-            form: `${environment.url}cleanandsantise`,
+            form: `${environment.url}kyfbCleanAndSanitise`,
             image: 'https://www.qld.gov.au/?a=140676',
-            title: 'Clean and santise',
+            title: 'Clean and sanitise',
           },
           {
             baseLocation: environment.url,
@@ -136,7 +136,6 @@ export class TopicsList {
     let renderFinishedTopics;
 
     const renderTopics = this._renderTopics(this.allTopics, completedTopics);
-
     const completed = this._renderCompletedTopics(
       this.allTopics,
       completedTopics,
@@ -157,7 +156,6 @@ export class TopicsList {
         </ul>
       </div>`;
     }
-
     return html`${renderTopics} ${renderFinishedTopics}`;
   }
 
@@ -228,7 +226,7 @@ export class TopicsList {
   // eslint-disable-next-line class-methods-use-this
   _generateNewArticle(image, form, title, baseLocation, email) {
     return html`<article
-      class="qg-card card__light-theme col-12 col-sm-6 col-lg-4"
+      class="qg-card qg-card__light-theme col-12 col-sm-6 col-lg-4"
     >
       <div class="content">
         <img src="${image}" alt="${title}" />
