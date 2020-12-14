@@ -73,9 +73,6 @@ export class FormioWrapper {
 
     baseObject.addEventListener('formiowrapperGoToNext', () => {
       this._goToNextPage();
-      if (this.config.extraTriggersOnActions.next) {
-        this._fireExtraEvent(this.config.extraTriggersOnActions.next);
-      }
     });
 
     baseObject.addEventListener('formiowrapperGoToPrevious', () => {
