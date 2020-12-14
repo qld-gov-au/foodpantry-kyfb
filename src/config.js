@@ -49,6 +49,5 @@ export const configuration = {
   },
   extraTriggersOnActions: {
     cancel: 'cancelKYFBForm',
-    next: 'checkForAutoEmail',
   },
 };
