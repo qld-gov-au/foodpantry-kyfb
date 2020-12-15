@@ -480,56 +480,38 @@ export class FormioWrapper {
     );
     downloadButton.disabled = true;
 
-    if (!window.navigator.msSaveOrOpenBlob) {
-      this._formSubmission()
-        .then(successBody => fetch(`${this.submissionEndpoint}/${successBody._id}/download`)
-          .then((res) => {
-            if (!res.ok) {
-              throw new Error(`HTTP error! status: ${res}`);
-            }
-            return res.blob();
-          })
-          .then((blob) => {
-            const newBlob = new Blob([blob], { type: 'application/pdf' });
-            const data = window.URL.createObjectURL(newBlob);
+    this._formSubmission().then((successBody) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open(
+        'GET',
+        `${this.submissionEndpoint}/${successBody._id}/download`,
+        true,
+      );
+      xhr.responseType = 'arraybuffer';
+      xhr.onload = function openPdf() {
+        if (this.status === 200) {
+          const blob = new Blob([this.response], { type: 'application/pdf' });
+          if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            // IE 11
+            window.navigator.msSaveOrOpenBlob(blob);
+          } else {
+            // Other browsers
+            const data = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = data;
-            link.download = `Know Your Food Business summary - ${this.submissionData.topicName}.pdf`;
+            link.download = `Know Your Food Business summary - ${successBody.data.topicName}.pdf`;
             link.click();
             setTimeout(() => {
               // For Firefox
               window.URL.revokeObjectURL(data);
             }, 100);
-
-            downloadButton.disabled = false;
-            this.requestedDownload = false;
-          }))
-        .catch((error) => {
-          downloadButton.disabled = false;
-          this.requestedDownload = false;
-          return error;
-        });
-    } else {
-      // IE 11
-      this._formSubmission().then((successBody) => {
-        const xhr = new XMLHttpRequest();
-        xhr.open(
-          'GET',
-          `${this.submissionEndpoint}/${successBody._id}/download`,
-          true,
-        );
-        xhr.responseType = 'arraybuffer';
-        xhr.onload = function openPdf() {
-          if (this.status === 200) {
-            const blob = new Blob([this.response], { type: 'application/pdf' });
-            window.navigator.msSaveOrOpenBlob(blob);
           }
-          downloadButton.disabled = false;
-          this.requestedDownload = false;
-        };
-        xhr.send();
-      });
-    }
+        }
+        downloadButton.disabled = false;
+        this.requestedDownload = false;
+      };
+      xhr.send();
+    });
   }
 
   /**
