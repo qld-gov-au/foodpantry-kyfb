@@ -100,6 +100,13 @@ export class FormioWrapper {
       this.wizard.data.sendEmail = 'admin';
       this._sendEmail();
     });
+
+    baseObject.addEventListener('formiowrapperPageChange', (event) => {
+      if (event.detail.page !== this.currentPageRef) {
+        this._fireExtraEvent('formioNewPageRender');
+        this.currentPageRef = this.wizard.page;
+      }
+    });
   }
 
   /**

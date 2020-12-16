@@ -79,21 +79,12 @@ import { configuration } from './config';
     document.querySelector('.guide-sub-nav').hidden = true;
   });
 
-  let pageRef = null;
-  let newPage = null;
-  window.addEventListener('formiowrapperPageChange', (event) => {
-    if (event.detail.page !== pageRef) {
-      newPage = true;
-      pageRef = event.detail.page;
-    } else {
-      newPage = false;
-    }
-
+  window.addEventListener('formioNewPageRender', (event) => {
     // apply styles against to any radio's
     cssReapplier.reapply(['radio']);
 
     // automated email on summary
-    if (event.detail.page === 3 && newPage) {
+    if (event.detail.page === 3) {
       const newEvent = new CustomEvent('formiowrapperSendAdminEmail', {
         bubbles: true,
       });
