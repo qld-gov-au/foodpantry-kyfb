@@ -53,7 +53,7 @@ import { configuration } from './config';
     kyfb.config.form.location = event.detail.topic;
     kyfb.config.form.baseLocation = event.detail.base;
     kyfb.config.form.title = event.detail.title;
-    kyfb.config.form.adminEmail = event.detail.email;
+
     kyfb.initialise(firstInit);
     firstInit = false;
     if (event.detail.topic) {
