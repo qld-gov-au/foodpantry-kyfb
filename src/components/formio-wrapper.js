@@ -73,9 +73,6 @@ export class FormioWrapper {
 
     baseObject.addEventListener('formiowrapperGoToNext', () => {
       this._goToNextPage();
-      if (this.config.extraTriggersOnActions.next) {
-        this._fireExtraEvent(this.config.extraTriggersOnActions.next);
-      }
     });
 
     baseObject.addEventListener('formiowrapperGoToPrevious', () => {
@@ -102,6 +99,13 @@ export class FormioWrapper {
     baseObject.addEventListener('formiowrapperSendAdminEmail', () => {
       this.wizard.data.sendEmail = 'admin';
       this._sendEmail();
+    });
+
+    baseObject.addEventListener('formiowrapperPageChange', (event) => {
+      if (event.detail.page !== this.currentPageRef) {
+        this._fireExtraEvent('formioNewPageRender');
+        this.currentPageRef = this.wizard.page;
+      }
     });
   }
 
@@ -479,42 +483,39 @@ export class FormioWrapper {
       '[name="data[downloadSummary]"',
     );
     downloadButton.disabled = true;
-    this._formSubmission()
-      .then(successBody => fetch(`${this.submissionEndpoint}/${successBody._id}/download`)
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error(`HTTP error! status: ${res}`);
-          }
-          return res.blob();
-        })
-        .then((blob) => {
-          const newBlob = new Blob([blob], { type: 'application/pdf' });
 
-          // IE 11
+    this._formSubmission().then((successBody) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open(
+        'GET',
+        `${this.submissionEndpoint}/${successBody._id}/download`,
+        true,
+      );
+      xhr.responseType = 'arraybuffer';
+      xhr.onload = function openPdf() {
+        if (this.status === 200) {
+          const blob = new Blob([this.response], { type: 'application/pdf' });
           if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-            window.navigator.msSaveOrOpenBlob(newBlob);
-            return;
+            // IE 11
+            window.navigator.msSaveOrOpenBlob(blob);
+          } else {
+            // Other browsers
+            const data = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = data;
+            link.download = `Know Your Food Business summary - ${successBody.data.topicName}.pdf`;
+            link.click();
+            setTimeout(() => {
+              // For Firefox
+              window.URL.revokeObjectURL(data);
+            }, 100);
           }
-
-          // For other browsers
-          const data = window.URL.createObjectURL(newBlob);
-          const link = document.createElement('a');
-          link.href = data;
-          link.download = `Know Your Food Business summary - ${this.submissionData.topicName}.pdf`;
-          link.click();
-          setTimeout(() => {
-            // For Firefox
-            window.URL.revokeObjectURL(data);
-          }, 100);
-
-          downloadButton.disabled = false;
-          this.requestedDownload = false;
-        }))
-      .catch((error) => {
+        }
         downloadButton.disabled = false;
         this.requestedDownload = false;
-        return error;
-      });
+      };
+      xhr.send();
+    });
   }
 
   /**
