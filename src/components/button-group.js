@@ -4,6 +4,8 @@ export class ButtonGroup {
   constructor(target, data = 'buttons') {
     this.target = target;
     this.data = data;
+    this.showDialog = false;
+    this.cancelEvent = {};
 
     window.addEventListener('formiowrapperPageChange', ({ detail }) => {
       this.updateTarget(detail);
@@ -32,9 +34,26 @@ export class ButtonGroup {
       but.active,
       but.detail,
       but.type,
+      but.confirm,
     ));
 
     return html`${output}`;
+  }
+
+  /**
+   */
+  // eslint-disable-next-line class-methods-use-this
+  _createConfirmation() {
+    return html`
+      <div id="PopupConfirm" ?hidden="${!this.showDialog}">
+        <div class="close" @click=${this.closeDialog}><i class="fas fa-times"></i></div>
+        <h2>Are you sure you want to leave?</h2>
+        Your progress will not be saved.
+        <hr>
+        <button @click="${this.closeDialog}">No, stay</button>
+        <button @click="${this.confirmCancel}">Yes leave</button>
+      </div>
+    `;
   }
 
   /**
@@ -46,6 +65,7 @@ export class ButtonGroup {
    * @param {Boolean} active if the nav button is active
    * @param {Object} detail detail object to pass through
    * @param {String} type type of element overrites button
+   * @param {Boolean} confirm if there is a confirmation for this button press
    * @return {Object}
    */
   generateButton(
@@ -57,6 +77,7 @@ export class ButtonGroup {
     active,
     detail = '',
     type = 'button',
+    confirm = false,
   ) {
     if (!displayed) return html``;
     const extraClass = disabled ? 'disabled' : '';
@@ -64,6 +85,7 @@ export class ButtonGroup {
     const button = html` <button
       class="${cssClass} ${extraClass} ${activeClass}"
       data-event=${event}
+      data-confirm=${confirm}
       data-detail=${JSON.stringify(detail)}
       @click=${this.fireEvent}
       ?disabled=${disabled}
@@ -86,10 +108,38 @@ export class ButtonGroup {
    */
   // eslint-disable-next-line class-methods-use-this
   fireEvent(event) {
+    if (event.target.dataset.confirm) {
+      console.log(event.target.dataset.confirm);
+      this.cancelEvent = {
+        event: event.target.dataset.event,
+        detail: event.target.dataset.detail,
+      };
+      this.openDialog();
+      return;
+    }
     const newEvent = new CustomEvent(event.target.dataset.event, {
       bubbles: true,
       detail: JSON.parse(event.target.dataset.detail),
     });
     window.dispatchEvent(newEvent);
+  }
+
+  /**
+   */
+  openDialog() {
+    this.showDialog = true;
+  }
+
+  /**
+   */
+  closeDialog() {
+    this.showDialog = false;
+  }
+
+  /**
+   */
+  confirmCancel() {
+    this.fireEvent(this.cancelEvent);
+    this.cancelEvent = {};
   }
 }

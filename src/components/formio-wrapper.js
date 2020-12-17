@@ -33,6 +33,10 @@ export class FormioWrapper {
       if (firstInit) {
         this._attachHandlers();
         this.createPDFInstance();
+        this._populateDataFromStorage(
+          this.config.storage.type,
+          this.config.form.title,
+        );
       }
     });
   }
@@ -52,6 +56,11 @@ export class FormioWrapper {
     });
     this.wizard.on('change', () => {
       this._firePageChangeEvent();
+      this._updateStorage(
+        this.config.storage.type,
+        this.config.form.title,
+        this.wizard.data,
+      );
     });
     this.wizard.on('downloadPDF', () => {
       this.wizard.data.sendEmail = false;
@@ -86,6 +95,7 @@ export class FormioWrapper {
     });
 
     baseObject.addEventListener('formiowrapperCancel', () => {
+      this._clearStorage(this.config.storage.type);
       this._goToPage(0);
       if (this.config.extraTriggersOnActions.cancel) {
         this._fireExtraEvent(this.config.extraTriggersOnActions.cancel);
@@ -136,6 +146,38 @@ export class FormioWrapper {
       },
     });
     this.config.form.baseElement.dispatchEvent(event);
+  }
+
+  /**
+   * @param {Object} storage the storage option
+   * @param {Sting} key the key within the storage
+   * @param {Object} data the new data to be stored
+   */
+  // eslint-disable-next-line class-methods-use-this
+  _updateStorage(storage, key, data) {
+    const rawData = storage.getItem(key);
+    const previousStorage = rawData ? JSON.parse(rawData) : {};
+    const newStorage = { ...previousStorage, ...data };
+    storage.setItem(key, JSON.stringify(newStorage));
+  }
+
+  /**
+   * @param {Object} storage the storage option
+   * @param {String} key the key within the storage
+   */
+  _populateDataFromStorage(storage, key) {
+    const storedData = storage.getItem(key);
+    if (storedData) {
+      this.wizard.data = JSON.parse(storedData);
+    }
+  }
+
+  /**
+   * @param {Object} storage the storage option
+   */
+  // eslint-disable-next-line class-methods-use-this
+  _clearStorage(storage) {
+    storage.clear();
   }
 
   /**
@@ -233,6 +275,7 @@ export class FormioWrapper {
       disabled: false,
       displayed: true,
       visited: false,
+      confirm: this.config.buttons.confirmOnCancel,
     };
 
     if (page === 0) {

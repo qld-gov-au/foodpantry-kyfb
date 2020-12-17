@@ -16,6 +16,7 @@ export const configuration = {
     title: '',
     location: '',
     baseLocation: '',
+    clearStorageOnCancel: true,
   },
   scroll: {
     target: 0,
@@ -33,6 +34,7 @@ export const configuration = {
     overwriteFirstButton: true,
     overwriteValue: 'Start',
     showButtonsOnLast: false,
+    confirmOnCancel: true,
     css: {
       base: 'qg-btn',
       previous: 'btn-default',
