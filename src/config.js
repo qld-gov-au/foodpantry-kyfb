@@ -1,3 +1,5 @@
+import { html } from 'lit-html';
+
 export const configuration = {
   form: {
     baseElement: window,
@@ -41,6 +43,15 @@ export const configuration = {
       next: 'btn-primary',
       cancel: 'btn-link',
     },
+  },
+  confirmation: {
+    title: 'Are you sure you want to leave?',
+    closeXButton: html`<i class="fas fa-times">X</i>`,
+    description: 'Your progress will not be saved',
+    continueButtonText: 'No, stay',
+    continueButtonCssClass: 'qg-btn btn-primary',
+    leaveButtonText: 'Yes, leave',
+    leaveButtonCssClass: 'qg-btn btn-link',
   },
   navigation: {
     baseClass: 'qg-btn btn-link',

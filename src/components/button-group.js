@@ -1,4 +1,5 @@
-import { html, render } from 'lit-html';
+import { html, render, nothing } from 'lit-html';
+import { configuration } from '../config';
 
 export class ButtonGroup {
   constructor(target, data = 'buttons') {
@@ -6,7 +7,7 @@ export class ButtonGroup {
     this.data = data;
     this.showDialog = false;
     this.cancelEvent = {};
-
+    this.fullData = [];
     window.addEventListener('formiowrapperPageChange', ({ detail }) => {
       this.updateTarget(detail);
     });
@@ -17,6 +18,7 @@ export class ButtonGroup {
    * @param {Array} data the event data
    */
   updateTarget(data) {
+    this.fullData = data;
     render(this.updateButtons(data[this.data]), this.target);
   }
 
@@ -37,7 +39,12 @@ export class ButtonGroup {
       but.confirm,
     ));
 
-    return html`${output}`;
+    let confirmation = nothing;
+    if (JSON.stringify(output).indexOf('</li>') === -1) {
+      confirmation = this._createConfirmation();
+    }
+
+    return html`${output}${confirmation}`;
   }
 
   /**
@@ -45,13 +52,28 @@ export class ButtonGroup {
   // eslint-disable-next-line class-methods-use-this
   _createConfirmation() {
     return html`
-      <div id="PopupConfirm" ?hidden="${!this.showDialog}">
-        <div class="close" @click=${this.closeDialog}><i class="fas fa-times"></i></div>
-        <h2>Are you sure you want to leave?</h2>
-        Your progress will not be saved.
-        <hr>
-        <button @click="${this.closeDialog}">No, stay</button>
-        <button @click="${this.confirmCancel}">Yes leave</button>
+      <div id="cancelconfirmationwrapper" .hidden=${!this.showDialog}>
+        <div id="cancelconfirmationdialog">
+          <div class="close" @click="${() => this.this.toggleDialog()}">
+            ${configuration.confirmation.closeXButton}
+          </div>
+          <h2>${configuration.confirmation.title}</h2>
+          ${configuration.confirmation.description}
+          <hr>
+          <div class="buttons">
+            <button
+              class="${configuration.confirmation.continueButtonCssClass}"
+              @click="${() => this.toggleDialog()}">
+              ${configuration.confirmation.continueButtonText}
+            </button>
+            <button
+              class="${configuration.confirmation.leaveButtonCssClass}"
+              @click="${event => this.confirmCancel(event)}">
+              ${configuration.confirmation.leaveButtonText}
+            </button>
+          </div>
+          
+        </div>
       </div>
     `;
   }
@@ -87,7 +109,7 @@ export class ButtonGroup {
       data-event=${event}
       data-confirm=${confirm}
       data-detail=${JSON.stringify(detail)}
-      @click=${this.fireEvent}
+      @click="${e => this.processClick(e)}"
       ?disabled=${disabled}
     >
       ${text}
@@ -106,17 +128,28 @@ export class ButtonGroup {
   /**
    * @param {Object} event the event
    */
-  // eslint-disable-next-line class-methods-use-this
-  fireEvent(event) {
-    if (event.target.dataset.confirm) {
-      console.log(event.target.dataset.confirm);
+  processClick(event) {
+    // eslint-disable-next-line no-extra-boolean-cast
+    if (event.target.dataset.confirm !== 'false') {
       this.cancelEvent = {
-        event: event.target.dataset.event,
-        detail: event.target.dataset.detail,
+        target: {
+          dataset: {
+            event: event.target.dataset.event,
+            detail: event.target.dataset.detail,
+          },
+        },
       };
-      this.openDialog();
+      this.toggleDialog();
       return;
     }
+    this.fireEvent(event);
+  }
+
+  /**
+   * @param {Object} event
+   */
+  // eslint-disable-next-line class-methods-use-this
+  fireEvent(event) {
     const newEvent = new CustomEvent(event.target.dataset.event, {
       bubbles: true,
       detail: JSON.parse(event.target.dataset.detail),
@@ -126,20 +159,15 @@ export class ButtonGroup {
 
   /**
    */
-  openDialog() {
-    this.showDialog = true;
-  }
-
-  /**
-   */
-  closeDialog() {
-    this.showDialog = false;
-  }
-
-  /**
-   */
   confirmCancel() {
     this.fireEvent(this.cancelEvent);
     this.cancelEvent = {};
+  }
+
+  /**
+   */
+  toggleDialog() {
+    this.showDialog = !this.showDialog;
+    render(this.updateButtons(this.fullData[this.data]), this.target);
   }
 }
