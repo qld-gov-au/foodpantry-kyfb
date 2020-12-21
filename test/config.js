@@ -19,6 +19,7 @@ export const configuration = {
     location:
       'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/formwizard',
     baseLocation: 'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd',
+    clearStorageOnCancel: true,
   },
   scroll: {
     target: 0,

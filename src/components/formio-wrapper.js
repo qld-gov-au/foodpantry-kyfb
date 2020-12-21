@@ -33,10 +33,6 @@ export class FormioWrapper {
       if (firstInit) {
         this._attachHandlers();
         this.createPDFInstance();
-        this._populateDataFromStorage(
-          this.config.storage.type,
-          this.config.form.title,
-        );
       }
     });
   }
@@ -56,6 +52,14 @@ export class FormioWrapper {
     });
     this.wizard.on('change', () => {
       this._firePageChangeEvent();
+
+      if(this.wizard.page === 0) {
+        this._populateDataFromStorage(
+          this.config.storage.type,
+          this.config.form.title,
+        );
+      }
+
       this._updateStorage(
         this.config.storage.type,
         this.config.form.title,
@@ -179,6 +183,7 @@ export class FormioWrapper {
   /**
    */
   _clearStorage() {
+    if(!this.config.form.clearStorageOnCancel) return;
     this.config.terms.termsStorageType.clear();
     this.config.storage.type.clear();
     delete this.wizard.data;
