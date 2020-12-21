@@ -47,7 +47,7 @@ export const configuration = {
   },
   confirmation: {
     title: 'Are you sure you want to leave?',
-    closeXButton: html`<i class="fas fa-times">X</i>`,
+    closeXButton: html`<i class="fas fa-times"></i>`,
     description: 'Your progress will not be saved',
     continueButtonText: 'No, stay',
     continueButtonCssClass: 'qg-btn btn-primary',

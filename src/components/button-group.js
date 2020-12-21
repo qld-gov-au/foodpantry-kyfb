@@ -128,7 +128,6 @@ export class ButtonGroup {
    * @param {Object} event the event
    */
   processClick(event) {
-    // eslint-disable-next-line no-extra-boolean-cast
     if (event.target.dataset.confirm !== 'false') {
       this.cancelEvent = {
         target: {
