@@ -485,6 +485,7 @@ export class FormioWrapper {
     downloadButton.disabled = true;
 
     this._formSubmission().then((successBody) => {
+      const { pdfDownloadName } = this.config.form;
       const xhr = new XMLHttpRequest();
       xhr.open(
         'GET',
@@ -503,7 +504,7 @@ export class FormioWrapper {
             const data = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = data;
-            link.download = `Know Your Food Business summary - ${successBody.data.topicName}.pdf`;
+            link.download = pdfDownloadName(successBody.data);
             link.click();
             setTimeout(() => {
               // For Firefox
