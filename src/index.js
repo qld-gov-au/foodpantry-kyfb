@@ -53,7 +53,7 @@ import { configuration } from './config';
     kyfb.config.form.location = event.detail.topic;
     kyfb.config.form.baseLocation = event.detail.base;
     kyfb.config.form.title = event.detail.title;
-    kyfb.config.form.adminEmail = event.detail.email;
+
     kyfb.initialise(firstInit);
     firstInit = false;
     if (event.detail.topic) {
@@ -79,16 +79,16 @@ import { configuration } from './config';
     document.querySelector('.guide-sub-nav').hidden = true;
   });
 
-  window.addEventListener('checkForAutoEmail', (event) => {
+  window.addEventListener('formioNewPageRender', (event) => {
+    // apply styles against to any radio's
+    cssReapplier.reapply(['radio']);
+
+    // automated email on summary
     if (event.detail.page === 3) {
       const newEvent = new CustomEvent('formiowrapperSendAdminEmail', {
         bubbles: true,
       });
       window.dispatchEvent(newEvent);
     }
-  });
-
-  window.addEventListener('formiowrapperPageChange', (event) => {
-    cssReapplier.reapply(['radio']);
   });
 })();

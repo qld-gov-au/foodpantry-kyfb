@@ -13,6 +13,7 @@ export const configuration = {
     adminEmail: '',
     endpoint: 'submission',
     pdfEndpoint: 'kyfbpdf',
+    pdfDownloadName: data => `Know Your Food Business summary - ${data.topicName}.pdf`,
     pdfSubmission: 'pdfSubmission',
     selector: '#formio',
     title: '',
@@ -62,6 +63,5 @@ export const configuration = {
   },
   extraTriggersOnActions: {
     cancel: 'cancelKYFBForm',
-    next: 'checkForAutoEmail',
   },
 };
