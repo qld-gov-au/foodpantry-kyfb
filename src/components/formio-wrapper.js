@@ -95,7 +95,7 @@ export class FormioWrapper {
     });
 
     baseObject.addEventListener('formiowrapperCancel', () => {
-      this._clearStorage(this.config.storage.type);
+      this._clearStorage();
       this._goToPage(0);
       if (this.config.extraTriggersOnActions.cancel) {
         this._fireExtraEvent(this.config.extraTriggersOnActions.cancel);
@@ -173,11 +173,11 @@ export class FormioWrapper {
   }
 
   /**
-   * @param {Object} storage the storage option
    */
-  // eslint-disable-next-line class-methods-use-this
-  _clearStorage(storage) {
-    storage.clear();
+  _clearStorage() {
+    this.config.terms.termsStorageType.clear();
+    this.config.storage.type.clear();
+    delete this.wizard.data;
   }
 
   /**

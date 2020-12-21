@@ -72,7 +72,6 @@ export class ButtonGroup {
               ${configuration.confirmation.leaveButtonText}
             </button>
           </div>
-          
         </div>
       </div>
     `;
@@ -160,8 +159,10 @@ export class ButtonGroup {
   /**
    */
   confirmCancel() {
-    this.fireEvent(this.cancelEvent);
+    this.toggleDialog();
+    const cancelEvent = { ...this.cancelEvent };
     this.cancelEvent = {};
+    this.fireEvent(cancelEvent);
   }
 
   /**
