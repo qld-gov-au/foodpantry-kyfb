@@ -178,9 +178,9 @@ describe('Navigation specialities', () => {
     };
 
     buttonGroup.updateTarget(data, element);
-    const noStay = element.querySelectorAll('button')[3];
+    const noStay = element.querySelectorAll('button')[4];
     expect(noStay.innerHTML).includes('No, stay');
-    const yesLeave = element.querySelectorAll('button')[4];
+    const yesLeave = element.querySelectorAll('button')[5];
     expect(yesLeave.innerHTML).includes('Yes, leave');
     expect(element.querySelector('#cancelconfirmationwrapper')).to.be.ok;
     expect(element.querySelector('#cancelconfirmationdialog')).to.be.ok;
@@ -227,7 +227,7 @@ describe('Navigation specialities', () => {
         }
       }
     }
-    
+
     expect(buttonGroup.showDialog).equal(false);
     expect(Object.keys(buttonGroup.cancelEvent).length === 0
     && buttonGroup.cancelEvent.constructor === Object).to.equal(true);
@@ -240,10 +240,5 @@ describe('Navigation specialities', () => {
     buttonGroup.confirmCancel();
     expect(buttonGroup.showDialog).equal(false);
   });
-
-
-
-
-
 
 });

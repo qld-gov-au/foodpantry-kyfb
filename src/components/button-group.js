@@ -54,9 +54,9 @@ export class ButtonGroup {
     return html`
       <div id="cancelconfirmationwrapper" .hidden=${!this.showDialog}>
         <div id="cancelconfirmationdialog">
-          <div class="close" @click="${() => this.this.toggleDialog()}">
-            ${configuration.confirmation.closeXButton}
-          </div>
+          <button class="close" @click="${() => this.toggleDialog()}">
+              ${configuration.confirmation.closeXButton}
+          </button>
           <h2>${configuration.confirmation.title}</h2>
           ${configuration.confirmation.description}
           <hr>
