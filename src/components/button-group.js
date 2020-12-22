@@ -52,7 +52,10 @@ export class ButtonGroup {
   // eslint-disable-next-line class-methods-use-this
   _createConfirmation() {
     return html`
-      <div id="cancelconfirmationwrapper" .hidden=${!this.showDialog}>
+      <div
+        id="cancelconfirmationwrapper"
+        .hidden=${!this.showDialog}
+        @click="${e => this.backgroundClose(e)}">
         <div id="cancelconfirmationdialog">
           <button class="close" @click="${() => this.toggleDialog()}">
               ${configuration.confirmation.closeXButton}
@@ -168,6 +171,15 @@ export class ButtonGroup {
    */
   toggleDialog() {
     this.showDialog = !this.showDialog;
+    render(this.updateButtons(this.fullData[this.data]), this.target);
+  }
+
+  /**
+   * @param {Object} event the click event
+   */
+  backgroundClose(event) {
+    if(event.target.id !== 'cancelconfirmationwrapper') return;
+    this.showDialog = false;
     render(this.updateButtons(this.fullData[this.data]), this.target);
   }
 }

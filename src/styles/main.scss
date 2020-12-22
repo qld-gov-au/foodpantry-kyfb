@@ -39,7 +39,8 @@
     font-weight: 700;
   }
 
-  .required-element::after, .required_fieldset legend::after {
+  .required-element::after,
+  .required_fieldset legend::after {
     content: '*';
     color: #f85c50;
   }
@@ -136,20 +137,18 @@ ol.kyfb {
   position: relative;
   display: flex;
   flex-direction: column;
-  background-color: #FFFFFF;
-  height: 20%;
+  background-color: #ffffff;
   width: 33%;
-  padding: 20px;
+  padding: 16px;
   border: 1px solid #d3d3d3;
   border-radius: 4px;
   box-shadow: 5px 5px 5px;
 
   .buttons {
     display: flex;
-    flex-direction: row;
+    flex-direction: row-reverse;
     justify-content: space-between;
-    width: 50%;
-    align-self: flex-start;
+    align-self: flex-end;
     justify-self: baseline;
   }
 
@@ -162,10 +161,38 @@ ol.kyfb {
     position: absolute;
     display: flex;
     align-self: flex-end;
-    height: 20px;
+    width: 40px;
+    height: 40px;
+    background-color: transparent;
+    border: 0;
+    padding: 0;
+    margin: -16px;
+    i {
+      height: 11px;
+      width: 11px;
+    }
+  }
+
+  hr {
+    border: 0;
+    border-bottom: 1px solid #e9ecef;
+    width: 100%;
+    margin-bottom: 16px;
+    margin-top: 24px;
   }
 }
 
+@media screen and (max-width: 767px) {
+  #cancelconfirmationdialog {
+    width: 90%;
+  }
+}
+
+@media screen and (min-width: 767px) and (max-width: 1200px) {
+  #cancelconfirmationdialog {
+    width: 60%;
+  }
+}
 
 // https://meowni.ca/hidden.is.a.lie.html
 [hidden] {
