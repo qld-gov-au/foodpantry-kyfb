@@ -166,6 +166,7 @@ export class FormioWrapper {
     const rawData = storage.getItem(key);
     const previousStorage = rawData ? JSON.parse(rawData) : {};
     const newStorage = { ...previousStorage, ...data };
+    newStorage.currentPage = this.wizard.page;
     storage.setItem(key, JSON.stringify(newStorage));
   }
 
@@ -177,6 +178,9 @@ export class FormioWrapper {
     const storedData = storage.getItem(key);
     if (storedData) {
       this.wizard.data = JSON.parse(storedData);
+      if(this.wizard.data.currentPage) {
+        this._goToPage(this.wizard.data.currentPage);
+      }
     }
   }
 
