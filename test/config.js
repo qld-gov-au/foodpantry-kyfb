@@ -1,3 +1,5 @@
+import { html } from 'lit-html';
+
 export const configuration = {
   form: {
     baseElement: window,
@@ -17,6 +19,7 @@ export const configuration = {
     location:
       'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/formwizard',
     baseLocation: 'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd',
+    clearStorageOnCancel: true,
   },
   scroll: {
     target: 0,
@@ -34,12 +37,22 @@ export const configuration = {
     overwriteFirstButton: true,
     overwriteValue: 'Start',
     showButtonsOnLast: false,
+    confirmOnCancel: true,
     css: {
       base: 'qg-btn',
       previous: 'btn-default',
       next: 'btn-primary',
       cancel: 'btn-link',
     },
+  },
+  confirmation: {
+    title: 'Are you sure you want to leave?',
+    closeXButton: html`<i class="fa fa-times" aria-hidden="true"></i>`,
+    description: 'Your progress will not be saved',
+    continueButtonText: 'No, stay',
+    continueButtonCssClass: 'qg-btn btn-primary',
+    leaveButtonText: 'Yes, leave',
+    leaveButtonCssClass: 'qg-btn btn-link',
   },
   navigation: {
     baseClass: 'qg-btn btn-link',

@@ -1,6 +1,7 @@
 /* eslint-disable */
 
 import { fixture, html, expect } from '@open-wc/testing';
+import { spy, assert } from 'sinon';
 import { ButtonGroup } from '../src/components/button-group';
 
 describe('Button Group Tests', () => {
@@ -60,8 +61,6 @@ describe('Button Group Tests', () => {
     expect(secondButton.dataset.event).equals('formGoToNext');
     expect(secondButton.disabled).equals(true);
 
-    const thirdButton = element.querySelectorAll('button')[2];
-    expect(thirdButton).to.not.be.ok;
   });
 
   it('Fire event fires an event', async (done) => {
@@ -110,7 +109,7 @@ describe('Navigation specialities', () => {
     buttonGroup = new ButtonGroup(element, 'navigation');
   });
 
-  it('Button group renders as expected', async () => {
+  it('Button group as li renders as expected', async () => {
     const data = {
       navigation: [
         {
@@ -150,4 +149,96 @@ describe('Navigation specialities', () => {
     const thirdButton = element.querySelectorAll('li')[2];
     expect(thirdButton).to.not.be.ok;
   });
+
+  it('Button group has cancel confirmation rendered in the dom', async () => {
+    const data = {
+      navigation: [
+        {
+          title: 'Back',
+          event: 'formGoToPrevious',
+          cssClass: 'class1',
+          disabled: false,
+          displayed: true,
+        },
+        {
+          title: 'Next',
+          event: 'formGoToNext',
+          cssClass: 'class2',
+          disabled: true,
+          displayed: true,
+        },
+        {
+          title: 'Cancel',
+          event: 'formioCancel',
+          cssClass: 'class3',
+          disabled: false,
+          displayed: true,
+        },
+      ],
+    };
+
+    buttonGroup.updateTarget(data, element);
+    const noStay = element.querySelectorAll('button')[4];
+    expect(noStay.innerHTML).includes('No, stay');
+    const yesLeave = element.querySelectorAll('button')[5];
+    expect(yesLeave.innerHTML).includes('Yes, leave');
+    expect(element.querySelector('#cancelconfirmationwrapper')).to.be.ok;
+    expect(element.querySelector('#cancelconfirmationdialog')).to.be.ok;
+    expect(element.querySelector('.close')).to.be.ok;
+    expect(element.querySelector('h2')).to.be.ok;
+
+  });
+
+
+  it('Process click not handles the different options', async () => {
+    const data = {
+      navigation: [
+        {
+          title: 'Back',
+          event: 'formGoToPrevious',
+          cssClass: 'class1',
+          disabled: false,
+          displayed: true,
+        },
+        {
+          title: 'Next',
+          event: 'formGoToNext',
+          cssClass: 'class2',
+          disabled: true,
+          displayed: true,
+        },
+        {
+          title: 'Cancel',
+          event: 'formioCancel',
+          cssClass: 'class3',
+          disabled: false,
+          displayed: true,
+        },
+      ],
+    };
+    buttonGroup.updateTarget(data, element);
+
+    const event = {
+      target: {
+        dataset: {
+          event: 'testEvent',
+          detail: JSON.stringify({test: 'data'}),
+          confirm: true,
+        }
+      }
+    }
+
+    expect(buttonGroup.showDialog).equal(false);
+    expect(Object.keys(buttonGroup.cancelEvent).length === 0
+    && buttonGroup.cancelEvent.constructor === Object).to.equal(true);
+    buttonGroup.processClick(event);
+    expect(Object.keys(buttonGroup.cancelEvent).length === 0
+    && buttonGroup.cancelEvent.constructor === Object).to.equal(false);
+    expect(buttonGroup.cancelEvent.target.dataset.event).to.equal('testEvent');
+    expect(buttonGroup.cancelEvent.target.dataset.detail).to.equal(event.target.dataset.detail);
+    expect(buttonGroup.showDialog).equal(true);
+    buttonGroup.confirmCancel();
+    expect(buttonGroup.showDialog).equal(false);
+  });
+
 });
