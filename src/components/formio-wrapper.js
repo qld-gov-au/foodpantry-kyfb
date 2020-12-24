@@ -177,7 +177,10 @@ export class FormioWrapper {
   _populateDataFromStorage(storage, key) {
     const storedData = storage.getItem(key);
     if (storedData) {
-      this.wizard.data = JSON.parse(storedData);
+      this.storedData = JSON.parse(storedData);
+      this.wizard.data = this.storedData;
+      this.submissionData = this.wizard.data;
+
       if(this.wizard.data.currentPage) {
         this._goToPage(this.wizard.data.currentPage);
       }
@@ -538,6 +541,7 @@ export class FormioWrapper {
 
     this._formSubmission().then((successBody) => {
       const { pdfDownloadName } = this.config.form;
+      const formioWrapper = this;
       const xhr = new XMLHttpRequest();
       xhr.open(
         'GET',
@@ -565,7 +569,7 @@ export class FormioWrapper {
           }
         }
         downloadButton.disabled = false;
-        this.requestedDownload = false;
+        formioWrapper.requestedDownload = false;
       };
       xhr.send();
     });

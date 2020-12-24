@@ -10,7 +10,7 @@ export const configuration = {
       showNext: false,
       showSubmit: false,
     },
-    adminEmail: '',
+    adminEmail: 'foodpantry@health.qld.gov.au',
     endpoint: 'submission',
     pdfEndpoint: 'kyfbpdf',
     pdfDownloadName: data => `Know Your Food Business summary - ${data.topicName}.pdf`,
@@ -18,7 +18,7 @@ export const configuration = {
     selector: '#formio',
     title: '',
     location: '',
-    baseLocation: '',
+    baseLocation: 'https://api.forms.platforms.qld.gov.au/uatsprint9-fesrqwsyzlbtegd/',
     clearStorageOnCancel: false,
   },
   scroll: {
