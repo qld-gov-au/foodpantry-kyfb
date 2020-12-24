@@ -38,7 +38,7 @@ export class TopicsList {
           },
           {
             baseLocation: environment.url,
-            form: `${environment.url}storefood`,
+            form: `${environment.url}kyfbstorefood`,
             image: 'https://www.qld.gov.au/?a=140651',
             title: 'Store food',
           },
