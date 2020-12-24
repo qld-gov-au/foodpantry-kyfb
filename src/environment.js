@@ -21,7 +21,7 @@ export class Environment {
 
     switch (selectedEnvironment) {
       case 'development': {
-        this.url = 'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/';
+        this.url = 'https://api.forms.platforms.qld.gov.au/uatsprint9-fesrqwsyzlbtegd/';
         this.email = '';
         break;
       }
