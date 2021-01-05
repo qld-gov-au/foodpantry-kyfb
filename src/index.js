@@ -8,7 +8,6 @@ import { configuration } from './config';
 (() => {
   const cssReapplier = new ReapplySelected();
   const kyfb = new FormioWrapper(configuration);
-  const bg = new ButtonGroup(document.querySelector('.button-container'));
 
   window.addEventListener('DOMContentLoaded', () => {
     /* Remove Squiz default H1 */
@@ -34,6 +33,8 @@ import { configuration } from './config';
     const sectionNavTarget = sectionNav.querySelector('ol');
 
     const sectionNavigation = new ButtonGroup(sectionNavTarget, 'navigation');
+    const bg = new ButtonGroup(document.querySelector('.button-container'));
+
     const topicsList = new TopicsList(
       'topics',
       localStorage,
