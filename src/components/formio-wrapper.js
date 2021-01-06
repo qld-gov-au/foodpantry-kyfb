@@ -584,14 +584,12 @@ export class FormioWrapper {
       '[name="data[emailButton]"',
     );
     if (this.wizard.data.sendEmail === 'user') {
-      if (this.wizard.data.email) {
-        emailButton.disabled = true;
-        this.requestedEmail = true;
-        setTimeout(() => {
-          this.requestedEmail = false;
-          emailButton.disabled = false;
-        }, 10000);
-      }
+      emailButton.disabled = true;
+      this.requestedEmail = true;
+      setTimeout(() => {
+        this.requestedEmail = false;
+        emailButton.disabled = false;
+      }, 10000);
     } else {
       this.wizard.data.adminEmail = this.config.form.adminEmail;
     }
