@@ -27,6 +27,9 @@ import { configuration } from './config';
       sectionNav = navigationSection.querySelector('ul > li > a.active')
         .parentElement;
     }
+
+    navigationSection.querySelector('ul > li > a.active').classList
+      .add('opened');
     const unorderdList = document.createElement('ol');
     unorderdList.classList.add('kyfb', 'guide-sub-nav');
     sectionNav.appendChild(unorderdList);
