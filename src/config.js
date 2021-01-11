@@ -1,3 +1,5 @@
+import { html } from 'lit-html';
+
 export const configuration = {
   form: {
     baseElement: window,
@@ -8,14 +10,16 @@ export const configuration = {
       showNext: false,
       showSubmit: false,
     },
-    adminEmail: '',
+    adminEmail: 'foodpantry@health.qld.gov.au',
     endpoint: 'submission',
     pdfEndpoint: 'kyfbpdf',
+    pdfDownloadName: data => `Know Your Food Business summary - ${data.topicName}.pdf`,
     pdfSubmission: 'pdfSubmission',
     selector: '#formio',
     title: '',
     location: '',
-    baseLocation: '',
+    baseLocation: 'https://api.forms.platforms.qld.gov.au/uatsprint9-fesrqwsyzlbtegd/',
+    clearStorageOnCancel: false,
   },
   scroll: {
     target: 0,
@@ -33,12 +37,22 @@ export const configuration = {
     overwriteFirstButton: true,
     overwriteValue: 'Start',
     showButtonsOnLast: false,
+    confirmOnCancel: false,
     css: {
       base: 'qg-btn',
       previous: 'btn-default',
       next: 'btn-primary',
       cancel: 'btn-link',
     },
+  },
+  confirmation: {
+    title: 'Are you sure you want to leave?',
+    closeXButton: html`<<i class="fa fa-times" aria-hidden="true"></i>`,
+    description: 'Your progress will not be saved',
+    continueButtonText: 'No, stay',
+    continueButtonCssClass: 'qg-btn btn-primary',
+    leaveButtonText: 'Yes, leave',
+    leaveButtonCssClass: 'qg-btn btn-link',
   },
   navigation: {
     baseClass: 'qg-btn btn-link',
