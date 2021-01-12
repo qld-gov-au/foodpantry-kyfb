@@ -8,7 +8,6 @@ import { configuration } from './config';
 (() => {
   const cssReapplier = new ReapplySelected();
   const kyfb = new FormioWrapper(configuration);
-  const bg = new ButtonGroup(document.querySelector('.button-container'));
 
   window.addEventListener('DOMContentLoaded', () => {
     /* Remove Squiz default H1 */
@@ -28,12 +27,17 @@ import { configuration } from './config';
       sectionNav = navigationSection.querySelector('ul > li > a.active')
         .parentElement;
     }
+
+    navigationSection.querySelector('ul > li > a.active').classList
+      .add('opened');
     const unorderdList = document.createElement('ol');
     unorderdList.classList.add('kyfb', 'guide-sub-nav');
     sectionNav.appendChild(unorderdList);
     const sectionNavTarget = sectionNav.querySelector('ol');
 
     const sectionNavigation = new ButtonGroup(sectionNavTarget, 'navigation');
+    const bg = new ButtonGroup(document.querySelector('.button-container'));
+
     const topicsList = new TopicsList(
       'topics',
       localStorage,

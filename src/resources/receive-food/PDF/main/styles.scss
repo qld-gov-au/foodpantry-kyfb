@@ -129,11 +129,23 @@
   }
 
   h3 {
+    font-size: 1.125rem;
+    font-weight: 800;
     margin-bottom: 12px;
   }
-  h3 {
-    font-size: 1.125rem;
+
+  h2{
+    margin-top: 24px;
+    margin-bottom: 12px;
+    font-size: 1.25rem;
+    font-weight: 800;
   }
+
+  h1 {
+    font-size: 1.5625rem;
+    font-weight: 800;
+  }
+
   p {
     margin-bottom: 0.75rem;
   }
@@ -162,7 +174,7 @@
     color: #005e85;
   }
 
-  .question-margin {
+ .question-margin {
     margin-top: 40px;
     margin-bottom: 0px;
   }
@@ -170,5 +182,9 @@
   .required-element:after {
     content: '*';
     color: #f85c50;
+  }
+
+  .notes-footer{
+    margin-top: 60px;
   }
 }

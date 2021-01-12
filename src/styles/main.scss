@@ -185,6 +185,15 @@ ol.kyfb {
   }
 }
 
+#qg-content #qg-section-nav li a.opened:before {
+  opacity: 0.5;
+}
+
+#qg-content #qg-section-nav li a.opened {
+  color: #005375;
+  background-color: transparent;
+}
+
 @media screen and (max-width: 767px) {
   #cancelconfirmationdialog {
     width: 90%;
