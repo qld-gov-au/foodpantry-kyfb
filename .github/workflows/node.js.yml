@@ -45,12 +45,12 @@ jobs:
         path: |
           dist
 
-#    - name: Publish
-#      uses: qld-gov-au/gha-publish-to-git@master
-#      with:
-#        repository: qld-gov-au/foodpantry-kyfb-squiz
-#        branch: master
-#        github_token: '${{ secrets.GH_TOKEN  }}'
-#        github_pat: '${{ secrets.GH_PAT }}'
-#        source_folder: dist
-#      if: success() && github.event_name == 'push'
+    - name: Publish
+      uses: qld-gov-au/gha-publish-to-git@master
+      with:
+        repository: qld-gov-au/foodpantry-kyfb-squiz
+        branch: master
+        github_token: '${{ secrets.GH_TOKEN  }}'
+        github_pat: '${{ secrets.GH_PAT }}'
+        source_folder: dist
+      if: success() && github.event_name == 'push'
