@@ -1,13 +1,11 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests and deploy to binary repo
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: Test
+name: Publish
 
 on:
   push:
-    branches: ['!develop', '!uat']
-  pull_request:
-    branches: [master]
+    branches: [develop, uat]
 
 jobs:
   build:
@@ -25,7 +23,7 @@ jobs:
           # A list of files, directories, and wildcard patterns to cache and restore
           path: node_modules
           # An explicit key for restoring and saving the cache
-          key: ffoodpantry-kyfb-node_modules-${{ hashFiles('package-lock.json') }}
+          key: foodpantry-kyfb-node_modules--${{ hashFiles('package-lock.json') }}
           restore-keys: foodpantry-kyfb-node_modules
 
       - name: Use Node.js ${{ matrix.node-version }}
@@ -36,3 +34,18 @@ jobs:
       - run: npm run lint
       - run: npm run build
       - run: npm run test
+
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist
+          path: |
+            dist
+      - name: Publish
+        uses: qld-gov-au/gha-publish-to-git@master
+        with:
+          repository: ${{ secrets.TARGET_REPO }}
+          branch: ${{ github.head_ref }}
+          github_token: '${{ secrets.GH_TOKEN }}'
+          source_folder: dist
+        if: success()
