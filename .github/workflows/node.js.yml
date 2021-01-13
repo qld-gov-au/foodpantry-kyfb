@@ -37,7 +37,7 @@ jobs:
     - run: npm run lint
     - run: npm run build
     - run: npm run test
-    
+
     - name: Archive artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -45,11 +45,20 @@ jobs:
         path: |
           dist
 
+    - name: Extract branch name
+      shell: bash
+      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      id: extract_branch
+
+    - name: display branch name
+      shell: bash
+      run: echo "${{ steps.extract_branch.outputs.branch }}"
+
     - name: Publish
       uses: qld-gov-au/gha-publish-to-git@master
       with:
         repository: qld-gov-au/foodpantry-kyfb-squiz
-        branch: '${{ github.head_ref }}'
+        branch: '${{ steps.extract_branch.outputs.branch }}'
         github_token: '${{ secrets.GH_TOKEN  }}'
         github_pat: '${{ secrets.GH_PAT }}'
         source_folder: dist
