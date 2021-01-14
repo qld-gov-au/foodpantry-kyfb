@@ -210,3 +210,9 @@ ol.kyfb {
 [hidden] {
   display: none !important;
 }
+
+@media print {
+  .form-radio input::after {
+      display: none !important;
+  }
+}
