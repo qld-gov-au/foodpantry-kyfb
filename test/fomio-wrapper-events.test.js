@@ -45,6 +45,7 @@ describe('Formio Wrapper Event Tests.', () => {
     wrapper.wizard.nextPage = () => {};
     wrapper.wizard.prevPage = () => {};
     wrapper.wizard.setPage = () => {};
+    wrapper.wizard.resetValue = () => {};
 
     const spiedInitialise = spy(wrapper, 'initialise');
     const spiedGoToNext = spy(wrapper, '_goToNextPage');
