@@ -193,7 +193,9 @@ export class FormioWrapper {
     if(!this.config.form.clearStorageOnCancel) return;
     this.config.terms.termsStorageType.clear();
     this.config.storage.type.clear();
-    delete this.wizard.data;
+    this.wizard.resetValue();
+    this.wizard.data = {};
+    this.config.storage.type.removeItem(this.config.form.title);
   }
 
   /**
