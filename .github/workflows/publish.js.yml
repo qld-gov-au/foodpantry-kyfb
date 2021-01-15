@@ -41,6 +41,7 @@ jobs:
           name: dist
           path: |
             dist
+      - run: echo ${{ secrets.TARGET_REPO }}
       - name: Publish
         uses: qld-gov-au/gha-publish-to-git@master
         with:
