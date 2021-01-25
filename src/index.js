@@ -57,6 +57,7 @@ import { configuration } from './config';
     kyfb.config.form.location = event.detail.topic;
     kyfb.config.form.baseLocation = event.detail.base;
     kyfb.config.form.title = event.detail.title;
+    window.scrollTo(0, 0);
 
     kyfb.initialise(firstInit);
     firstInit = false;
