@@ -42,6 +42,10 @@ export class FormioWrapper {
   _attachHandlers() {
     this.wizard.on('initialized', () => {
       this._firePageChangeEvent();
+      this.scrollToTop(
+        this.config.form.baseElement,
+        this.config.scroll.focusTarget,
+      );
     });
     this.wizard.on('render', () => {
       this._firePageChangeEvent();
@@ -226,6 +230,7 @@ export class FormioWrapper {
         cssClass: `${this.config.navigation.baseClass} ${activeClass} ${visitedClass}`,
         detail: {
           page: offset,
+          currentPage: this.wizard.page,
         },
         event: 'formiowrapperGoToPage',
         title: page.component.title,
@@ -237,7 +242,9 @@ export class FormioWrapper {
       if (!isValid) {
         invalidPreviousStep = true;
       }
-      navigationArray.push(outputObject);
+      if (!(this.config.navigation.skipFirstNavStep && offset === 0)) {
+        navigationArray.push(outputObject);
+      }
     });
     return navigationArray;
   }
