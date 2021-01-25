@@ -23,13 +23,14 @@ import { configuration } from './config';
       sectionNav.id = 'qg-section-nav';
       document.body.appendChild(sectionNav);
       sectionNav = document.querySelector('#qg-section-nav');
+      sectionNav.innerHTML = '<ul><li><a class="active" href="#">KYFB</li></ul>';
     } else {
       sectionNav = navigationSection.querySelector('ul > li > a.active')
         .parentElement;
+      navigationSection.querySelector('ul > li > a.active').classList
+        .add('opened');
     }
 
-    navigationSection.querySelector('ul > li > a.active').classList
-      .add('opened');
     const unorderdList = document.createElement('ol');
     unorderdList.classList.add('kyfb', 'guide-sub-nav');
     sectionNav.appendChild(unorderdList);
@@ -57,7 +58,6 @@ import { configuration } from './config';
     kyfb.config.form.location = event.detail.topic;
     kyfb.config.form.baseLocation = event.detail.base;
     kyfb.config.form.title = event.detail.title;
-    window.scrollTo(0, 0);
 
     kyfb.initialise(firstInit);
     firstInit = false;
