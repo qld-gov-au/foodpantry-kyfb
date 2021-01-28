@@ -18,7 +18,7 @@ export const configuration = {
     selector: '#formio',
     title: '',
     location: '',
-    baseLocation: 'https://api.forms.platforms.qld.gov.au/uatsprint9-fesrqwsyzlbtegd/',
+    baseLocation: '',
     clearStorageOnCancel: false,
   },
   scroll: {
