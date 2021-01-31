@@ -5,6 +5,7 @@ export class TopicsList {
   constructor(target, storage) {
     this.target = target;
     this.domTarget = undefined;
+    this.observer = undefined;
     this.storage = storage;
     this.storageName = 'completedTopics';
     const environment = new Environment();
@@ -104,6 +105,15 @@ export class TopicsList {
     if (this.target) {
       this.updateTarget(storage);
     }
+
+  }
+
+  /**
+   */
+  // eslint-disable-next-line class-methods-use-this
+  mutationObserved() {
+    window.scrollTo(0, 0);
+    this.disconnect();
   }
 
   /**
@@ -116,6 +126,13 @@ export class TopicsList {
     this._findTarget(this.target);
 
     if (this.domTarget) {
+      this.observer = new MutationObserver(this.mutationObserved);
+      this.observer.observe(this.domTarget, {
+        attributes: false,
+        childList: true,
+        characterData: false,
+        subtree:false
+      });
       render(this.updateTopics(completedTopics), this.domTarget);
     }
   }

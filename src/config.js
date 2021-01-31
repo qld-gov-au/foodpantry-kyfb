@@ -16,9 +16,6 @@ export const configuration = {
     pdfDownloadName: data => `Know Your Food Business summary - ${data.topicName}.pdf`,
     pdfSubmission: 'pdfSubmission',
     selector: '#formio',
-    title: '',
-    location: '',
-    baseLocation: 'https://api.forms.platforms.qld.gov.au/uatsprint9-fesrqwsyzlbtegd/',
     clearStorageOnCancel: false,
   },
   scroll: {
