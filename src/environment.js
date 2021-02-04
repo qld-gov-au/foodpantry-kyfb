@@ -26,7 +26,7 @@ export class Environment {
         break;
       }
       case 'uat': {
-        this.url = 'https://api.forms.platforms.qld.gov.au/uatmidsprint10-fesrqwsyzlbtegd/';
+        this.url = 'https://api.forms.platforms.qld.gov.au/uatsprint11-fesrqwsyzlbtegd/';
         this.email = 'foodpantry@health.qld.gov.au';
         break;
       }
