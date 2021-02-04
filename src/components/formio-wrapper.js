@@ -227,8 +227,8 @@ export class FormioWrapper {
         }
       });
 
-      if(this.wizard.data.currentPage) {
-        loadPage = loadPage === 0 ? this.wizard.data.currentPage : loadPage;
+      if(this.wizard.page) {
+        loadPage = loadPage === 0 ? this.wizard.page : loadPage;
         this._goToPage(loadPage);
       }
     }
@@ -413,9 +413,15 @@ export class FormioWrapper {
     let storedValue = termsStorage.getItem(
       this.config.terms.termsStorageName,
     );
-    storedValue = typeof storedValue !== 'undefined' ? JSON.parse(storedValue) : storedValue;
-    if(typeof storedValue === 'boolean') {
-      return storedValue;
+
+    try {
+      storedValue = typeof storedValue !== 'undefined' ? JSON.parse(storedValue) : storedValue;
+      if(typeof storedValue === 'boolean') {
+        return storedValue;
+      }
+    } catch(error) {
+      // eslint-disable-next-line no-console
+      console.warn('terms not set');
     }
 
     const previousPageNumber = page;
