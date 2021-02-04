@@ -85,9 +85,6 @@ import { configuration } from './config';
   });
 
   window.addEventListener('formioNewPageRender', (event) => {
-    // apply styles against to any radio's
-    cssReapplier.reapply(['radio']);
-
     // automated email on summary
     if (event.detail.page === 3) {
       const newEvent = new CustomEvent('formiowrapperSendAdminEmail', {
@@ -96,4 +93,15 @@ import { configuration } from './config';
       window.dispatchEvent(newEvent);
     }
   });
+
+  const mutationObserver = new MutationObserver(() => {
+    // apply styles against to any radio's
+    cssReapplier.reapply(['radio']);
+  });
+
+  mutationObserver.observe(
+    document.querySelector(configuration.form.selector),
+    {childList: true, subtree: true}
+  );
+
 })();
