@@ -55,6 +55,21 @@ import { configuration } from './config';
   let firstInit = true;
 
   window.addEventListener('kyfb-topic-change', (event) => {
+    if(kyfb.wizard){
+
+      if(kyfb.wizard.data && kyfb.wizard.data.topicName) {
+        kyfb.wizard.data.topicName = event.detail.title;
+      }
+
+      if(kyfb.wizard._seenPages) {
+        kyfb.wizard._seenPages = [];
+      }
+
+      if(kyfb.wizard.page) {
+        kyfb.wizard.page = 0;
+      }
+    }
+
     kyfb.config.form.location = event.detail.topic;
     kyfb.config.form.baseLocation = event.detail.base;
     kyfb.config.form.title = event.detail.title;
@@ -85,9 +100,6 @@ import { configuration } from './config';
   });
 
   window.addEventListener('formioNewPageRender', (event) => {
-    // apply styles against to any radio's
-    cssReapplier.reapply(['radio']);
-
     // automated email on summary
     if (event.detail.page === 3) {
       const newEvent = new CustomEvent('formiowrapperSendAdminEmail', {
@@ -96,4 +108,15 @@ import { configuration } from './config';
       window.dispatchEvent(newEvent);
     }
   });
+
+  const mutationObserver = new MutationObserver(() => {
+    // apply styles against to any radio's
+    cssReapplier.reapply(['radio']);
+  });
+
+  mutationObserver.observe(
+    document.querySelector(configuration.form.selector),
+    {childList: true, subtree: true}
+  );
+
 })();
