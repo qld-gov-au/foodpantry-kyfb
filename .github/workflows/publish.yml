@@ -59,7 +59,7 @@ jobs:
       - name: Publish
         uses: qld-gov-au/gha-publish-to-git@master
         with:
-          repository: '${{ secrets.TARGET_REPO }}'
+          repository: 'qld-gov-au/foodpantry-kyfb-squiz'
           branch: '${{ steps.extract_branch.outputs.branch }}'
           github_token: '${{ secrets.GH_TOKEN }}'
           github_pat: '${{ secrets.GH_PAT }}'
