@@ -9,6 +9,7 @@ export class TopicsList {
     this.storage = storage;
     this.storageName = 'completedTopics';
     const environment = new Environment();
+    window.formEnv = environment.flag;
 
     this.allTopics = [
       {
@@ -16,13 +17,13 @@ export class TopicsList {
         topics: [
           {
             baseLocation: environment.url,
-            form: `${environment.url}skillsandknowledge`,
+            form: `${environment.url}topicskillsandknowledge`,
             image: 'https://www.qld.gov.au/?a=140634',
             title: 'Skills and knowledge',
           },
           {
             baseLocation: environment.url,
-            form: `${environment.url}healthandhygiene`,
+            form: `${environment.url}topichealthandhygiene`,
             image: 'https://www.qld.gov.au/?a=140674',
             title: 'Health and hygiene',
           },
@@ -33,37 +34,37 @@ export class TopicsList {
         topics: [
           {
             baseLocation: environment.url,
-            form: `${environment.url}receivefood`,
+            form: `${environment.url}topicreceivefood`,
             image: 'https://www.qld.gov.au/?a=140652',
             title: 'Receive food',
           },
           {
             baseLocation: environment.url,
-            form: `${environment.url}kyfbstorefood`,
+            form: `${environment.url}topicstorefood`,
             image: 'https://www.qld.gov.au/?a=140651',
             title: 'Store food',
           },
           {
             baseLocation: environment.url,
-            form: `${environment.url}preparefood`,
+            form: `${environment.url}topicpreparefood`,
             image: 'https://www.qld.gov.au/?a=140672',
             title: 'Prepare food',
           },
           {
             baseLocation: environment.url,
-            form: `${environment.url}displayandservefood`,
+            form: `${environment.url}topicdisplayandservefood`,
             image: 'https://www.qld.gov.au/?a=140675',
             title: 'Display and serve food',
           },
           {
             baseLocation: environment.url,
-            form: `${environment.url}transportfood`,
+            form: `${environment.url}topictransportfood`,
             image: 'https://www.qld.gov.au/?a=140646',
             title: 'Transport food',
           },
           {
             baseLocation: environment.url,
-            form: `${environment.url}complaintsandrecall`,
+            form: `${environment.url}topiccomplaintsandrecalls`,
             image: 'https://www.qld.gov.au/?a=140671',
             title: 'Complaints and recall',
           },
@@ -74,19 +75,19 @@ export class TopicsList {
         topics: [
           {
             baseLocation: environment.url,
-            form: `${environment.url}animalsandpests`,
+            form: `${environment.url}topicanimalsandpests`,
             image: 'https://www.qld.gov.au/?a=140677',
             title: 'Animals and pests',
           },
           {
             baseLocation: environment.url,
-            form: `${environment.url}kyfbCleanAndSanitise`,
+            form: `${environment.url}topiccleanandsanitise`,
             image: 'https://www.qld.gov.au/?a=140676',
             title: 'Clean and sanitise',
           },
           {
             baseLocation: environment.url,
-            form: `${environment.url}kyfbmaintenance`,
+            form: `${environment.url}topicmaintenance`,
             image: 'https://www.qld.gov.au/?a=140673',
             title: 'Maintenance',
           },

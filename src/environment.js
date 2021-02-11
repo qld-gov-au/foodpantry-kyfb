@@ -21,17 +21,20 @@ export class Environment {
 
     switch (selectedEnvironment) {
       case 'development': {
-        this.url = 'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/';
+        this.flag = 'dev';
+        this.url = 'https://api.forms.platforms.qld.gov.au/dev-phfmembiqerttho/';
         this.email = '';
         break;
       }
       case 'uat': {
-        this.url = 'https://api.forms.platforms.qld.gov.au/uatsprint11-fesrqwsyzlbtegd/';
+        this.flag = 'uat';
+        this.url = 'https://api.forms.platforms.qld.gov.au/uat-phfmembiqerttho/';
         this.email = 'foodpantry@health.qld.gov.au';
         break;
       }
       default: {
-        this.url = 'https://api.forms.platforms.qld.gov.au/fesrqwsyzlbtegd/';
+        this.flag = 'dev';
+        this.url = 'https://api.forms.platforms.qld.gov.au/phfmembiqerttho/';
         this.email = 'foodpantry@health.qld.gov.au';
         break;
       }
