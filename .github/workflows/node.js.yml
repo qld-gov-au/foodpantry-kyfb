@@ -5,9 +5,12 @@ name: Test
 
 on:
   push:
-    branches: ['!develop', '!uat']
+    branches: 
+      - '*' #['!develop', '!uat']
   pull_request:
-    branches: [master]
+    branches: 
+      - 'master'
+      - 'develop'
 
 jobs:
   build:
@@ -25,7 +28,7 @@ jobs:
           # A list of files, directories, and wildcard patterns to cache and restore
           path: node_modules
           # An explicit key for restoring and saving the cache
-          key: ffoodpantry-kyfb-node_modules-${{ hashFiles('package-lock.json') }}
+          key: foodpantry-kyfb-node_modules-${{ hashFiles('package-lock.json') }}
           restore-keys: foodpantry-kyfb-node_modules
 
       - name: Use Node.js ${{ matrix.node-version }}

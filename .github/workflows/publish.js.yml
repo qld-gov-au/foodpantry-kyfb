@@ -5,7 +5,8 @@ name: Publish
 
 on:
   push:
-    branches: [develop, uat]
+    branches: 
+      - '*' #[develop, uat]
 
 jobs:
   build:
@@ -41,11 +42,22 @@ jobs:
           name: dist
           path: |
             dist
+
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+
+      - name: display branch name
+        shell: bash
+        run: echo "${{ steps.extract_branch.outputs.branch }}"
+
       - name: Publish
         uses: qld-gov-au/gha-publish-to-git@master
         with:
           repository: ${{ secrets.TARGET_REPO }}
-          branch: ${{ github.head_ref }}
+          branch: '${{ steps.extract_branch.outputs.branch }}'
           github_token: '${{ secrets.GH_TOKEN }}'
+          github_pat: '${{ secrets.GH_PAT }}'
           source_folder: dist
         if: success()
