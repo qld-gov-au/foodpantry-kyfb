@@ -67,6 +67,7 @@ export class FormioWrapper {
    * @param {Object} baseObject object to trigger listeners and events on
    */
   _addListeners(baseObject = window) {
+    this._removeListeners(baseObject);
     baseObject.addEventListener('DOMContentLoaded', () => {
       this.initialise();
     });
@@ -103,6 +104,53 @@ export class FormioWrapper {
     });
 
     baseObject.addEventListener('formiowrapperPageChange', (event) => {
+      if (event.detail.page !== this.currentPageRef) {
+        this._fireExtraEvent('formioNewPageRender');
+        this.currentPageRef = this.wizard.page;
+      }
+    });
+  }
+
+  /**
+   * @param {Object} baseObject object to trigger listeners and events on
+   */
+  _removeListeners(baseObject = window) {
+    baseObject.removeEventListener('DOMContentLoaded', () => {
+      this.initialise();
+    });
+
+    baseObject.removeEventListener('formiowrapperGoToNext', () => {
+      this._goToNextPage();
+    });
+
+    baseObject.removeEventListener('formiowrapperGoToPrevious', () => {
+      this._goToPreviousPage();
+      if (this.config.extraTriggersOnActions.previous) {
+        this._fireExtraEvent(this.config.extraTriggersOnActions.previous);
+      }
+    });
+
+    baseObject.removeEventListener('formiowrapperCancel', () => {
+      this._clearStorage();
+      this._goToPage(0);
+      if (this.config.extraTriggersOnActions.cancel) {
+        this._fireExtraEvent(this.config.extraTriggersOnActions.cancel);
+      }
+    });
+
+    baseObject.removeEventListener('formiowrapperGoToPage', (event) => {
+      this._goToPage(Number(event.detail.page));
+      if (this.config.extraTriggersOnActions.goto) {
+        this._fireExtraEvent(this.config.extraTriggersOnActions.goto);
+      }
+    });
+
+    baseObject.removeEventListener('formiowrapperSendAdminEmail', () => {
+      this.wizard.data.sendEmail = 'admin';
+      this._sendEmail();
+    });
+
+    baseObject.removeEventListener('formiowrapperPageChange', (event) => {
       if (event.detail.page !== this.currentPageRef) {
         this._fireExtraEvent('formioNewPageRender');
         this.currentPageRef = this.wizard.page;
@@ -182,7 +230,7 @@ export class FormioWrapper {
       newStorage = {...data};
     }
 
-    newStorage.currentPage = page;
+    newStorage.page = page;
     newStorage._seenPages = seenPages;
 
     storage.setItem(key, JSON.stringify(newStorage));
@@ -194,21 +242,17 @@ export class FormioWrapper {
    */
   _populateDataFromStorage(storage, key) {
     const storedData = storage.getItem(key);
-
     if (storedData) {
       try {
         this.storedData = JSON.parse(storedData);
-
         this.wizard._seenPages = this.storedData._seenPages;
         delete this.storedData._seenPages;
         this.wizard.page = this.storedData.page;
         delete this.storedData.page;
         this.wizard.data = this.storedData;
+        this.wizard.data[this.config.terms.dataName] = this.config.terms
+          .termsStorageType.getItem(this.config.terms.termsStorageName);
         this.submissionData = this.wizard.data;
-        this.config.terms.termsStorageType.setItem(
-          this.config.terms.termsStorageName,
-          this.submissionData[this.config.terms.dataName]
-        );
       } catch (error) {
         // eslint-disable-next-line no-console
         console.warn('Stored data corrupted, skipping');
@@ -218,7 +262,7 @@ export class FormioWrapper {
       this.wizard._seenPages.forEach((page) => {
         if (!this._checkPageValidity(
           page,
-          this.wizard.components,
+          this.wizard.pages,
           this.wizard.data,
           )) {
             if(loadPage === 0) {
@@ -226,7 +270,6 @@ export class FormioWrapper {
             }
         }
       });
-
       if(this.wizard.page) {
         loadPage = loadPage === 0 ? this.wizard.page : loadPage;
         this._goToPage(loadPage);
@@ -415,7 +458,8 @@ export class FormioWrapper {
     );
 
     try {
-      storedValue = typeof storedValue !== 'undefined' ? JSON.parse(storedValue) : storedValue;
+      storedValue = typeof storedValue !== 'undefined' ?
+        JSON.parse(storedValue) : storedValue;
       if(typeof storedValue === 'boolean') {
         return storedValue;
       }
@@ -461,11 +505,25 @@ export class FormioWrapper {
       if (this.wizard._data) {
         this.wizard._data[this.config.terms.dataName] = true;
       }
+      this._updateStorage(
+        this.config.storage.type,
+        this.config.form.title,
+        this.wizard.data,
+        this.wizard._seenPages,
+        targetPage,
+      );
       this._goToPage(targetPage);
       return true;
     }
     this._updateIfCompleted(this.wizard.page + 1, this.wizard.pages);
     this._areTermsAccepted(this.wizard.page, this.wizard.pages);
+    this._updateStorage(
+      this.config.storage.type,
+      this.config.form.title,
+      this.wizard.data,
+      this.wizard._seenPages,
+      this.wizard.page + 1,
+    );
     this.wizard.nextPage();
     return true;
   }
@@ -487,6 +545,7 @@ export class FormioWrapper {
       }
       if (this.config.form.title) {
         completed.push(this.config.form.title);
+        completed = [... new Set(completed)];
       }
       this.config.storage.type.setItem(
         this.config.storage.name,
@@ -512,9 +571,23 @@ export class FormioWrapper {
       if (this.wizard._data) {
         this.wizard._data[this.config.terms.dataName] = true;
       }
+      this._updateStorage(
+        this.config.storage.type,
+        this.config.form.title,
+        this.wizard.data,
+        this.wizard._seenPages,
+        targetPage,
+      );
       this._goToPage(targetPage);
       return true;
     }
+    this._updateStorage(
+      this.config.storage.type,
+      this.config.form.title,
+      this.wizard.data,
+      this.wizard._seenPages,
+      this.wizard.page - 1,
+    );
     this.wizard.prevPage();
     return true;
   }
@@ -529,8 +602,17 @@ export class FormioWrapper {
     }
     if (!this.wizard || !this.wizard.pages) return false;
 
+    this._updateStorage(
+      this.config.storage.type,
+      this.config.form.title,
+      this.wizard.data,
+      this.wizard._seenPages,
+      pageNo,
+    );
+
     this._updateIfCompleted(pageNo, this.wizard.pages);
     this.wizard.setPage(pageNo);
+    this.wizard.redraw();
     return true;
   }
 
@@ -649,8 +731,16 @@ export class FormioWrapper {
         emailButton.disabled = false;
       }, 10000);
     } else {
-      this.wizard.data.adminEmail = this.config.form.adminEmail;
+      this.wizard.data[this.config.form.adminField] = this.config.form.adminEmail;
+      this.wizard.data[this.config.form.emailField]
+        = this.config.form.adminEmail;
+      this.wizard.data[this.config.form.emailConfirmField]
+        = this.config.form.adminEmail;
     }
     this.wizard.submit();
+    if (this.wizard.data.sendEmail !== 'user') {
+      this.wizard.data[this.config.form.emailField] = '';
+      this.wizard.data[this.config.form.emailConfirmField] = '';
+    }
   }
 }

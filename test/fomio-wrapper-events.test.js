@@ -19,6 +19,7 @@ describe('Formio Wrapper Event Tests.', () => {
     Formio._data = {};
     configuration.form.baseElement = element;
     wrapper = new FormioWrapper(configuration);
+    wrapper.wizard.redraw = () => {};
   });
 
   it('_addListeners works as intended', async () => {
