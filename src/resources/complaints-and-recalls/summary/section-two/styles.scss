@@ -1,9 +1,35 @@
 .kyfb {
+
   .preference, #download-summary {
     margin-top: 24px;
     margin-bottom:16px;
-    letter-spacing: -0.53px;
     line-height: normal;
+    letter-spacing: -0.53px;
     color: #202529;
   }
+
+  .emailHeader {
+    font-weight: 400;
+  }
+}
+
+@keyframes progressSpinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    color: #696969;
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.btn-primary:disabled > .icon:after {
+  font-family: "FontAwesome";
+  display: inline-block;
+  animation: progressSpinner 3s infinite linear;
+  margin-left: 5px;
+  content:"\f110";
 }
