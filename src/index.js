@@ -4,10 +4,15 @@ import { ButtonGroup } from './components/button-group';
 import { TopicsList } from './components/topics-list';
 import { ReapplySelected } from './scripts/reapply-selected';
 import { configuration } from './config';
+import { Environment } from './environment';
+
 
 (() => {
   const cssReapplier = new ReapplySelected();
   const kyfb = new FormioWrapper(configuration);
+  const environment = new Environment();
+
+  window.formEnv = environment.flag;
 
   window.addEventListener('DOMContentLoaded', () => {
     /* Remove Squiz default H1 */
