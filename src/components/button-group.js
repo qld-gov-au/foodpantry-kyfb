@@ -178,7 +178,7 @@ export class ButtonGroup {
    * @param {Object} event the click event
    */
   backgroundClose(event) {
-    if(event.target.id !== 'cancelconfirmationwrapper') return;
+    if (event.target.id !== 'cancelconfirmationwrapper') return;
     this.showDialog = false;
     render(this.updateButtons(this.fullData[this.data]), this.target);
   }

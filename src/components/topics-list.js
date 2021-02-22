@@ -106,7 +106,6 @@ export class TopicsList {
     if (this.target) {
       this.updateTarget(storage);
     }
-
   }
 
   /**
@@ -132,7 +131,7 @@ export class TopicsList {
         attributes: false,
         childList: true,
         characterData: false,
-        subtree:false
+        subtree: false,
       });
       render(this.updateTopics(completedTopics), this.domTarget);
     }

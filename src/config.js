@@ -14,8 +14,8 @@ export const configuration = {
           // eslint-disable-next-line no-param-reassign
           submission.data.formEnv = window.formEnv;
           next();
-        }
-      }
+        },
+      },
     },
     adminEmail: 'foodpantry@health.qld.gov.au',
     adminField: 'adminEmail',

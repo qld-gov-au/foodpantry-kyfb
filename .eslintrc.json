@@ -7,7 +7,7 @@
     "Formio": "readonly"
   },
   "plugins": ["eslint-plugin-html"],
-  "extends": ["airbnb-base", "eslint-config-prettier"],
+  "extends": ["eslint-config-prettier", "airbnb-base"],
   "rules": {
     "import/prefer-default-export": "off",
     "eol-last": "error",
@@ -41,6 +41,18 @@
       {
         "selector": "WithStatement",
         "message": "`with` is disallowed in strict mode because it makes code impossible to predict and optimize."
+      }
+    ],
+    "max-len": [
+      "error",
+      80,
+      2,
+      {
+        "ignoreUrls": true,
+        "ignoreComments": false,
+        "ignoreRegExpLiterals": true,
+        "ignoreStrings": true,
+        "ignoreTemplateLiterals": true
       }
     ]
   }
