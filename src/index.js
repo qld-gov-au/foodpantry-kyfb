@@ -12,6 +12,12 @@ import { Environment } from './environment';
   const kyfb = new FormioWrapper(configuration);
   const environment = new Environment();
 
+  // Overwrite config with environment variables where applicable.
+  const config = {};
+  Object.keys(configuration).forEach((key) => {
+    config[key] = {...configuration[key], ...environment[key]}
+  })
+
   window.formEnv = environment.flag;
 
   window.addEventListener('DOMContentLoaded', () => {

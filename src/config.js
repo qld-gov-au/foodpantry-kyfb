@@ -18,6 +18,9 @@ export const configuration = {
       }
     },
     adminEmail: 'foodpantry@health.qld.gov.au',
+    adminField: 'adminEmail',
+    emailField: 'toConfirmEmail',
+    emailConfirmField: 'email',
     endpoint: 'submission',
     pdfEndpoint: 'kyfbpdf',
     pdfDownloadName: data => `Know Your Food Business summary - ${data.topicName}.pdf`,
