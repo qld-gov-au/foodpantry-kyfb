@@ -6,7 +6,6 @@ import { ReapplySelected } from './scripts/reapply-selected';
 import { configuration } from './config';
 import { Environment } from './environment';
 
-
 (() => {
   const cssReapplier = new ReapplySelected();
   const kyfb = new FormioWrapper(configuration);
@@ -15,8 +14,8 @@ import { Environment } from './environment';
   // Overwrite config with environment variables where applicable.
   const config = {};
   Object.keys(configuration).forEach((key) => {
-    config[key] = {...configuration[key], ...environment[key]}
-  })
+    config[key] = { ...configuration[key], ...environment[key] };
+  });
 
   window.formEnv = environment.flag;
 
@@ -66,17 +65,16 @@ import { Environment } from './environment';
   let firstInit = true;
 
   window.addEventListener('kyfb-topic-change', (event) => {
-    if(kyfb.wizard){
-
-      if(kyfb.wizard.data && kyfb.wizard.data.topicName) {
+    if (kyfb.wizard) {
+      if (kyfb.wizard.data && kyfb.wizard.data.topicName) {
         kyfb.wizard.data.topicName = event.detail.title;
       }
 
-      if(kyfb.wizard._seenPages) {
+      if (kyfb.wizard._seenPages) {
         kyfb.wizard._seenPages = [];
       }
 
-      if(kyfb.wizard.page) {
+      if (kyfb.wizard.page) {
         kyfb.wizard.page = 0;
       }
     }
@@ -127,7 +125,6 @@ import { Environment } from './environment';
 
   mutationObserver.observe(
     document.querySelector(configuration.form.selector),
-    {childList: true, subtree: true}
+    { childList: true, subtree: true },
   );
-
 })();
