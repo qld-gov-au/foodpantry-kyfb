@@ -23,19 +23,19 @@ export class Environment {
       case 'development': {
         this.flag = 'dev';
         this.url = 'https://api.forms.platforms.qld.gov.au/dev-phfmembiqerttho/';
-        this.email = '';
+        this.adminEmail = '';
         break;
       }
       case 'uat': {
         this.flag = 'uat';
         this.url = 'https://api.forms.platforms.qld.gov.au/uat-phfmembiqerttho/';
-        this.email = 'foodpantry@health.qld.gov.au';
+        this.adminEmail = 'foodpantry@health.qld.gov.au';
         break;
       }
       default: {
         this.flag = 'dev';
         this.url = 'https://api.forms.platforms.qld.gov.au/phfmembiqerttho/';
-        this.email = 'foodpantry@health.qld.gov.au';
+        this.adminEmail = 'foodpantry@health.qld.gov.au';
         break;
       }
     }
