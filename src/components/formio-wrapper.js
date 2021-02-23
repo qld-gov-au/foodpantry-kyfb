@@ -42,6 +42,10 @@ export class FormioWrapper {
   _attachHandlers() {
     this.wizard.on('initialized', () => {
       this._firePageChangeEvent();
+      this.scrollToTop(
+        this.config.form.baseElement,
+        this.config.scroll.focusTarget,
+      );
     });
     this.wizard.on('render', () => {
       this._firePageChangeEvent();
