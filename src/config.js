@@ -63,6 +63,7 @@ export const configuration = {
   },
   navigation: {
     baseClass: 'qg-btn btn-link',
+    skipFirstNavStep: false,
   },
   storage: {
     type: localStorage,
