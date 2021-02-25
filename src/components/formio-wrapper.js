@@ -42,6 +42,10 @@ export class FormioWrapper {
   _attachHandlers() {
     this.wizard.on('initialized', () => {
       this._firePageChangeEvent();
+      this.scrollToTop(
+        this.config.form.baseElement,
+        this.config.scroll.focusTarget,
+      );
     });
     this.wizard.on('render', () => {
       this._firePageChangeEvent();
@@ -193,7 +197,7 @@ export class FormioWrapper {
   }
 
   _updateStorages() {
-    if(this.wizard.page === 0) {
+    if (this.wizard.page === 0) {
       this._populateDataFromStorage(
         this.config.storage.type,
         this.config.form.title,
@@ -224,10 +228,10 @@ export class FormioWrapper {
     try {
       const previousStorage = rawData ? JSON.parse(rawData) : {};
       newStorage = { ...previousStorage, ...data };
-    } catch(error) {
+    } catch (error) {
       // eslint-disable-next-line no-console
       console.warn('Data corrupted, ignoring');
-      newStorage = {...data};
+      newStorage = { ...data };
     }
 
     newStorage.page = page;
@@ -264,13 +268,13 @@ export class FormioWrapper {
           page,
           this.wizard.pages,
           this.wizard.data,
-          )) {
-            if(loadPage === 0) {
-              loadPage = page;
-            }
+        )) {
+          if (loadPage === 0) {
+            loadPage = page;
+          }
         }
       });
-      if(this.wizard.page) {
+      if (this.wizard.page) {
         loadPage = loadPage === 0 ? this.wizard.page : loadPage;
         this._goToPage(loadPage);
       }
@@ -280,7 +284,7 @@ export class FormioWrapper {
   /**
    */
   _clearStorage() {
-    if(!this.config.form.clearStorageOnCancel) return;
+    if (!this.config.form.clearStorageOnCancel) return;
     this.config.terms.termsStorageType.clear();
     this.config.storage.type.clear();
     this.wizard.resetValue();
@@ -313,6 +317,7 @@ export class FormioWrapper {
         invalidPreviousStep = true;
       }
       const outputObject = {
+        // eslint-disable-next-line max-len
         cssClass: `${this.config.navigation.baseClass} ${activeClass} ${visitedClass}`,
         detail: {
           page: offset,
@@ -430,7 +435,9 @@ export class FormioWrapper {
   _shouldNextPageBeSkipped(page, pages) {
     if (!this.config.terms.skipIfTermsAlreadyAccepted) return false;
     const pageTitle = pages[page + 1].component.title;
-    if (!pageTitle.toLowerCase().includes(this.config.terms.title)) return false;
+    if (!pageTitle.toLowerCase().includes(this.config.terms.title)) {
+      return false;
+    }
     return this._areTermsAccepted(page, pages);
   }
 
@@ -442,7 +449,9 @@ export class FormioWrapper {
   _shouldPreviousPageBeSkipped(page, pages) {
     if (!this.config.terms.skipIfTermsAlreadyAccepted) return false;
     const pageTitle = pages[page - 1].component.title;
-    if (!pageTitle.toLowerCase().includes(this.config.terms.title)) return false;
+    if (!pageTitle.toLowerCase().includes(this.config.terms.title)) {
+      return false;
+    }
     return this._areTermsAccepted(page, pages);
   }
 
@@ -458,12 +467,12 @@ export class FormioWrapper {
     );
 
     try {
-      storedValue = typeof storedValue !== 'undefined' ?
-        JSON.parse(storedValue) : storedValue;
-      if(typeof storedValue === 'boolean') {
+      storedValue = typeof storedValue !== 'undefined'
+        ? JSON.parse(storedValue) : storedValue;
+      if (typeof storedValue === 'boolean') {
         return storedValue;
       }
-    } catch(error) {
+    } catch (error) {
       // eslint-disable-next-line no-console
       console.warn('terms not set');
     }
@@ -545,7 +554,7 @@ export class FormioWrapper {
       }
       if (this.config.form.title) {
         completed.push(this.config.form.title);
-        completed = [... new Set(completed)];
+        completed = [...new Set(completed)];
       }
       this.config.storage.type.setItem(
         this.config.storage.name,
@@ -567,7 +576,8 @@ export class FormioWrapper {
       this._shouldPreviousPageBeSkipped(this.wizard.page, this.wizard.pages)
     ) {
       const proposedPage = this.wizard.page - 2;
-      const targetPage = proposedPage <= 0 ? proposedPage : this.wizard.page - 1;
+      const targetPage = proposedPage <= 0
+        ? proposedPage : this.wizard.page - 1;
       if (this.wizard._data) {
         this.wizard._data[this.config.terms.dataName] = true;
       }
@@ -731,11 +741,12 @@ export class FormioWrapper {
         emailButton.disabled = false;
       }, 10000);
     } else {
-      this.wizard.data[this.config.form.adminField] = this.config.form.adminEmail;
-      this.wizard.data[this.config.form.emailField]
-        = this.config.form.adminEmail;
-      this.wizard.data[this.config.form.emailConfirmField]
-        = this.config.form.adminEmail;
+      this.wizard.data[
+        this.config.form.adminField] = this.config.form.adminEmail;
+      this.wizard.data[
+        this.config.form.emailField] = this.config.form.adminEmail;
+      this.wizard.data[
+        this.config.form.emailConfirmField] = this.config.form.adminEmail;
     }
     this.wizard.submit();
     if (this.wizard.data.sendEmail !== 'user') {

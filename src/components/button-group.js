@@ -1,4 +1,6 @@
 import { html, render, nothing } from 'lit-html';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html';
+
 import { configuration } from '../config';
 
 export class ButtonGroup {
@@ -8,6 +10,7 @@ export class ButtonGroup {
     this.showDialog = false;
     this.cancelEvent = {};
     this.fullData = [];
+
     window.addEventListener('formiowrapperPageChange', ({ detail }) => {
       this.updateTarget(detail);
     });
@@ -43,8 +46,51 @@ export class ButtonGroup {
     if (JSON.stringify(output).indexOf('</li>') === -1) {
       confirmation = this._createConfirmation();
     }
-
+    this.updateParentIfFirstStepSkipped(data);
     return html`${output}${confirmation}`;
+  }
+
+  /**
+   * @param {Object} data the data used to generate all the buttons
+   */
+  updateParentIfFirstStepSkipped(data) {
+    if (!data || !data[0] || data[0].type !== 'li') return;
+
+    if (!configuration.navigation
+        || !configuration.navigation.skipFirstNavStep) return;
+
+    const parent = this.target.parentElement.querySelector('li > a.active');
+    if (!parent) return;
+
+    const currentPage = this.getCurrentPage(data);
+    if (!parent.getAttribute('updated')) {
+      const clickData = { ...data[0].detail, ...{ page: 0 } };
+      parent.setAttribute('data-event', data[0].event);
+      parent.setAttribute('data-confirm', !!data[0].confirm);
+      parent.setAttribute('data-detail', JSON.stringify(clickData));
+      parent.setAttribute('updated', true);
+      parent.removeAttribute('href');
+      parent.removeEventListener('click', (e) => { this.processClick(e); });
+      parent.addEventListener('click', (e) => { this.processClick(e); });
+    }
+
+    if (currentPage === 0) {
+      parent.classList.remove('opened');
+    } else {
+      parent.classList.add('opened');
+    }
+  }
+
+  /**
+   * @param {Object} data
+   * @return {Number|NULL}
+   */
+  // eslint-disable-next-line class-methods-use-this
+  getCurrentPage(data) {
+    if (!data) return null;
+    if (!data[0]) return null;
+    if (!data[0].detail) return null;
+    return data[0].detail.currentPage;
   }
 
   /**
@@ -54,11 +100,11 @@ export class ButtonGroup {
     return html`
       <div
         id="cancelconfirmationwrapper"
-        .hidden=${!this.showDialog}
+        ?hidden=${!this.showDialog}
         @click="${e => this.backgroundClose(e)}">
         <div id="cancelconfirmationdialog">
           <button class="close" @click="${() => this.toggleDialog()}">
-              ${configuration.confirmation.closeXButton}
+              ${unsafeHTML(configuration.confirmation.closeXButton)}
           </button>
           <h2>${configuration.confirmation.title}</h2>
           ${configuration.confirmation.description}
@@ -178,7 +224,7 @@ export class ButtonGroup {
    * @param {Object} event the click event
    */
   backgroundClose(event) {
-    if(event.target.id !== 'cancelconfirmationwrapper') return;
+    if (event.target.id !== 'cancelconfirmationwrapper') return;
     this.showDialog = false;
     render(this.updateButtons(this.fullData[this.data]), this.target);
   }
