@@ -1,6 +1,6 @@
 {
   "name": "kyfb",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Know Your Food Business tool chain",
   "author": "Smart Service Queensland",
   "contributors": [
@@ -15,7 +15,7 @@
     }
   ],
   "license": "MIT",
-  "repository": "git+https://github.com/DanielTurner/kyfb.git",
+  "repository": "git+https://github.com/qld-gov-au/foodpantry-kyfb.git",
   "browserslist": [
     "chrome >= 76",
     "safari >= 11",
@@ -25,7 +25,7 @@
     "samsung >= 9"
   ],
   "bugs": {
-    "url": "https://github.com/DanielTurner/kyfb/issues"
+    "url": "https://github.com/qld-gov-au/foodpantry-kyfb/issues"
   },
   "scripts": {
     "lint:eslint": "eslint --ext .js,.html . --ignore-path .gitignore",
@@ -40,36 +40,36 @@
     "test": "karma start",
     "test:watch": "karma start --auto-watch=true --single-run=false",
     "start": "parcel src/index.html",
-    "build": "npm install && rimraf dist && npm run build:resources && npm run build:squiz",
+    "build": "npm install && rimraf dist && rimraf .cache && npm run build:resources && npm run build:squiz",
     "build:resources": "parcel build src/resources/**/*.html src/resources/**/**/*.html src/resources/**/**/**/*.html --no-source-maps",
     "build:squiz": "parcel build src/index.html --no-source-maps",
     "build:images": "parcel build src/kyfb-home-images/*",
     "postinstall": "rm -rf ./.cache && node ./postinstall.js"
   },
   "devDependencies": {
-    "@babel/core": "^7.11.6",
-    "@open-wc/testing": "^2.0.0",
-    "@open-wc/testing-karma": "^3.0.0",
-    "browserify": "^16.5.2",
+    "@babel/core": "^7.13.8",
+    "@open-wc/testing": "^2.5.32",
+    "@open-wc/testing-karma": "^4.0.9",
+    "browserify": "^17.0.0",
     "browserify-istanbul": "^3.0.1",
     "common-js": "^0.3.8",
-    "deepmerge": "^3.2.0",
-    "eslint": "^7.7.0",
-    "eslint-config-airbnb-base": "^14.2.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-html": "^6.0.3",
-    "eslint-plugin-import": "^2.22.0",
+    "deepmerge": "^4.2.2",
+    "eslint": "^7.21.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-html": "^6.1.1",
+    "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-json": "^2.1.2",
-    "husky": "^4.2.3",
-    "karma": "^4.1.0",
-    "lint-staged": "^10.1.2",
+    "husky": "^5.1.2",
+    "karma": "^6.1.1",
+    "lint-staged": "^10.5.4",
     "parcel-bundler": "^1.12.4",
-    "parcel-plugin-inliner": "^1.0.14",
-    "prettier": "2.1.0",
-    "prettier-eslint": "^11.0.0",
+    "parcel-plugin-inliner": "^1.0.16",
+    "prettier": "2.2.1",
+    "prettier-eslint": "^12.0.0",
     "rimraf": "^3.0.2",
-    "sass": "^1.26.10",
-    "sinon": "^9.0.3"
+    "sass": "^1.32.8",
+    "sinon": "^9.2.4"
   },
   "prettier": {
     "singleQuote": true,
@@ -77,7 +77,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && npm test"
+      "pre-commit": "lint-staged && npm run build && npm test"
     }
   },
   "lint-staged": {
