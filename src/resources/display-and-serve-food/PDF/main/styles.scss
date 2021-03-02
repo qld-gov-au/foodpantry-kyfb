@@ -1,4 +1,11 @@
 @media print {
+
+  @page {
+    size: A4;
+    margin: 1cm;
+  }
+
+
   .formio-component-radio label {
     display: none;
   }
