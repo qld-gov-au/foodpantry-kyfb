@@ -42,6 +42,7 @@ export const configuration = {
   },
   buttons: {
     overwriteFirstButton: true,
+    overwriteFirstButtonShowExtras: true,
     overwriteValue: 'Start',
     showButtonsOnLast: false,
     confirmOnCancel: false,
