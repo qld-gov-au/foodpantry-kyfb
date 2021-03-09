@@ -189,7 +189,6 @@ describe('Navigation specialities', () => {
 
   });
 
-
   it('Process click not handles the different options', async () => {
     const data = {
       navigation: [
