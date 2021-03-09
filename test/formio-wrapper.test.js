@@ -93,7 +93,8 @@ describe('Formio Wrapper Tests.', () => {
 
   it('_gotoPage triggers the right wizard function', async () => {
     wrapper.loaded = true;
-    wrapper.wizard.setPage = () => {};
+    wrapper.wizard.setPage = () => Promise.resolve(true);
+    wrapper._updateStorage = () => {};
     wrapper.wizard.pages = [
       {
         component: {
@@ -302,13 +303,13 @@ describe('Formio Wrapper Tests.', () => {
   });
 
   it('page change event is fired as expected', async () => {
+    const stubbedFire = stub(wrapper.config.form.baseElement, 'dispatchEvent');
     const stubbedMenu = stub(wrapper, 'buildProgressMenuData');
     const stubbedButtons = stub(wrapper, 'buildButtonData');
-    const stubbedFire = stub(wrapper.config.form.baseElement, 'dispatchEvent');
     wrapper._firePageChangeEvent();
-    stubbedMenu.restore;
-    stubbedButtons.restore;
-    stubbedFire.restore;
+    stubbedMenu.restore();
+    stubbedButtons.restore();
+    stubbedFire.restore();
     assert.calledOnce(stubbedMenu);
     assert.calledOnce(stubbedButtons);
     assert.calledOnce(stubbedFire);
@@ -456,6 +457,7 @@ describe('Formio Wrapper Tests.', () => {
       configuration.terms.termsStorageName,
       false,
     );
+
     wrapper.config.terms.skipIfTermsAlreadyAccepted = false;
     const pages = [
       { component: { title: 'Something mundane' } },
@@ -586,7 +588,7 @@ describe('Formio Wrapper Tests.', () => {
     wrapper._shouldNextPageBeSkipped = () => {
       return true;
     };
-    wrapper.wizard.setPage = () => {};
+    wrapper.wizard.setPage = () => Promise.resolve(true);
     const spied = spy(wrapper, '_goToPage');
     wrapper._goToNextPage();
     spied.restore();
