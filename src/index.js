@@ -108,6 +108,29 @@ import { Environment } from './environment';
     document.querySelector('.guide-sub-nav').hidden = true;
   });
 
+  window.dataLayer = window.dataLayer || [];
+  window.addEventListener('formioWrapperTracking', (event) => {
+    const { form } = event.detail;
+    const { change } = event.detail;
+    if (!form.changed) return;
+    if (typeof form.changed.component === 'object') {
+      const { title } = change.changed.instance.root._form || '';
+      const { modified } = change.changed.instance.root._form || '';
+      window.dataLayer.push({
+        event: 'formio-interaction',
+        'formio-name': title,
+        'formio-input-id': change.changed.component.id,
+        'formio-input-type': change.changed.component.type,
+        'formio-input-value': change.changed.value,
+        'formio-input-key': change.changed.component.key,
+        'formio-input-label-raw': change.changed.component.label,
+        'formio-version': modified,
+        'formio-category': `Form: ${title}`,
+        'formio-action': 'filled in',
+      });
+    }
+  });
+
   window.addEventListener('formioNewPageRender', (event) => {
     // automated email on summary
     if (event.detail.page === 3) {
