@@ -72,6 +72,5 @@ export const configuration = {
   },
   extraTriggersOnActions: {
     cancel: 'cancelKYFBForm',
-    change: 'updateAnalytics',
   },
 };
