@@ -51,8 +51,9 @@ export class FormioWrapper {
         this.scrollToTop();
       }
     });
-    this.wizard.on('change', () => {
+    this.wizard.on('change', (form, change) => {
       this._firePageChangeEvent();
+      this._fireTrackingEvent(form, change);
     });
     this.wizard.on('downloadPDF', () => {
       this.wizard.data.sendEmail = false;
@@ -767,5 +768,21 @@ export class FormioWrapper {
       this.wizard.data[this.config.form.emailField] = '';
       this.wizard.data[this.config.form.emailConfirmField] = '';
     }
+  }
+
+  /**
+   * @param {Object} form the form object
+   * @param {Object} change the change object
+   */
+  _fireTrackingEvent(form, change) {
+    const newEvent = new CustomEvent('formioWrapperTracking', {
+      bubbles: true,
+      detail: {
+        form,
+        change,
+        title: !this.formTitle ? this.wizard._form.title : this.formTitle,
+      },
+    });
+    this.config.form.baseElement.dispatchEvent(newEvent);
   }
 }
