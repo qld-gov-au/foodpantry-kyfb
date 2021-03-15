@@ -27,7 +27,6 @@ export class FormioWrapper {
       this.config.form.formioConfig,
     ).then((wizard) => {
       this.wizard = wizard;
-      this.submissionData = this.wizard.submission.data;
       this.wizard.data.adminEmail = this.formAdminEmail;
       this.formTitle = !this.formTitle ? wizard._form.title : this.formTitle;
       this.loaded = true;
@@ -139,8 +138,11 @@ export class FormioWrapper {
     });
 
     baseObject.removeEventListener('formiowrapperCancel', () => {
-      this._clearStorage();
-      this._goToPage(0);
+      if (this.config.form.clearStorageOnCancel) {
+        this._clearStorage();
+      } else {
+        this._goToPage(0);
+      }
       if (this.config.extraTriggersOnActions.cancel) {
         this._fireExtraEvent(this.config.extraTriggersOnActions.cancel);
       }
@@ -230,7 +232,7 @@ export class FormioWrapper {
     const rawData = storage.getItem(key);
     let newStorage = {};
     try {
-      const previousStorage = rawData ? JSON.parse(rawData) : {};
+      const previousStorage = rawData ? this._unpackageData(rawData) : {};
       newStorage = { ...previousStorage, ...data };
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -240,7 +242,7 @@ export class FormioWrapper {
     newStorage.page = page;
     newStorage._seenPages = seenPages;
     newStorage.lastNavigation = this.lastNavigation;
-    storage.setItem(key, JSON.stringify(newStorage));
+    storage.setItem(key, this._packageData(newStorage));
   }
 
   /**
@@ -252,15 +254,15 @@ export class FormioWrapper {
     const termsStorage = this.config.terms.termsStorageType;
     if (storedData) {
       try {
-        this.storedData = JSON.parse(storedData);
+        this.storedData = this._unpackageData(storedData);
         this.wizard._seenPages = this.storedData._seenPages;
         this.lastNavigation = this.storedData.lastNavigation || 0;
         delete this.storedData._seenPages;
         this.wizard.page = this.storedData.page;
         delete this.storedData.page;
         this.wizard.data = this.storedData;
-        this.wizard.data[this.config.terms.dataName] = termsStorage
-          .getItem(this.config.terms.termsStorageName);
+        this.wizard.data[this.config.terms.dataName] = JSON.parse(termsStorage
+          .getItem(this.config.terms.termsStorageName));
         if (this.wizard._data) {
           this.wizard._data[this.config.terms.dataName] = true;
         }
@@ -276,17 +278,51 @@ export class FormioWrapper {
   }
 
   /**
+   * @param {Object} storedData stored object
+   * @param {Object} newData new data object from formio
+   * @returns {String} the stringified object
+   */
+  // eslint-disable-next-line class-methods-use-this
+  _packageData(storedData, newData) {
+    const newStorage = { ...storedData, ...newData };
+
+    const keys = Object.keys(newStorage);
+    keys.forEach((key) => {
+      newStorage[key] = JSON.stringify(newStorage[key]);
+    });
+    return JSON.stringify(newStorage);
+  }
+
+  /**
+   * @param {String} stringData the stringified object
+   * @return {Object} the unpackaged object
+   */
+  // eslint-disable-next-line class-methods-use-this
+  _unpackageData(stringData) {
+    let data = {};
+    try {
+      data = JSON.parse(stringData);
+      const keys = Object.keys(data);
+      keys.forEach((key) => {
+        data[key] = JSON.parse(data[key]);
+      });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.warn('Stored data corrupted, skipping');
+    }
+    return data;
+  }
+
+  /**
    */
   _clearStorage() {
-    if (!this.config.form.clearStorageOnCancel) return;
     this.config.terms.termsStorageType.clear();
     this.config.storage.type.clear();
-    delete this.wizard.data;
-    delete this.wizard._data;
+    this.lastNavigation = 0;
     this.wizard._seenPages = [];
-    delete this.wizard.page;
-    this.config.storage.type.removeItem(this.config.form.title);
-    this.wizard.resetValue();
+    this.wizard.emit('resetForm');
+    // Hack cause formio doesn't reset properly.
+    document.location.reload();
   }
 
   /**
@@ -395,11 +431,6 @@ export class FormioWrapper {
       if (this.config.buttons.overwriteFirstButton) {
         cancelButton.displayed = false;
         nextButton.title = this.config.buttons.overwriteValue;
-      }
-      if (this.config.buttons.overwriteFirstButtonShowExtras) {
-        cancelButton.displayed = true;
-        previousButton.displayed = true;
-        previousButton.event = 'formiowrapperCancel';
       }
     }
 
@@ -628,7 +659,7 @@ export class FormioWrapper {
     );
 
     this._updateIfCompleted(pageNo, this.wizard.pages);
-    window.wizard = this.wizard;
+
     // Oddness... seems it doesn't set page the first time.
     this.wizard.setPage(pageNo)
       .then(() => {
@@ -688,7 +719,7 @@ export class FormioWrapper {
    * @return {Response}
    */
   _formSubmission() {
-    this.pdfInstance.data = this.submissionData;
+    this.pdfInstance.data = this.wizard.data;
     return this.pdfInstance.submit();
   }
 
@@ -754,7 +785,7 @@ export class FormioWrapper {
       setTimeout(() => {
         this.requestedEmail = false;
         emailButton.disabled = false;
-      }, 30000);
+      }, 3000);
     } else {
       this.wizard.data[
         this.config.form.adminField] = this.config.form.adminEmail;
