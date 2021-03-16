@@ -23,6 +23,7 @@ export const configuration = {
     emailConfirmField: 'email',
     endpoint: 'submission',
     pdfEndpoint: 'kyfbpdf',
+    downloadPDF: false,
     pdfDownloadName: data => `Know Your Food Business summary - ${data.topicName}.pdf`,
     pdfSubmission: 'pdfSubmission',
     selector: '#formio',
