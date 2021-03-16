@@ -8,7 +8,6 @@ import { configuration } from './config.js';
 describe('Formio Wrapper Tests.', () => {
   let wrapper = {};
   let element;
-  let apiResponse;
   beforeEach(async () => {
     element = await fixture(html` <div id="formio"></div> `);
     window.Formio = {};
@@ -19,13 +18,6 @@ describe('Formio Wrapper Tests.', () => {
 
     wrapper = new FormioWrapper(configuration);
     wrapper.wizard.redraw = () => {};
-
-    apiResponse = function (body = {}) {
-      return new window.Response(JSON.stringify(body), {
-        status: 200,
-        headers: { 'Content-type': 'application/json' },
-      });
-    };
   });
 
   it('wrapper is initialised', async () => {
@@ -303,9 +295,9 @@ describe('Formio Wrapper Tests.', () => {
   });
 
   it('page change event is fired as expected', async () => {
-    const stubbedFire = stub(wrapper.config.form.baseElement, 'dispatchEvent');
     const stubbedMenu = stub(wrapper, 'buildProgressMenuData');
     const stubbedButtons = stub(wrapper, 'buildButtonData');
+    const stubbedFire = stub(wrapper.config.form.baseElement, 'dispatchEvent');
     wrapper._firePageChangeEvent();
     stubbedMenu.restore();
     stubbedButtons.restore();
@@ -621,6 +613,35 @@ describe('Formio Wrapper Tests.', () => {
     wrapper._downloadPDF();
     spied.restore();
     assert.notCalled(spied);
+  });
+
+  it('_packageData works as expected', async () => {
+    const data1 = {
+      data: 'one',
+      object: {
+        one: 1,
+        two: 2,
+      },
+      shared: {
+        beef: 'sweet',
+      }
+    };
+
+    const data2 = {
+      data: 'two',
+      shared: {
+        beef: 'under',
+        pork: 'none',
+      }
+    };
+
+    const response = wrapper._packageData(data1, data2);
+    const object = wrapper._unpackageData(response);
+    expect(object.data).equals('two');
+    expect(object.object.one).equals(1);
+    expect(object.object.two).equals(2);
+    expect(object.shared.beef).equals('under');
+    expect(object.shared.pork).equals('none');
   });
 
   afterEach(async () => {});
