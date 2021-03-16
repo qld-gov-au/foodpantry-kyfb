@@ -265,9 +265,6 @@ export class FormioWrapper {
         this.wizard.data = this.storedData;
         this.wizard.data[this.config.terms.dataName] = JSON.parse(termsStorage
           .getItem(this.config.terms.termsStorageName));
-        if (this.wizard._data) {
-          this.wizard._data[this.config.terms.dataName] = true;
-        }
       } catch (error) {
         // eslint-disable-next-line no-console
         console.warn('Stored data corrupted, skipping');
