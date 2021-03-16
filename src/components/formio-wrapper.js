@@ -88,10 +88,12 @@ export class FormioWrapper {
         this._fireExtraEvent(this.config.extraTriggersOnActions.previous);
       }
     });
-
     baseObject.addEventListener('formiowrapperCancel', () => {
-      this._clearStorage();
-      this._goToPage(0);
+      if (this.config.form.clearStorageOnCancel) {
+        this._clearStorage();
+      } else {
+        this._goToPage(0);
+      }
       if (this.config.extraTriggersOnActions.cancel) {
         this._fireExtraEvent(this.config.extraTriggersOnActions.cancel);
       }
