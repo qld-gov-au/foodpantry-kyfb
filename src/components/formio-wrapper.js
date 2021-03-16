@@ -546,9 +546,6 @@ export class FormioWrapper {
       const targetPage = proposedPage < this.wizard.pages.length
         ? proposedPage
         : this.wizard.page + 1;
-      if (this.wizard._data) {
-        this.wizard._data[this.config.terms.dataName] = true;
-      }
       this._updateStorage(
         this.config.storage.type,
         this.config.form.title,
@@ -616,9 +613,6 @@ export class FormioWrapper {
       const proposedPage = this.wizard.page - 2;
       const targetPage = proposedPage <= 0
         ? proposedPage : this.wizard.page - 1;
-      if (this.wizard._data) {
-        this.wizard._data[this.config.terms.dataName] = true;
-      }
       this._updateStorage(
         this.config.storage.type,
         this.config.form.title,
