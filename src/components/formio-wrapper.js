@@ -1,7 +1,7 @@
 /**
  * @class FormioWrapper
  */
-export class FormioWrapper {
+ export class FormioWrapper {
   /**
    * @param {Object} configuration the configuration object
    * @returns {void}
@@ -815,6 +815,8 @@ export class FormioWrapper {
    */
   _sendEmail() {
     if (this.requestedEmail) return;
+    let previousEmail = '';
+    let previousConfirm = '';
     const emailButton = this.config.form.queryElement.querySelector(
       '[name="data[emailButton]"',
     );
@@ -826,6 +828,10 @@ export class FormioWrapper {
         emailButton.disabled = false;
       }, 3000);
     } else {
+      previousEmail = this.wizard.data[
+        this.config.form.emailField];
+      previousConfirm = this.wizard.data[
+        this.config.form.emailConfirmField];
       this.wizard.data[
         this.config.form.adminField] = this.config.form.adminEmail;
       this.wizard.data[
@@ -835,8 +841,8 @@ export class FormioWrapper {
     }
     this._triggerEmailSubmission(this.wizard.data.sendEmail);
     if (this.wizard.data.sendEmail !== 'user') {
-      this.wizard.data[this.config.form.emailField] = '';
-      this.wizard.data[this.config.form.emailConfirmField] = '';
+      this.wizard.data[this.config.form.emailField] = previousEmail;
+      this.wizard.data[this.config.form.emailConfirmField] = previousConfirm;
     }
   }
 
