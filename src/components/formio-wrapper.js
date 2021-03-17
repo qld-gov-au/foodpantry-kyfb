@@ -1,7 +1,7 @@
 /**
  * @class FormioWrapper
  */
- export class FormioWrapper {
+export class FormioWrapper {
   /**
    * @param {Object} configuration the configuration object
    * @returns {void}

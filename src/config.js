@@ -17,7 +17,7 @@ export const configuration = {
         },
       },
     },
-    adminEmail: 'foodpantry@health.qld.gov.au',
+    adminEmail: '',
     adminField: 'adminEmail',
     emailField: 'toConfirmEmail',
     emailConfirmField: 'email',

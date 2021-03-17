@@ -18,7 +18,7 @@ export class Environment {
     } else {
       selectedEnvironment = environment;
     }
-
+    this.form = {};
     switch (selectedEnvironment) {
       case 'development': {
         this.flag = 'dev';
