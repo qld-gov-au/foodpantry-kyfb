@@ -24,7 +24,7 @@ describe('Formio Wrapper Event Tests.', () => {
 
   it('_addListeners works as intended', async () => {
     wrapper.loaded = true;
-
+    wrapper._clearStorage = () => {};
     wrapper.wizard.page = 1;
     wrapper.wizard.pages = [
       {
@@ -45,7 +45,7 @@ describe('Formio Wrapper Event Tests.', () => {
     ];
     wrapper.wizard.nextPage = () => {};
     wrapper.wizard.prevPage = () => {};
-    wrapper.wizard.setPage = () => {};
+    wrapper.wizard.setPage = () => Promise.resolve(true);
     wrapper.wizard.resetValue = () => {};
 
     const spiedInitialise = spy(wrapper, 'initialise');
@@ -96,7 +96,7 @@ describe('Formio Wrapper Event Tests.', () => {
     ];
     wrapper.wizard.nextPage = () => {};
     wrapper.wizard.prevPage = () => {};
-    wrapper.wizard.setPage = () => {};
+    wrapper.wizard.setPage = () => Promise.resolve(true);
 
     const spiedGoToPage = spy(wrapper, '_goToPage');
 

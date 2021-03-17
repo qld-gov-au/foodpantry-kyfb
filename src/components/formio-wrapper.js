@@ -11,6 +11,7 @@ export class FormioWrapper {
     this.formElement = {};
     this.wizard = {};
     this.loaded = false;
+    this.lastNavigation = 0;
     this._addListeners(this.config.form.baseElement);
   }
 
@@ -26,7 +27,6 @@ export class FormioWrapper {
       this.config.form.formioConfig,
     ).then((wizard) => {
       this.wizard = wizard;
-      this.submissionData = this.wizard.submission.data;
       this.wizard.data.adminEmail = this.formAdminEmail;
       this.formTitle = !this.formTitle ? wizard._form.title : this.formTitle;
       this.loaded = true;
@@ -42,20 +42,17 @@ export class FormioWrapper {
   _attachHandlers() {
     this.wizard.on('initialized', () => {
       this._firePageChangeEvent();
-      this.scrollToTop(
-        this.config.form.baseElement,
-        this.config.scroll.focusTarget,
-      );
+      this.scrollToTop();
     });
     this.wizard.on('render', () => {
       this._firePageChangeEvent();
-      this.scrollToTop(
-        this.config.form.baseElement,
-        this.config.scroll.focusTarget,
-      );
+      if (this.wizard.page === 0) {
+        this.scrollToTop();
+      }
     });
-    this.wizard.on('change', () => {
+    this.wizard.on('change', (form, change) => {
       this._firePageChangeEvent();
+      this._fireTrackingEvent(form, change);
     });
     this.wizard.on('downloadPDF', () => {
       this.wizard.data.sendEmail = false;
@@ -78,18 +75,25 @@ export class FormioWrapper {
 
     baseObject.addEventListener('formiowrapperGoToNext', () => {
       this._goToNextPage();
+      this.scrollToTop();
+      if (this.config.extraTriggersOnActions.next) {
+        this._fireExtraEvent(this.config.extraTriggersOnActions.next);
+      }
     });
 
     baseObject.addEventListener('formiowrapperGoToPrevious', () => {
       this._goToPreviousPage();
+      this.scrollToTop();
       if (this.config.extraTriggersOnActions.previous) {
         this._fireExtraEvent(this.config.extraTriggersOnActions.previous);
       }
     });
-
     baseObject.addEventListener('formiowrapperCancel', () => {
-      this._clearStorage();
-      this._goToPage(0);
+      if (this.config.form.clearStorageOnCancel) {
+        this._clearStorage();
+      } else {
+        this._goToPage(0);
+      }
       if (this.config.extraTriggersOnActions.cancel) {
         this._fireExtraEvent(this.config.extraTriggersOnActions.cancel);
       }
@@ -97,6 +101,7 @@ export class FormioWrapper {
 
     baseObject.addEventListener('formiowrapperGoToPage', (event) => {
       this._goToPage(Number(event.detail.page));
+      this.scrollToTop();
       if (this.config.extraTriggersOnActions.goto) {
         this._fireExtraEvent(this.config.extraTriggersOnActions.goto);
       }
@@ -135,8 +140,11 @@ export class FormioWrapper {
     });
 
     baseObject.removeEventListener('formiowrapperCancel', () => {
-      this._clearStorage();
-      this._goToPage(0);
+      if (this.config.form.clearStorageOnCancel) {
+        this._clearStorage();
+      } else {
+        this._goToPage(0);
+      }
       if (this.config.extraTriggersOnActions.cancel) {
         this._fireExtraEvent(this.config.extraTriggersOnActions.cancel);
       }
@@ -197,7 +205,7 @@ export class FormioWrapper {
   }
 
   _updateStorages() {
-    if (this.wizard.page === 0) {
+    if (this.wizard.page === 0 && !this.lastNavigation) {
       this._populateDataFromStorage(
         this.config.storage.type,
         this.config.form.title,
@@ -226,18 +234,17 @@ export class FormioWrapper {
     const rawData = storage.getItem(key);
     let newStorage = {};
     try {
-      const previousStorage = rawData ? JSON.parse(rawData) : {};
+      const previousStorage = rawData ? this._unpackageData(rawData) : {};
       newStorage = { ...previousStorage, ...data };
     } catch (error) {
       // eslint-disable-next-line no-console
       console.warn('Data corrupted, ignoring');
       newStorage = { ...data };
     }
-
     newStorage.page = page;
     newStorage._seenPages = seenPages;
-
-    storage.setItem(key, JSON.stringify(newStorage));
+    newStorage.lastNavigation = this.lastNavigation;
+    storage.setItem(key, this._packageData(newStorage));
   }
 
   /**
@@ -246,50 +253,78 @@ export class FormioWrapper {
    */
   _populateDataFromStorage(storage, key) {
     const storedData = storage.getItem(key);
+    const termsStorage = this.config.terms.termsStorageType;
     if (storedData) {
       try {
-        this.storedData = JSON.parse(storedData);
+        this.storedData = this._unpackageData(storedData);
         this.wizard._seenPages = this.storedData._seenPages;
+        this.lastNavigation = this.storedData.lastNavigation || 0;
         delete this.storedData._seenPages;
         this.wizard.page = this.storedData.page;
         delete this.storedData.page;
         this.wizard.data = this.storedData;
-        this.wizard.data[this.config.terms.dataName] = this.config.terms
-          .termsStorageType.getItem(this.config.terms.termsStorageName);
-        this.submissionData = this.wizard.data;
+        this.wizard.data[this.config.terms.dataName] = JSON.parse(termsStorage
+          .getItem(this.config.terms.termsStorageName));
+        if (this.wizard._data) {
+          this.wizard._data[this.config.terms.dataName] = true;
+        }
       } catch (error) {
         // eslint-disable-next-line no-console
         console.warn('Stored data corrupted, skipping');
       }
 
-      let loadPage = 0;
-      this.wizard._seenPages.forEach((page) => {
-        if (!this._checkPageValidity(
-          page,
-          this.wizard.pages,
-          this.wizard.data,
-        )) {
-          if (loadPage === 0) {
-            loadPage = page;
-          }
-        }
-      });
-      if (this.wizard.page) {
-        loadPage = loadPage === 0 ? this.wizard.page : loadPage;
-        this._goToPage(loadPage);
+      if (this.lastNavigation !== 0) {
+        this._goToPage(this.lastNavigation);
       }
     }
   }
 
   /**
+   * @param {Object} storedData stored object
+   * @param {Object} newData new data object from formio
+   * @returns {String} the stringified object
+   */
+  // eslint-disable-next-line class-methods-use-this
+  _packageData(storedData, newData) {
+    const newStorage = { ...storedData, ...newData };
+
+    const keys = Object.keys(newStorage);
+    keys.forEach((key) => {
+      newStorage[key] = JSON.stringify(newStorage[key]);
+    });
+    return JSON.stringify(newStorage);
+  }
+
+  /**
+   * @param {String} stringData the stringified object
+   * @return {Object} the unpackaged object
+   */
+  // eslint-disable-next-line class-methods-use-this
+  _unpackageData(stringData) {
+    let data = {};
+    try {
+      data = JSON.parse(stringData);
+      const keys = Object.keys(data);
+      keys.forEach((key) => {
+        data[key] = JSON.parse(data[key]);
+      });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.warn('Stored data corrupted, skipping');
+    }
+    return data;
+  }
+
+  /**
    */
   _clearStorage() {
-    if (!this.config.form.clearStorageOnCancel) return;
     this.config.terms.termsStorageType.clear();
     this.config.storage.type.clear();
-    this.wizard.resetValue();
-    this.wizard.data = {};
-    this.config.storage.type.removeItem(this.config.form.title);
+    this.lastNavigation = 0;
+    this.wizard._seenPages = [];
+    this.wizard.emit('resetForm');
+    // Hack cause formio doesn't reset properly.
+    document.location.reload();
   }
 
   /**
@@ -522,6 +557,7 @@ export class FormioWrapper {
         targetPage,
       );
       this._goToPage(targetPage);
+      this.lastNavigation = targetPage;
       return true;
     }
     this._updateIfCompleted(this.wizard.page + 1, this.wizard.pages);
@@ -533,6 +569,7 @@ export class FormioWrapper {
       this.wizard._seenPages,
       this.wizard.page + 1,
     );
+    this.lastNavigation = this.wizard.page + 1;
     this.wizard.nextPage();
     return true;
   }
@@ -571,6 +608,7 @@ export class FormioWrapper {
   _goToPreviousPage() {
     if (!this.loaded) {
       this.notLoaded();
+      return false;
     }
     if (
       this._shouldPreviousPageBeSkipped(this.wizard.page, this.wizard.pages)
@@ -588,6 +626,7 @@ export class FormioWrapper {
         this.wizard._seenPages,
         targetPage,
       );
+      this.lastNavigation = targetPage;
       this._goToPage(targetPage);
       return true;
     }
@@ -598,6 +637,7 @@ export class FormioWrapper {
       this.wizard._seenPages,
       this.wizard.page - 1,
     );
+    this.lastNavigation = this.wizard.page - 1;
     this.wizard.prevPage();
     return true;
   }
@@ -621,8 +661,13 @@ export class FormioWrapper {
     );
 
     this._updateIfCompleted(pageNo, this.wizard.pages);
-    this.wizard.setPage(pageNo);
-    this.wizard.redraw();
+
+    // Oddness... seems it doesn't set page the first time.
+    this.wizard.setPage(pageNo)
+      .then(() => {
+        this.wizard.setPage(pageNo);
+        this.wizard.redraw();
+      });
     return true;
   }
 
@@ -644,7 +689,10 @@ export class FormioWrapper {
    * @param {HTMLElement} baseElement the base element for scrolling (window)
    * @param {HTMLElement} focusTarget the element for query selecting (document)
    */
-  scrollToTop(baseElement, focusTarget) {
+  scrollToTop(
+    baseElement = this.config.form.baseElement,
+    focusTarget = this.config.scroll.focusTarget,
+  ) {
     if (this.config.scroll.target !== -1) {
       baseElement.scroll({
         top: this.config.scroll.target,
@@ -673,7 +721,7 @@ export class FormioWrapper {
    * @return {Response}
    */
   _formSubmission() {
-    this.pdfInstance.data = this.submissionData;
+    this.pdfInstance.data = this.wizard.data;
     return this.pdfInstance.submit();
   }
 
@@ -739,7 +787,7 @@ export class FormioWrapper {
       setTimeout(() => {
         this.requestedEmail = false;
         emailButton.disabled = false;
-      }, 10000);
+      }, 3000);
     } else {
       this.wizard.data[
         this.config.form.adminField] = this.config.form.adminEmail;
@@ -753,5 +801,21 @@ export class FormioWrapper {
       this.wizard.data[this.config.form.emailField] = '';
       this.wizard.data[this.config.form.emailConfirmField] = '';
     }
+  }
+
+  /**
+   * @param {Object} form the form object
+   * @param {Object} change the change object
+   */
+  _fireTrackingEvent(form, change) {
+    const newEvent = new CustomEvent('formioWrapperTracking', {
+      bubbles: true,
+      detail: {
+        form,
+        change,
+        title: !this.formTitle ? this.wizard._form.title : this.formTitle,
+      },
+    });
+    this.config.form.baseElement.dispatchEvent(newEvent);
   }
 }
