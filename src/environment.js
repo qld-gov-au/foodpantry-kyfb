@@ -18,24 +18,24 @@ export class Environment {
     } else {
       selectedEnvironment = environment;
     }
-
+    this.form = {};
     switch (selectedEnvironment) {
       case 'development': {
         this.flag = 'dev';
         this.url = 'https://api.forms.platforms.qld.gov.au/dev-phfmembiqerttho/';
-        this.adminEmail = '';
+        this.form.adminEmail = 'FoodPantryDefects@DSITIAQLD.onmicrosoft.com';
         break;
       }
       case 'uat': {
         this.flag = 'uat';
         this.url = 'https://api.forms.platforms.qld.gov.au/uat-phfmembiqerttho/';
-        this.adminEmail = 'foodpantry@health.qld.gov.au';
+        this.form.adminEmail = 'foodpantry@health.qld.gov.au';
         break;
       }
       default: {
         this.flag = 'prod';
         this.url = 'https://api.forms.platforms.qld.gov.au/phfmembiqerttho/';
-        this.adminEmail = 'foodpantry@health.qld.gov.au';
+        this.form.adminEmail = 'foodpantry@health.qld.gov.au';
         break;
       }
     }
