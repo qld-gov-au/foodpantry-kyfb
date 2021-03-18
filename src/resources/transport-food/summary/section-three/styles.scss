@@ -1,8 +1,8 @@
 .kyfb {
-
-  .preference, #download-summary {
+  .preference,
+  #download-summary {
     margin-top: 24px;
-    margin-bottom:16px;
+    margin-bottom: 16px;
     line-height: normal;
     letter-spacing: -0.53px;
     color: #202529;
@@ -26,10 +26,15 @@
   }
 }
 
-.btn-primary:disabled > .icon:after {
-  font-family: "FontAwesome";
-  display: inline-block;
-  animation: progressSpinner 3s infinite linear;
-  margin-left: 5px;
-  content:"\f110";
+[busy='true'] {
+  cursor: not-allowed !important;
+  opacity: 0.65;
+  color: #212529;
+  & > .icon:after {
+    font-family: 'FontAwesome';
+    display: inline-block;
+    animation: progressSpinner 3s infinite linear;
+    margin-left: 5px;
+    content: '\f110';
+  }
 }
