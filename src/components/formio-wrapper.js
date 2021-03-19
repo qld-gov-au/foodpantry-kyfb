@@ -9,6 +9,7 @@ export class FormioWrapper {
   constructor(configuration) {
     this.config = configuration;
     this.formElement = {};
+    this.emailElement = null;
     this.wizard = {};
     this.loaded = false;
     this.lastNavigation = 0;
@@ -27,7 +28,9 @@ export class FormioWrapper {
       this.config.form.formioConfig,
     ).then((wizard) => {
       this.wizard = wizard;
+      this.wizard.data.parent = wizard.id;
       this.wizard.data.adminEmail = this.formAdminEmail;
+      this.wizard.data.downloadPDF = this.config.form.downloadPDF;
       this.formTitle = !this.formTitle ? wizard._form.title : this.formTitle;
       this.loaded = true;
       if (firstInit) {
@@ -265,9 +268,6 @@ export class FormioWrapper {
         this.wizard.data = this.storedData;
         this.wizard.data[this.config.terms.dataName] = JSON.parse(termsStorage
           .getItem(this.config.terms.termsStorageName));
-        if (this.wizard._data) {
-          this.wizard._data[this.config.terms.dataName] = true;
-        }
       } catch (error) {
         // eslint-disable-next-line no-console
         console.warn('Stored data corrupted, skipping');
@@ -434,6 +434,12 @@ export class FormioWrapper {
         cancelButton.displayed = false;
         nextButton.title = this.config.buttons.overwriteValue;
       }
+
+      if (this.config.buttons.overwriteFirstButtonShowExtras) {
+        cancelButton.displayed = true;
+        previousButton.displayed = true;
+        previousButton.event = 'formiowrapperCancel';
+      }
     }
 
     if (page === this.wizard.pages.length - 1) {
@@ -546,9 +552,6 @@ export class FormioWrapper {
       const targetPage = proposedPage < this.wizard.pages.length
         ? proposedPage
         : this.wizard.page + 1;
-      if (this.wizard._data) {
-        this.wizard._data[this.config.terms.dataName] = true;
-      }
       this._updateStorage(
         this.config.storage.type,
         this.config.form.title,
@@ -616,9 +619,6 @@ export class FormioWrapper {
       const proposedPage = this.wizard.page - 2;
       const targetPage = proposedPage <= 0
         ? proposedPage : this.wizard.page - 1;
-      if (this.wizard._data) {
-        this.wizard._data[this.config.terms.dataName] = true;
-      }
       this._updateStorage(
         this.config.storage.type,
         this.config.form.title,
@@ -708,13 +708,41 @@ export class FormioWrapper {
    * @return {void}
    */
   createPDFInstance() {
-    if (!this.config.form.pdfEndpoint) return;
+    if (!this.config.form.pdfEndpoint || !this.config.form.sendPDF) return;
     Formio.createForm(
       document.createElement('div'),
       `${this.config.form.baseLocation}${this.config.form.pdfEndpoint}`,
     ).then((pdfInstance) => {
       this.pdfInstance = pdfInstance;
     });
+  }
+
+  /**
+   * @param {String} sendEmail user or admin for the send email attribute
+   */
+  _triggerEmailSubmission(sendEmail) {
+    if (!this.config.form.location) return;
+    if (!this.emailElement) {
+      this.emailElement = document.createElement('div');
+      this.emailElement.setAttribute('id', 'emailElement');
+      this.emailElement.setAttribute('hidden', true);
+    }
+
+    Formio.createForm(
+      this.emailElement,
+      `${this.config.form.location}`,
+    ).then((formInstance) => {
+      if (!this.wizard.data.children) {
+        this.wizard.data.children = [];
+      }
+      this.wizard.data.children.push(formInstance.id);
+      const emailForm = formInstance;
+      emailForm.data = this.wizard.data;
+      emailForm.sendEmail = sendEmail;
+      emailForm.submit();
+    });
+    this.emailElement.innerHTML = '';
+    this.emailElement = null;
   }
 
   /**
@@ -729,7 +757,7 @@ export class FormioWrapper {
    * @return {void}
    */
   _downloadPDF() {
-    if (this.requestedDownload) return;
+    if (this.requestedDownload || !this.config.form.sendPDF) return;
     this.requestedDownload = true;
     // wizard event does not capture EventTarget
     const downloadButton = this.config.form.queryElement.querySelector(
@@ -778,17 +806,25 @@ export class FormioWrapper {
    */
   _sendEmail() {
     if (this.requestedEmail) return;
+    let previousEmail = '';
+    let previousConfirm = '';
     const emailButton = this.config.form.queryElement.querySelector(
       '[name="data[emailButton]"',
     );
     if (this.wizard.data.sendEmail === 'user') {
       emailButton.disabled = true;
+      emailButton.setAttribute('busy', true);
       this.requestedEmail = true;
       setTimeout(() => {
         this.requestedEmail = false;
         emailButton.disabled = false;
+        emailButton.setAttribute('busy', false);
       }, 3000);
     } else {
+      previousEmail = this.wizard.data[
+        this.config.form.emailField];
+      previousConfirm = this.wizard.data[
+        this.config.form.emailConfirmField];
       this.wizard.data[
         this.config.form.adminField] = this.config.form.adminEmail;
       this.wizard.data[
@@ -796,10 +832,10 @@ export class FormioWrapper {
       this.wizard.data[
         this.config.form.emailConfirmField] = this.config.form.adminEmail;
     }
-    this.wizard.submit();
+    this._triggerEmailSubmission(this.wizard.data.sendEmail);
     if (this.wizard.data.sendEmail !== 'user') {
-      this.wizard.data[this.config.form.emailField] = '';
-      this.wizard.data[this.config.form.emailConfirmField] = '';
+      this.wizard.data[this.config.form.emailField] = previousEmail;
+      this.wizard.data[this.config.form.emailConfirmField] = previousConfirm;
     }
   }
 

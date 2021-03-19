@@ -8,7 +8,6 @@ import { Environment } from './environment';
 
 (() => {
   const cssReapplier = new ReapplySelected();
-  const kyfb = new FormioWrapper(configuration);
   const environment = new Environment();
 
   // Overwrite config with environment variables where applicable.
@@ -17,6 +16,7 @@ import { Environment } from './environment';
     config[key] = { ...configuration[key], ...environment[key] };
   });
 
+  const kyfb = new FormioWrapper(config);
   window.formEnv = environment.flag;
 
   window.addEventListener('DOMContentLoaded', () => {
