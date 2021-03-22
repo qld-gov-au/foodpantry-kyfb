@@ -12,7 +12,7 @@ export class FormioWrapper {
     this.emailElement = null;
     this.wizard = {};
     this.loaded = false;
-    this.lastNavigation = 0;
+    this.lastNavigation = null;
     this._addListeners(this.config.form.baseElement);
   }
 
@@ -208,7 +208,7 @@ export class FormioWrapper {
   }
 
   _updateStorages() {
-    if (this.wizard.page === 0 && !this.lastNavigation) {
+    if (this.wizard.page === 0 && this.lastNavigation === null) {
       this._populateDataFromStorage(
         this.config.storage.type,
         this.config.form.title,
@@ -273,8 +273,21 @@ export class FormioWrapper {
         console.warn('Stored data corrupted, skipping');
       }
 
-      if (this.lastNavigation !== 0) {
-        this._goToPage(this.lastNavigation);
+      if (this.lastNavigation !== null) {
+        let lowestValid = this.lastNavigation;
+        let counter;
+
+        // Ensure we have the last valid page to load on.
+        for (counter = this.lastNavigation; counter > 0; counter -= 1) {
+          if (!this._checkPageValidity(
+            counter,
+            this.wizard.components,
+            this.wizard.data,
+          )) {
+            lowestValid = counter;
+          }
+        }
+        this._goToPage(lowestValid);
       }
     }
   }
