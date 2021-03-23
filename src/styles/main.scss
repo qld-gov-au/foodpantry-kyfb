@@ -213,10 +213,13 @@ ol.kyfb {
 
 @media print {
   .form-radio input::after {
-      display: none !important;
+    display: none !important;
+  }
+  .qg-card {
+    max-width: 50% !important;
   }
 }
 
-.invalid-feedback{
+.invalid-feedback {
   display: block;
 }
