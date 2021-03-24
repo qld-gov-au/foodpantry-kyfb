@@ -745,10 +745,12 @@ export class FormioWrapper {
       this.emailElement,
       `${this.config.form.location}`,
     ).then((formInstance) => {
-      if (!this.wizard.data.children) {
-        this.wizard.data.children = [];
+      let children = [];
+      if (this.wizard.data.children) {
+        children = JSON.parse(this.wizard.data.children);
       }
-      this.wizard.data.children.push(formInstance.id);
+      children.push(formInstance.id);
+      this.wizard.data.children = JSON.stringify(children);
       const emailForm = formInstance;
       emailForm.data = this.wizard.data;
       emailForm.sendEmail = sendEmail;
