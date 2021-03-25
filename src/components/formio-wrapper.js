@@ -209,13 +209,11 @@ export class FormioWrapper {
 
   _updateStorages() {
     if (this.wizard.page === 0 && this.lastNavigation === null) {
-      console.log('populate');
       this._populateDataFromStorage(
         this.config.storage.type,
         this.config.form.title,
       );
     } else {
-      if (this.wizard.page === 0) return;
       this._updateStorage(
         this.config.storage.type,
         this.config.form.title,
