@@ -59,9 +59,9 @@ describe('Topics list test', () => {
     expect(articles[6].innerText).equals('Transport food');
     expect(articles[6].innerHTML.includes('alt="Transport food"')).equals(true);
 
-    expect(articles[7].innerText).equals('Complaints and recall');
+    expect(articles[7].innerText).equals('Complaints and recalls');
     expect(
-      articles[7].innerHTML.includes('alt="Complaints and recall"'),
+      articles[7].innerHTML.includes('alt="Complaints and recalls"'),
     ).equals(true);
 
     expect(articles[8].innerText).equals('Animals and pests');

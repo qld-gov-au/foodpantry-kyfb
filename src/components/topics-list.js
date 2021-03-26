@@ -66,7 +66,7 @@ export class TopicsList {
             baseLocation: environment.url,
             form: `${environment.url}topiccomplaintsandrecalls`,
             image: 'https://www.qld.gov.au/?a=140671',
-            title: 'Complaints and recall',
+            title: 'Complaints and recalls',
           },
         ],
       },
