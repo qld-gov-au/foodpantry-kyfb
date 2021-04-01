@@ -35,7 +35,7 @@ export class Environment {
       default: {
         this.flag = 'prod';
         this.url = 'https://api.forms.platforms.qld.gov.au/phfmembiqerttho/';
-        this.form.adminEmail = 'foodpantry@health.qld.gov.au';
+        this.form.adminEmail = 'foodsafety@health.qld.gov.au';
         break;
       }
     }
