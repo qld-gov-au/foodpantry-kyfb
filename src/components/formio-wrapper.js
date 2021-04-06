@@ -355,6 +355,10 @@ export class FormioWrapper {
       //   this.wizard.components,
       //   this.wizard.data,
       // );
+      //
+      // if (!isValid) {
+      //   invalidPreviousStep = true;
+      // }
 
       const active = offset === this.wizard.page;
       const activeClass = active ? 'active' : '';
@@ -485,7 +489,7 @@ export class FormioWrapper {
    */
   _shouldNextPageBeSkipped(page, pages) {
     // eslint-disable-next-line no-console
-    if (!this.config.terms.skipIfTermsAlreadyAccepted) return false;
+    if (this.config.terms.skipIfTermsAlreadyAccepted) return false;
     const pageTitle = pages[page + 1].component.title;
     if (!pageTitle.toLowerCase().includes(this.config.terms.title)) {
       return false;
