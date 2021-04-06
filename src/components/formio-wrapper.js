@@ -379,7 +379,7 @@ export class FormioWrapper {
         type: 'li',
       };
       if (!isValid) {
-        invalidPreviousStep = true;
+        invalidPreviousStep = false;
       }
       if (!(this.config.navigation.skipFirstNavStep && offset === 0)) {
         navigationArray.push(outputObject);
