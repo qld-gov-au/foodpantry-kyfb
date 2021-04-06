@@ -350,11 +350,11 @@ export class FormioWrapper {
     }
     let invalidPreviousStep = false;
     this.wizard.components.forEach((page, offset) => {
-      const isValid = this._checkPageValidity(
-        offset,
-        this.wizard.components,
-        this.wizard.data,
-      );
+      // const isValid = this._checkPageValidity(
+      //   offset,
+      //   this.wizard.components,
+      //   this.wizard.data,
+      // );
 
       const active = offset === this.wizard.page;
       const activeClass = active ? 'active' : '';
@@ -378,9 +378,6 @@ export class FormioWrapper {
         active,
         type: 'li',
       };
-      if (!isValid) {
-        invalidPreviousStep = true;
-      }
       if (!(this.config.navigation.skipFirstNavStep && offset === 0)) {
         navigationArray.push(outputObject);
       }
@@ -487,6 +484,7 @@ export class FormioWrapper {
    * @return {Boolean}
    */
   _shouldNextPageBeSkipped(page, pages) {
+    // eslint-disable-next-line no-console
     if (!this.config.terms.skipIfTermsAlreadyAccepted) return false;
     const pageTitle = pages[page + 1].component.title;
     if (!pageTitle.toLowerCase().includes(this.config.terms.title)) {
@@ -515,6 +513,7 @@ export class FormioWrapper {
    * @return {Boolean}
    */
   _areTermsAccepted(page, pages) {
+    // eslint-disable-next-line no-console
     const termsStorage = this.config.terms.termsStorageType;
     let storedValue = termsStorage.getItem(
       this.config.terms.termsStorageName,
@@ -548,6 +547,7 @@ export class FormioWrapper {
    */
   // eslint-disable-next-line class-methods-use-this
   _checkPageValidity(offset, pages, data) {
+    // eslint-disable-next-line no-console
     if (offset < 0) return false;
     return pages[offset].checkValidity(data);
   }
