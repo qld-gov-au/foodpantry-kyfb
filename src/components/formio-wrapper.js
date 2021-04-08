@@ -487,7 +487,7 @@ export class FormioWrapper {
    * @return {Boolean}
    */
   _shouldNextPageBeSkipped(page, pages) {
-    if (!this.config.terms.skipIfTermsAlreadyAccepted && localStorage.getItem('TermsAccepted')) {
+    if (!this.config.terms.skipIfTermsAlreadyAccepted) {
       return false;
     }
     const pageTitle = pages[page + 1].component.title;
