@@ -517,26 +517,6 @@ export class FormioWrapper {
    * @return {Boolean}
    */
   _areTermsAccepted(page, pages) {
-    /* check current status of terms and conditions
-       by reading localstorage values of all the KYFB forms
-       and set a localstorage value accordingly */
-    const checkTermsAreAccepted = () => {
-      // eslint-disable-next-line no-unused-vars
-      for (const [key, value] of Object.entries(localStorage)) {
-        for (const [k, v] of Object.entries(JSON.parse(value))) {
-          if (k === 'termsAndConditions') {
-            if (v === 'true') {
-              if (localStorage.getItem('TermsAccepted') === null) {
-                localStorage.setItem('TermsAccepted', true);
-              }
-            } else {
-              localStorage.setItem('TermsAccepted', false);
-            }
-          }
-        }
-      }
-    };
-    checkTermsAreAccepted();
     const termsStorage = this.config.terms.termsStorageType;
     let storedValue = termsStorage.getItem(
       this.config.terms.termsStorageName,
