@@ -379,7 +379,7 @@ export class FormioWrapper {
         type: 'li',
       };
       if (!isValid) {
-        invalidPreviousStep = true;
+        invalidPreviousStep = false;
       }
       if (!(this.config.navigation.skipFirstNavStep && offset === 0)) {
         navigationArray.push(outputObject);
@@ -487,7 +487,9 @@ export class FormioWrapper {
    * @return {Boolean}
    */
   _shouldNextPageBeSkipped(page, pages) {
-    if (!this.config.terms.skipIfTermsAlreadyAccepted) return false;
+    if (!this.config.terms.skipIfTermsAlreadyAccepted) {
+      return false;
+    }
     const pageTitle = pages[page + 1].component.title;
     if (!pageTitle.toLowerCase().includes(this.config.terms.title)) {
       return false;
@@ -515,11 +517,30 @@ export class FormioWrapper {
    * @return {Boolean}
    */
   _areTermsAccepted(page, pages) {
+    /* check current status of terms and conditions
+       by reading localstorage values of all the KYFB forms
+       and set a localstorage value accordingly */
+    const checkTermsAreAccepted = () => {
+      // eslint-disable-next-line no-unused-vars
+      for (const [key, value] of Object.entries(localStorage)) {
+        for (const [k, v] of Object.entries(JSON.parse(value))) {
+          if (k === 'termsAndConditions') {
+            if (v === 'true') {
+              if (localStorage.getItem('TermsAccepted') === null) {
+                localStorage.setItem('TermsAccepted', true);
+              }
+            } else {
+              localStorage.setItem('TermsAccepted', false);
+            }
+          }
+        }
+      }
+    };
+    checkTermsAreAccepted();
     const termsStorage = this.config.terms.termsStorageType;
     let storedValue = termsStorage.getItem(
       this.config.terms.termsStorageName,
     );
-
     try {
       storedValue = typeof storedValue !== 'undefined'
         ? JSON.parse(storedValue) : storedValue;
