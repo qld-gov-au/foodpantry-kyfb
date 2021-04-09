@@ -36,7 +36,7 @@ export const configuration = {
   },
   terms: {
     title: 'terms of use',
-    termsStorageType: sessionStorage,
+    termsStorageType: localStorage,
     termsStorageName: 'termsAndConditions',
     skipIfTermsAlreadyAccepted: true,
     dataName: 'termsAndConditions',
