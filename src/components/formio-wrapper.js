@@ -54,8 +54,8 @@ export class FormioWrapper {
       }
     });
     this.wizard.on('change', (form, change) => {
-      const tcStatus = form.data.termsAndConditions;
-      this._firePageChangeEvent(tcStatus);
+      const termsAndConditionsStatus = form.data.termsAndConditions;
+      this._firePageChangeEvent(termsAndConditionsStatus);
       this._fireTrackingEvent(form, change);
     });
     this.wizard.on('downloadPDF', () => {
@@ -194,14 +194,14 @@ export class FormioWrapper {
    * @returns {void}
    */
   // eslint-ignored here while committing
-  _firePageChangeEvent(tcStatus) {
+  _firePageChangeEvent(termsAndConditionsStatus) {
     this._updateStorages();
     const event = new CustomEvent('formiowrapperPageChange', {
       bubbles: true,
       detail: {
         title: this.config.form.title,
         page: this.wizard && this.wizard.page ? this.wizard.page : 0,
-        navigation: this.buildProgressMenuData(tcStatus),
+        navigation: this.buildProgressMenuData(termsAndConditionsStatus),
         buttons: this.buildButtonData(),
       },
     });
@@ -344,7 +344,7 @@ export class FormioWrapper {
   /**
    * @returns {Array} the array of options to distribute
    */
-  buildProgressMenuData(tcStatus) {
+  buildProgressMenuData(termsAndConditionsStatus) {
     // eslint-disable-next-line no-console
     const navigationArray = [];
     if (!this.wizard || !this.wizard.components) {
@@ -383,7 +383,7 @@ export class FormioWrapper {
       if (!isValid) {
         invalidPreviousStep = false;
       }
-      if (!tcStatus && pageKey === 'page3') {
+      if (!termsAndConditionsStatus && pageKey === 'page3') {
         invalidPreviousStep = true;
       }
       if (!(this.config.navigation.skipFirstNavStep && offset === 0)) {
