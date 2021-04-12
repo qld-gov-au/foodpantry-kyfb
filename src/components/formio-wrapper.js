@@ -342,6 +342,7 @@ export class FormioWrapper {
   }
 
   /**
+   * @param {boolean} termsAndConditionsStatus from form.io object
    * @returns {Array} the array of options to distribute
    */
   buildProgressMenuData(termsAndConditionsStatus) {
