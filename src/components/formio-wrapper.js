@@ -54,7 +54,8 @@ export class FormioWrapper {
       }
     });
     this.wizard.on('change', (form, change) => {
-      this._firePageChangeEvent();
+      const termsAndConditionsStatus = form.data.termsAndConditions;
+      this._firePageChangeEvent(termsAndConditionsStatus);
       this._fireTrackingEvent(form, change);
     });
     this.wizard.on('downloadPDF', () => {
@@ -193,14 +194,14 @@ export class FormioWrapper {
    * @returns {void}
    */
   // eslint-ignored here while committing
-  _firePageChangeEvent() {
+  _firePageChangeEvent(termsAndConditionsStatus) {
     this._updateStorages();
     const event = new CustomEvent('formiowrapperPageChange', {
       bubbles: true,
       detail: {
         title: this.config.form.title,
         page: this.wizard && this.wizard.page ? this.wizard.page : 0,
-        navigation: this.buildProgressMenuData(),
+        navigation: this.buildProgressMenuData(termsAndConditionsStatus),
         buttons: this.buildButtonData(),
       },
     });
@@ -341,21 +342,23 @@ export class FormioWrapper {
   }
 
   /**
+   * @param {boolean} termsAndConditionsStatus from form.io object
    * @returns {Array} the array of options to distribute
    */
-  buildProgressMenuData() {
+  buildProgressMenuData(termsAndConditionsStatus) {
+    // eslint-disable-next-line no-console
     const navigationArray = [];
     if (!this.wizard || !this.wizard.components) {
       return navigationArray;
     }
     let invalidPreviousStep = false;
     this.wizard.components.forEach((page, offset) => {
+      const pageKey = page.component.key;
       const isValid = this._checkPageValidity(
         offset,
         this.wizard.components,
         this.wizard.data,
       );
-
       const active = offset === this.wizard.page;
       const activeClass = active ? 'active' : '';
       const visited = this._seenPages(offset, this.wizard._seenPages);
@@ -380,6 +383,9 @@ export class FormioWrapper {
       };
       if (!isValid) {
         invalidPreviousStep = false;
+      }
+      if (!termsAndConditionsStatus && pageKey === 'page3') {
+        invalidPreviousStep = true;
       }
       if (!(this.config.navigation.skipFirstNavStep && offset === 0)) {
         navigationArray.push(outputObject);
@@ -517,26 +523,6 @@ export class FormioWrapper {
    * @return {Boolean}
    */
   _areTermsAccepted(page, pages) {
-    /* check current status of terms and conditions
-       by reading localstorage values of all the KYFB forms
-       and set a localstorage value accordingly */
-    const checkTermsAreAccepted = () => {
-      // eslint-disable-next-line no-unused-vars
-      for (const [key, value] of Object.entries(localStorage)) {
-        for (const [k, v] of Object.entries(JSON.parse(value))) {
-          if (k === 'termsAndConditions') {
-            if (v === 'true') {
-              if (localStorage.getItem('TermsAccepted') === null) {
-                localStorage.setItem('TermsAccepted', true);
-              }
-            } else {
-              localStorage.setItem('TermsAccepted', false);
-            }
-          }
-        }
-      }
-    };
-    checkTermsAreAccepted();
     const termsStorage = this.config.terms.termsStorageType;
     let storedValue = termsStorage.getItem(
       this.config.terms.termsStorageName,
