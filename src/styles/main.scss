@@ -212,6 +212,9 @@ ol.kyfb {
 }
 
 @media print {
+  a.print-url::after{
+    content: " (" attr(href) ") ";
+  }
   .form-radio input::after {
     display: none !important;
   }
