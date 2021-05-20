@@ -211,10 +211,11 @@ ol.kyfb {
   display: none !important;
 }
 
+a.print-url-after::after{
+  content: " (" attr(href) ") ";
+}
+
 @media print {
-  a.print-url::after{
-    content: " (" attr(href) ") ";
-  }
   .form-radio input::after {
     display: none !important;
   }
