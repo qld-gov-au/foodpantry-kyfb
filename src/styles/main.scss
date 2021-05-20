@@ -211,8 +211,8 @@ ol.kyfb {
   display: none !important;
 }
 
-a.print-url-after::after{
-  content: " (" attr(href) ") ";
+a.print-url-after[href]:after {
+  content: " (" attr(href) ")";
 }
 
 @media print {
