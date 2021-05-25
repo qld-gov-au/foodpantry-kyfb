@@ -52,13 +52,11 @@ import { Environment } from './environment';
     const topicsList = new TopicsList(
       'topics',
       localStorage,
-      configuration.stageLocation,
     );
 
     const secondaryTopics = new TopicsList(
       'SummaryTopics',
       localStorage,
-      configuration.stageLocation,
     );
   });
 
@@ -82,8 +80,10 @@ import { Environment } from './environment';
     kyfb.config.form.location = event.detail.topic;
     kyfb.config.form.baseLocation = event.detail.base;
     kyfb.config.form.title = event.detail.title;
+    kyfb.lastNavigation = null;
 
     kyfb.initialise(firstInit);
+    // kyfb.populateDataFromStorageTrigger();
     firstInit = false;
     if (event.detail.topic) {
       document.querySelector('#forms').hidden = false;
@@ -101,6 +101,7 @@ import { Environment } from './environment';
   window.addEventListener('cancelKYFBForm', (event) => {
     kyfb.formLocation = '';
     kyfb.formTitle = '';
+    kyfb.lastNavigation = null;
     kyfb.initialise();
     document.querySelector('#forms').hidden = true;
     document.querySelector('#topics').hidden = false;
