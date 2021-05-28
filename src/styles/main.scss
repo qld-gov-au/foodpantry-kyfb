@@ -211,6 +211,10 @@ ol.kyfb {
   display: none !important;
 }
 
+a.print-url-after[href]:after {
+  content: " (" attr(href) ")";
+}
+
 @media print {
   .form-radio input::after {
     display: none !important;
