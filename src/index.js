@@ -70,13 +70,13 @@ import { Environment } from './environment';
         kyfb.wizard.data.topicName = event.detail.title;
       }
 
-      if (kyfb.wizard._seenPages) {
-        kyfb.wizard._seenPages = [];
-      }
-
-      if (kyfb.wizard.page) {
-        kyfb.wizard.page = 0;
-      }
+      // if (kyfb.wizard._seenPages) {
+      //   kyfb.wizard._seenPages = [];
+      // }
+      //
+      // if (kyfb.wizard.page) {
+      //   kyfb.wizard.page = 0;
+      // }
     }
 
     kyfb.config.form.location = event.detail.topic;
