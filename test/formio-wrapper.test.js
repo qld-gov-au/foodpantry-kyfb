@@ -615,36 +615,34 @@ describe('Formio Wrapper Tests.', () => {
     assert.notCalled(spied);
   });
 
-  // Note - I don't think this test is correct because it is assuming that forms.io _packageData function accepts 2 parameters (stored data and new data) but forms.io _packageData only accepts one parameter and that is stored value.
+  it('_packageData works as expected', async () => {
+    const data1 = {
+      data: 'one',
+      object: {
+        one: 1,
+        two: 2,
+      },
+      shared: {
+        beef: 'sweet',
+      }
+    };
 
-  // it('_packageData works as expected', async () => {
-  //   const data1 = {
-  //     data: 'one',
-  //     object: {
-  //       one: 1,
-  //       two: 2,
-  //     },
-  //     shared: {
-  //       beef: 'sweet',
-  //     }
-  //   };
-  //
-  //   const data2 = {
-  //     data: 'two',
-  //     shared: {
-  //       beef: 'under',
-  //       pork: 'none',
-  //     }
-  //   };
-  //
-  //   const response = wrapper._packageData(data1, data2);
-  //   const object = wrapper._unpackageData(response);
-  //   expect(object.data).equals('one');
-  //   expect(object.object.one).equals(1);
-  //   expect(object.object.two).equals(2);
-  //   expect(object.shared.beef).equals('under');
-  //   expect(object.shared.pork).equals('none');
-  // });
+    const data2 = {
+      data: 'two',
+      shared: {
+        beef: 'under',
+        pork: 'none',
+      }
+    };
+
+    const response = wrapper._packageData(data1, data2);
+    const object = wrapper._unpackageData(response);
+    expect(object.data).equals('two');
+    expect(object.object.one).equals(1);
+    expect(object.object.two).equals(2);
+    expect(object.shared.beef).equals('under');
+    expect(object.shared.pork).equals('none');
+  });
 
   afterEach(async () => {});
 });
