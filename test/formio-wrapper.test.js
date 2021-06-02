@@ -637,7 +637,7 @@ describe('Formio Wrapper Tests.', () => {
 
     const response = wrapper._packageData(data1, data2);
     const object = wrapper._unpackageData(response);
-    expect(object.data).equals('one');
+    expect(object.data).equals('two');
     expect(object.object.one).equals(1);
     expect(object.object.two).equals(2);
     expect(object.shared.beef).equals('under');
