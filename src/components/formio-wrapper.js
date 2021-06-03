@@ -299,8 +299,9 @@ export class FormioWrapper {
    * @returns {String} the stringified object
    */
   // eslint-disable-next-line class-methods-use-this
-  _packageData(storedData) {
-    const newStorage = { ...storedData };
+  _packageData(storedData, newData) {
+    const newStorage = { ...storedData, ...newData };
+
     const keys = Object.keys(newStorage);
     keys.forEach((key) => {
       newStorage[key] = JSON.stringify(newStorage[key]);
