@@ -52,7 +52,7 @@ import { Environment } from './environment';
     const topicsList = new TopicsList(
       'topics',
       localStorage,
-      configuration.stageLocation,
+      // configuration.stageLocation,
     );
 
     const secondaryTopics = new TopicsList(
@@ -65,23 +65,29 @@ import { Environment } from './environment';
   let firstInit = true;
 
   window.addEventListener('kyfb-topic-change', (event) => {
+    // eslint-disable-next-line no-console
+    console.log('kyfb-topic-change');
     if (kyfb.wizard) {
+      // eslint-disable-next-line no-console
+      console.log('kyfb.wizard');
       if (kyfb.wizard.data && kyfb.wizard.data.topicName) {
         kyfb.wizard.data.topicName = event.detail.title;
       }
-
       if (kyfb.wizard._seenPages) {
+        // eslint-disable-next-line no-console
+        console.log(kyfb.wizard._seenPages);
         kyfb.wizard._seenPages = [];
       }
-
-      if (kyfb.wizard.page) {
-        kyfb.wizard.page = 0;
-      }
+      //
+      // if (kyfb.wizard.page) {
+      //   kyfb.wizard.page = 0;
+      // }
     }
 
     kyfb.config.form.location = event.detail.topic;
     kyfb.config.form.baseLocation = event.detail.base;
     kyfb.config.form.title = event.detail.title;
+    kyfb.lastNavigation = null;
 
     kyfb.initialise(firstInit);
     firstInit = false;
@@ -99,8 +105,11 @@ import { Environment } from './environment';
   });
 
   window.addEventListener('cancelKYFBForm', (event) => {
+    // eslint-disable-next-line no-console
+    console.log('cancelKYFBForm event');
     kyfb.formLocation = '';
     kyfb.formTitle = '';
+    kyfb.lastNavigation = null;
     kyfb.initialise();
     document.querySelector('#forms').hidden = true;
     document.querySelector('#topics').hidden = false;
